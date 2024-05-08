@@ -40,12 +40,6 @@ public class ImageController {
                 view.resize(width, height);
                 mainFrame.pack();
             } else {
-                // print mainFrame coordinates
-                System.out.println(mainFrame.getLocation());
-                
-                mainFrame.revalidate();
-                mainFrame.repaint();
-
                 JOptionPane.showMessageDialog(null, "Dimensions must be positive numbers.", "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
