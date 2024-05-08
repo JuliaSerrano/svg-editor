@@ -32,6 +32,10 @@ public class MenuBar extends JMenuBar {
         editMenu.add(resizeItem);
         resizeItem.addActionListener(e -> showResizeImageDialog());
 
+        JMenuItem changeBgColorItem = new JMenuItem("Change Background Color");
+        editMenu.add(changeBgColorItem);
+        changeBgColorItem.addActionListener(e -> changeBackgroundColor());
+
     }
 
     private void showNewImageDialog() {
@@ -57,5 +61,10 @@ public class MenuBar extends JMenuBar {
         if (result == JOptionPane.OK_OPTION) {
             controller.resizeImage(widthField.getText(), heightField.getText(), restart);
         }
+    }
+
+    private void changeBackgroundColor() {
+        Color newColor = JColorChooser.showDialog(null, "Choose Background Color", controller.getView().getBackground());
+        controller.getView().setBackground(newColor);
     }
 }

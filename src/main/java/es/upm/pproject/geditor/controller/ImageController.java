@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import es.upm.pproject.geditor.model.ImageModel;
 import es.upm.pproject.geditor.view.MainFrame;
 import es.upm.pproject.geditor.view.ImagePanel;
+import java.awt.Color;
 
 public class ImageController {
 
@@ -35,9 +36,8 @@ public class ImageController {
             int width = Integer.parseInt(widthText);
             int height = Integer.parseInt(heightText);
             if (width > 0 && height > 0) {
-                model.setDimensions(width, height);
 
-                if (restart) view.clean();
+                if (restart) view.restart();
     
                 view.resize(width, height);
                 mainFrame.pack();
@@ -50,6 +50,10 @@ public class ImageController {
                     JOptionPane.ERROR_MESSAGE);
         }
 
+    }
+
+    public void changeBackgroundColor(Color color) {
+        view.changeBackground(color);
     }
 
 }
