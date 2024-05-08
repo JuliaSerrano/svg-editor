@@ -21,24 +21,41 @@ public class MenuBar extends JMenuBar {
         JMenuItem newImageItem = new JMenuItem("New Image");
         fileMenu.add(newImageItem);
         newImageItem.addActionListener(e -> showNewImageDialog());
+
+
+        // Create the Edit menu
+        JMenu editMenu = new JMenu("Edit");
+        this.add(editMenu);
+
+        // Add menu items to the Edit menu
+        JMenuItem resizeItem = new JMenuItem("Resize");
+        editMenu.add(resizeItem);
+        resizeItem.addActionListener(e -> showResizeImageDialog());
+
     }
 
     private void showNewImageDialog() {
+        showImageDialog("Enter Width and Height for New Image", true);
+    }
+
+    private void showResizeImageDialog() {
+        showImageDialog("Enter New Width and Height to Resize Image", false);
+    }
+
+    private void showImageDialog(String dialogTitle, boolean restart) {
         // Create a panel to hold the input fields
         JPanel panel = new JPanel(new GridLayout(0, 2));
-
-        // Add text fields for width and height
         panel.add(new JLabel("Width:"));
         JTextField widthField = new JTextField(5);
         panel.add(widthField);
-
         panel.add(new JLabel("Height:"));
         JTextField heightField = new JTextField(5);
         panel.add(heightField);
 
         // Show the dialog
-        JOptionPane.showMessageDialog(null, panel, "Enter Width and Height", JOptionPane.PLAIN_MESSAGE);
-
-        controller.createImage(widthField.getText(), heightField.getText());
+        int result = JOptionPane.showConfirmDialog(null, panel, dialogTitle, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            controller.resizeImage(widthField.getText(), heightField.getText(), restart);
+        }
     }
 }

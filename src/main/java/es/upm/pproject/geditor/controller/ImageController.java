@@ -30,13 +30,15 @@ public class ImageController {
         return model;
     }
 
-    public void createImage(String widthText, String heightText) {
+    public void resizeImage(String widthText, String heightText, boolean restart) {
         try {
             int width = Integer.parseInt(widthText);
             int height = Integer.parseInt(heightText);
             if (width > 0 && height > 0) {
                 model.setDimensions(width, height);
-                view.clean();
+
+                if (restart) view.clean();
+    
                 view.resize(width, height);
                 mainFrame.pack();
             } else {
