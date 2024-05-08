@@ -37,10 +37,8 @@ public class MenuBar extends JMenuBar {
         panel.add(heightField);
 
         // Show the dialog
-        int result = JOptionPane.showConfirmDialog(null, panel, "Enter Width and Height", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, panel, "Enter Width and Height", JOptionPane.PLAIN_MESSAGE);
 
-        if (result == JOptionPane.OK_OPTION) {
-            controller.createImage(widthField.getText(), heightField.getText());
-        }
+        controller.createImage(widthField.getText(), heightField.getText());
     }
 }
