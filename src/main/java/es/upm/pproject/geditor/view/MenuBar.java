@@ -35,6 +35,10 @@ public class MenuBar extends JMenuBar {
         JMenuItem changeBgColorItem = new JMenuItem("Change Background Color");
         editMenu.add(changeBgColorItem);
         changeBgColorItem.addActionListener(e -> changeBackgroundColor());
+        
+        JMenuItem rectangleItem = new JMenuItem("Draw Rectangle");
+        editMenu.add(rectangleItem);
+        rectangleItem.addActionListener(e -> setCurrentShape(Figure.RECTANGLE));
 
     }
 
@@ -67,4 +71,16 @@ public class MenuBar extends JMenuBar {
         Color newColor = JColorChooser.showDialog(null, "Choose Background Color", controller.getView().getBackground());
         controller.getView().setBackground(newColor);
     }
+   
+//********************************************************************************
+   
+    public void setCurrentShape(Figure shape) {
+        Figure currentShape = shape;
+    }
+
+    
+    
+    
+    
+
 }
