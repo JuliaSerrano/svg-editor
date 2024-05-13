@@ -4,6 +4,7 @@ public enum Figure {
 	
 	RECTANGLE,
 	CIRCLE,
-	LINE
+	LINE,
+	POLYGON
 	
 }

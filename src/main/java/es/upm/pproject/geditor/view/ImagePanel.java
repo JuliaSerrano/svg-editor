@@ -3,6 +3,8 @@ package es.upm.pproject.geditor.view;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,9 +21,15 @@ public class ImagePanel extends JPanel {
 	private List<Rectangle> rectangles = new ArrayList<>();
 	private List<Ellipse2D.Double> circles = new ArrayList<>();
 	private List<Line2D.Double> lines = new ArrayList<>();
+	
+	private List<Polygon> polygons = new ArrayList<>();
+	private List<Point> polygonPoints = new ArrayList<>();
+	
     private boolean drawRectanglesEnabled = false;
     private boolean drawCirclesEnabled = false;
     private boolean drawLinesEnabled = false;
+    private boolean	drawPolygonsEnabled = false;
+    private Polygon currentPolygon = null;
 
 
     MainFrame mainFrame;
@@ -52,6 +60,13 @@ public class ImagePanel extends JPanel {
                     endX = startX;
                     endY = startY;
                     currentShape = Figure.LINE;
+                }else if(drawPolygonsEnabled) {
+                    startX = e.getX();
+                    startY = e.getY();
+                    currentPolygon = new Polygon();
+                    currentPolygon.addPoint(startX, startY);
+                    polygonPoints.clear();
+                    polygonPoints.add(new Point(startX, startY));
                 }
         	}
         	
@@ -59,9 +74,19 @@ public class ImagePanel extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-            	   endX = e.getX();
-                   endY = e.getY();
-                   repaint();
+            	
+            	if (drawPolygonsEnabled) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    currentPolygon.addPoint(x, y);
+                    polygonPoints.add(new Point(x, y));
+                    repaint();
+                }else {
+                	 endX = e.getX();
+                     endY = e.getY();
+                     repaint();
+                }
+            	  
             }
 
             @Override
@@ -77,6 +102,10 @@ public class ImagePanel extends JPanel {
                 }else if (currentShape == Figure.LINE) {
                 	Line2D.Double line = new Line2D.Double(startX, startY, endX, endY);
                     lines.add(line);
+                }else if (drawPolygonsEnabled) {
+                    polygons.add(currentPolygon);
+                    currentPolygon = null;
+                    
                 }
                 repaint();
             }
@@ -120,6 +149,11 @@ public class ImagePanel extends JPanel {
          for (Line2D.Double line : lines) {
         	 g.drawLine((int)line.getX1(), (int)line.getY1(), (int)line.getX2(),(int) line.getY2());
          }
+         
+         for (Polygon polygon : polygons) {
+             g.drawPolygon(polygon);
+         }
+         
          if (currentShape == Figure.RECTANGLE) {
              int width = Math.abs(endX - startX);
              int height = Math.abs(endY - startY);
@@ -139,7 +173,36 @@ public class ImagePanel extends JPanel {
 
     
   
+   
+
+    public void drawRectangle(int x, int y, int width, int height) {
+        Rectangle rectangle = new Rectangle(x, y, width, height);
+        rectangles.add(rectangle);
+        repaint();
+    }
     
+    
+    
+    public void drawCircle(int centerX, int centerY, int radius) {
+        Circle circle = new Circle(centerX, centerY, radius);
+        circles.add(circle);
+        repaint();
+    }
+    
+    public void drawEllipse(int centerX, int centerY, int width, int height) {
+        Ellipse2D.Double ellipse = new Ellipse2D.Double(centerX - width / 2, centerY - height / 2, width, height);
+        circles.add(ellipse);
+        repaint();
+    }
+    
+    public void drawLine(int startX, int startY, int endX, int endY) {
+        Line2D.Double line = new Line2D.Double(startX, startY, endX, endY);
+        lines.add(line);
+        repaint();
+    }
+
+
+
     
     public void setDrawRectanglesEnabled(boolean enabled) {
         drawRectanglesEnabled = enabled;
@@ -152,6 +215,17 @@ public class ImagePanel extends JPanel {
     public void setDrawLinesEnabled(boolean enabled) {
     	drawLinesEnabled = enabled;
     }
-
-
+    
+    public void setDrawPolygonsEnabled(boolean enabled) {
+        drawPolygonsEnabled = enabled;
+    }
+    
+    
+    //Class for drawing circle
+    public class Circle extends Ellipse2D.Double {
+        public Circle(int centerX, int centerY, int radius) {
+            super(centerX - radius, centerY - radius, radius * 2, radius * 2);
+        }
+    }
 }
+

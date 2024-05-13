@@ -6,6 +6,9 @@ import es.upm.pproject.geditor.model.ImageModel;
 import es.upm.pproject.geditor.view.MainFrame;
 import es.upm.pproject.geditor.view.ImagePanel;
 import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageController {
 
@@ -55,5 +58,8 @@ public class ImageController {
     public void changeBackgroundColor(Color color) {
         view.changeBackground(color);
     }
+    
+    
+   
 
 }
