@@ -8,6 +8,8 @@ import es.upm.pproject.geditor.controller.ImageController;
 public class MenuBar extends JMenuBar {
 
     ImageController controller;
+    private boolean drawRectanglesEnabled = false;
+    private boolean drawCirclesEnabled = false;
 
     public MenuBar(ImageController controller) {
         super();
@@ -39,6 +41,11 @@ public class MenuBar extends JMenuBar {
         JMenuItem rectangleItem = new JMenuItem("Draw Rectangle");
         editMenu.add(rectangleItem);
         rectangleItem.addActionListener(e -> setCurrentShape(Figure.RECTANGLE));
+        
+        JMenuItem circleItem = new JMenuItem("Draw Circle");
+        editMenu.add(circleItem);
+        circleItem.addActionListener(e -> setCurrentShape(Figure.CIRCLE));
+
 
     }
 
@@ -74,9 +81,25 @@ public class MenuBar extends JMenuBar {
    
 //********************************************************************************
    
+    
+    
     public void setCurrentShape(Figure shape) {
-        Figure currentShape = shape;
+        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE) {
+            if (shape == Figure.RECTANGLE) {
+                drawRectanglesEnabled = !drawRectanglesEnabled;
+                drawCirclesEnabled = false;
+            } else if (shape == Figure.CIRCLE) {
+                drawCirclesEnabled = !drawCirclesEnabled;
+                drawRectanglesEnabled = false;
+            }
+            controller.getView().setDrawRectanglesEnabled(drawRectanglesEnabled);
+            controller.getView().setDrawCirclesEnabled(drawCirclesEnabled);
+        }
     }
+
+
+    
+    
 
     
     
