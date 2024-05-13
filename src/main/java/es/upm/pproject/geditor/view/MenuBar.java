@@ -10,6 +10,7 @@ public class MenuBar extends JMenuBar {
     ImageController controller;
     private boolean drawRectanglesEnabled = false;
     private boolean drawCirclesEnabled = false;
+    private boolean drawLinesEnabled = false;
 
     public MenuBar(ImageController controller) {
         super();
@@ -45,6 +46,11 @@ public class MenuBar extends JMenuBar {
         JMenuItem circleItem = new JMenuItem("Draw Circle");
         editMenu.add(circleItem);
         circleItem.addActionListener(e -> setCurrentShape(Figure.CIRCLE));
+        
+        JMenuItem lineItem = new JMenuItem("Draw Line");
+        editMenu.add(lineItem);
+        lineItem.addActionListener(e -> setCurrentShape(Figure.LINE));
+
 
 
     }
@@ -84,16 +90,24 @@ public class MenuBar extends JMenuBar {
     
     
     public void setCurrentShape(Figure shape) {
-        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE) {
+        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE || shape == Figure.LINE) {
             if (shape == Figure.RECTANGLE) {
                 drawRectanglesEnabled = !drawRectanglesEnabled;
                 drawCirclesEnabled = false;
+                drawLinesEnabled = false;
             } else if (shape == Figure.CIRCLE) {
                 drawCirclesEnabled = !drawCirclesEnabled;
                 drawRectanglesEnabled = false;
+                drawLinesEnabled = false;
+            }
+            else if (shape == Figure.LINE) {
+            	drawLinesEnabled = !drawLinesEnabled;
+                drawRectanglesEnabled = false;
+                drawCirclesEnabled = false;
             }
             controller.getView().setDrawRectanglesEnabled(drawRectanglesEnabled);
             controller.getView().setDrawCirclesEnabled(drawCirclesEnabled);
+            controller.getView().setDrawLinesEnabled(drawLinesEnabled);
         }
     }
 
