@@ -6,9 +6,6 @@ import es.upm.pproject.geditor.model.ImageModel;
 import es.upm.pproject.geditor.view.MainFrame;
 import es.upm.pproject.geditor.view.ImagePanel;
 import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ImageController {
 
@@ -40,8 +37,9 @@ public class ImageController {
             int height = Integer.parseInt(heightText);
             if (width > 0 && height > 0) {
 
-                if (restart) view.restart();
-    
+                if (restart)
+                    view.restart();
+
                 view.resize(width, height);
                 mainFrame.pack();
             } else {
@@ -58,8 +56,5 @@ public class ImageController {
     public void changeBackgroundColor(Color color) {
         view.changeBackground(color);
     }
-    
-    
-   
 
 }
