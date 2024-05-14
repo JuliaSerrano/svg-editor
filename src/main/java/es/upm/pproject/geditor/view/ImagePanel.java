@@ -29,7 +29,7 @@ public class ImagePanel extends JPanel {
     private boolean drawCirclesEnabled = false;
     private boolean drawLinesEnabled = false;
     private boolean drawPolygonsEnabled = false;
-    private Polygon currentPolygon = null;
+    private Polygon currentPolygon = new Polygon();
 
     MainFrame mainFrame;
 
@@ -60,30 +60,27 @@ public class ImagePanel extends JPanel {
                     endY = startY;
                     currentShape = Figure.LINE;
                 } else if (drawPolygonsEnabled) {
-                    startX = e.getX();
-                    startY = e.getY();
-                    currentPolygon = new Polygon();
-                    currentPolygon.addPoint(startX, startY);
-                    polygonPoints.clear();
-                    polygonPoints.add(new Point(startX, startY));
+                    polygonPoints.add(new Point(e.getX(), e.getY()));
+                    // Double-click to finish the polygon
+                    if (e.getClickCount() == 2 && !polygonPoints.isEmpty()) {
+                        for (Point p : polygonPoints) {
+                            currentPolygon.addPoint(p.x, p.y);
+                        }
+                        polygonPoints.clear();
+                        polygons.add(currentPolygon);
+                        currentPolygon = new Polygon();
+                    }
+                    currentShape = Figure.POLYGON;
                 }
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-
-                if (drawPolygonsEnabled) {
-                    int x = e.getX();
-                    int y = e.getY();
-                    currentPolygon.addPoint(x, y);
-                    polygonPoints.add(new Point(x, y));
-                    repaint();
-                } else {
+                if (!drawPolygonsEnabled) {
                     endX = e.getX();
                     endY = e.getY();
                     repaint();
                 }
-
             }
 
             @Override
@@ -101,10 +98,6 @@ public class ImagePanel extends JPanel {
                 } else if (currentShape == Figure.LINE) {
                     Line2D.Double line = new Line2D.Double(startX, startY, endX, endY);
                     lines.add(line);
-                } else if (drawPolygonsEnabled) {
-                    polygons.add(currentPolygon);
-                    currentPolygon = null;
-
                 }
                 repaint();
             }
@@ -165,6 +158,13 @@ public class ImagePanel extends JPanel {
             g.drawOval(x, y, width, height);
         } else if (currentShape == Figure.LINE) {
             g.drawLine(startX, startY, endX, endY);
+        } else if (currentShape == Figure.POLYGON && !polygonPoints.isEmpty()) {
+            Point start = polygonPoints.get(0);
+            for (int i = 1; i < polygonPoints.size(); i++) {
+                Point end = polygonPoints.get(i);
+                g.drawLine(start.x, start.y, end.x, end.y);
+                start = end;
+            }
         }
     }
 
