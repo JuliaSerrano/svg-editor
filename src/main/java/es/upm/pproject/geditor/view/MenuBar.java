@@ -116,8 +116,9 @@ public class MenuBar extends JMenuBar {
     }
 
     private void changeBackgroundColor() {
-        Color newColor = JColorChooser.showDialog(null, "Choose Background Color", controller.getView().getBackground());
-        controller.getView().setBackground(newColor);
+        Color newColor = JColorChooser.showDialog(null, "Choose Background Color",
+                controller.getView().getBackground());
+        controller.changeBackgroundColor(newColor);
     }
     
     
