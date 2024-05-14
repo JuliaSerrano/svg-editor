@@ -3,6 +3,7 @@ package es.upm.pproject.geditor.view;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -10,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
@@ -24,6 +26,8 @@ public class ImagePanel extends JPanel {
 
     private List<Polygon> polygons = new ArrayList<>();
     private List<Point> polygonPoints = new ArrayList<>();
+    private List<Polyline> polylines = new ArrayList<>();
+    private List<Path2D> paths = new ArrayList<>();
 
     private boolean drawRectanglesEnabled = false;
     private boolean drawCirclesEnabled = false;
@@ -143,6 +147,21 @@ public class ImagePanel extends JPanel {
         for (Polygon polygon : polygons) {
             g.drawPolygon(polygon);
         }
+        
+        for (Polyline polyline : polylines) {
+            polyline.draw(g);
+        }
+        
+        for (Polyline polyline : polylines) {
+            polyline.draw(g);
+        }
+        
+        for (Path2D path : paths) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(Color.BLACK);
+            g2d.draw(path);
+            g2d.dispose();
+        }
 
         if (currentShape == Figure.RECTANGLE) {
             int width = Math.abs(endX - startX);
@@ -191,6 +210,18 @@ public class ImagePanel extends JPanel {
         lines.add(line);
         repaint();
     }
+    
+    public void drawPolygon(int[] xPoints, int[] yPoints, int numVertices) {
+        Polygon polygon = new Polygon(xPoints, yPoints, numVertices);
+        polygons.add(polygon);
+        repaint();
+    }
+    
+    public void drawPolyline(int[] xPoints, int[] yPoints, int numPoints) {
+        Polyline polyline = new Polyline(xPoints, yPoints, numPoints);
+        polylines.add(polyline);
+        repaint();
+    }
 
     public void setDrawRectanglesEnabled(boolean enabled) {
         drawRectanglesEnabled = enabled;
@@ -207,11 +238,34 @@ public class ImagePanel extends JPanel {
     public void setDrawPolygonsEnabled(boolean enabled) {
         drawPolygonsEnabled = enabled;
     }
+    
+    public void drawPath(Path2D path) {
+        paths.add(path);
+        repaint();
+    }
+
 
     // Class for drawing circle
     public class Circle extends Ellipse2D.Double {
         public Circle(int centerX, int centerY, int radius) {
             super(centerX - radius, centerY - radius, radius * 2, radius * 2);
+        }
+    }
+    
+    //Class for drawing Polylines
+    public class Polyline {
+        private int[] xPoints;
+        private int[] yPoints;
+        private int numPoints;
+
+        public Polyline(int[] xPoints, int[] yPoints, int numPoints) {
+            this.xPoints = xPoints;
+            this.yPoints = yPoints;
+            this.numPoints = numPoints;
+        }
+
+        public void draw(Graphics g) {
+            g.drawPolyline(xPoints, yPoints, numPoints);
         }
     }
 }

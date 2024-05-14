@@ -3,6 +3,10 @@ package es.upm.pproject.geditor.view;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
+import java.util.ArrayList;
+import java.util.List;
+
 import es.upm.pproject.geditor.controller.ImageController;
 
 public class MenuBar extends JMenuBar {
@@ -79,6 +83,20 @@ public class MenuBar extends JMenuBar {
         JMenuItem lineKeyItem = new JMenuItem("Draw Line");
         figuresKeyMenu.add(lineKeyItem);
         lineKeyItem.addActionListener(e -> showLineDialog());
+        
+
+        JMenuItem polygonKeyItem = new JMenuItem("Draw Polygon");
+        figuresKeyMenu.add(polygonKeyItem);
+        polygonKeyItem.addActionListener(e -> showPolygonDialog());
+        
+        
+        JMenuItem polylineKeyItem = new JMenuItem("Draw Polyline");
+        figuresKeyMenu.add(polylineKeyItem);
+        polylineKeyItem.addActionListener(e -> showPolylineDialog());
+        
+        JMenuItem pathKeyItem = new JMenuItem("Draw Path");
+        figuresKeyMenu.add(pathKeyItem);
+        pathKeyItem.addActionListener(e -> showPathDialog());
 
     }
 
@@ -235,6 +253,131 @@ public class MenuBar extends JMenuBar {
             controller.getView().drawLine(startX, startY, endX, endY);
         }
     }
+    
+    
+    private void showPolygonDialog() {
+        // Crear el cuadro de diálogo para ingresar las coordenadas de los vértices del polígono
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        panel.add(new JLabel("Vertex X:"));
+        JTextField vertexXField = new JTextField(5);
+        panel.add(vertexXField);
+        panel.add(new JLabel("Vertex Y:"));
+        JTextField vertexYField = new JTextField(5);
+        panel.add(vertexYField);
+
+        JButton addVertexButton = new JButton("Add Vertex");
+        panel.add(addVertexButton);
+
+        List<Point> vertices = new ArrayList<>();
+        
+
+        // Listener para agregar vértices al polígono
+        addVertexButton.addActionListener(e -> {
+            int vertexX = Integer.parseInt(vertexXField.getText());
+            int vertexY = Integer.parseInt(vertexYField.getText());
+            vertices.add(new Point(vertexX, vertexY));
+            vertexXField.setText("");
+            vertexYField.setText("");
+        });
+
+        // Mostrar el cuadro de diálogo
+        int result = JOptionPane.showConfirmDialog(null, panel, "Draw Polygon", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            // Convertir la lista de vértices a un array de coordenadas
+            int[] xPoints = vertices.stream().mapToInt(point -> (int)point.getX()).toArray();
+            int[] yPoints = vertices.stream().mapToInt(point -> (int)point.getY()).toArray();
+
+            int numVertices = vertices.size();
+            // Dibujar el polígono utilizando el método drawPolygon
+            controller.getView().drawPolygon(xPoints, yPoints, numVertices);
+        }
+    }
+    
+    
+    private void showPolylineDialog() {
+        // Crear el cuadro de diálogo para ingresar las coordenadas de los puntos de la polilínea
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        panel.add(new JLabel("Point X:"));
+        JTextField pointXField = new JTextField(5);
+        panel.add(pointXField);
+        panel.add(new JLabel("Point Y:"));
+        JTextField pointYField = new JTextField(5);
+        panel.add(pointYField);
+
+        JButton addPointButton = new JButton("Add Point");
+        panel.add(addPointButton);
+
+        List<Point> points = new ArrayList<>();
+
+        // Listener para agregar puntos a la polilínea
+        addPointButton.addActionListener(e -> {
+            int pointX = Integer.parseInt(pointXField.getText());
+            int pointY = Integer.parseInt(pointYField.getText());
+            points.add(new Point(pointX, pointY));
+            pointXField.setText("");
+            pointYField.setText("");
+        });
+
+        // Mostrar el cuadro de diálogo
+        int result = JOptionPane.showConfirmDialog(null, panel, "Draw Polyline", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            // Convertir la lista de puntos a un array de coordenadas
+        	int[] xPoints = points.stream().mapToInt(point -> (int) point.getX()).toArray();
+        	int[] yPoints = points.stream().mapToInt(point -> (int) point.getY()).toArray();
+
+            int numPoints = points.size();
+            // Dibujar la polilínea utilizando el método drawPolyline
+            controller.getView().drawPolyline(xPoints, yPoints, numPoints);
+        }
+    }
+    
+    
+    private void showPathDialog() {
+        // Crear el cuadro de diálogo para ingresar las coordenadas de los puntos del path
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        panel.add(new JLabel("Point X:"));
+        JTextField pointXField = new JTextField(5);
+        panel.add(pointXField);
+        panel.add(new JLabel("Point Y:"));
+        JTextField pointYField = new JTextField(5);
+        panel.add(pointYField);
+
+        JButton addPointButton = new JButton("Add Point");
+        panel.add(addPointButton);
+
+        // Lista para almacenar los puntos del path
+        List<Point> points = new ArrayList<>();
+
+        // Listener para agregar puntos al path
+        addPointButton.addActionListener(e -> {
+            int pointX = Integer.parseInt(pointXField.getText());
+            int pointY = Integer.parseInt(pointYField.getText());
+            points.add(new Point(pointX, pointY));
+            pointXField.setText("");
+            pointYField.setText("");
+        });
+
+        // Mostrar el cuadro de diálogo
+        int result = JOptionPane.showConfirmDialog(null, panel, "Draw Path", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            // Crear un nuevo objeto Path2D para almacenar el path
+            Path2D path = new Path2D.Double();
+            
+            // Establecer el primer punto del path
+            Point firstPoint = points.get(0);
+            path.moveTo(firstPoint.getX(), firstPoint.getY());
+            
+            // Agregar los demás puntos al path
+            for (int i = 1; i < points.size(); i++) {
+                Point nextPoint = points.get(i);
+                path.lineTo(nextPoint.getX(), nextPoint.getY());
+            }
+
+            // Dibujar el path utilizando el método drawPath
+            controller.getView().drawPath(path);
+        }
+    }
+
 
     // ********************************************************************************
 
