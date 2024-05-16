@@ -6,6 +6,7 @@ public enum Figure {
 	CIRCLE,
 	LINE,
 	POLYGON,
-	POLYLINE
+	POLYLINE,
+	PATH
 
 }

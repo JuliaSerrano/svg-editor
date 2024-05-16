@@ -29,12 +29,15 @@ public class ImagePanel extends JPanel {
     private List<Polyline> polylines = new ArrayList<>();
     private List<Path2D> paths = new ArrayList<>();
     private List<Point> polylinePoints = new ArrayList<>();
+    private List<Point> pathPoints = new ArrayList<>();
+    private Path2D.Double currentPath = new Path2D.Double();
 
     private boolean drawRectanglesEnabled = false;
     private boolean drawCirclesEnabled = false;
     private boolean drawLinesEnabled = false;
     private boolean drawPolygonsEnabled = false;
     private boolean drawPolylinesEnabled = false;
+    private boolean drawPathsEnabled = false;
     private Polygon currentPolygon = new Polygon();
 
     MainFrame mainFrame;
@@ -82,6 +85,13 @@ public class ImagePanel extends JPanel {
                     startY = e.getY();
                     currentShape = Figure.POLYLINE;
                     polylinePoints.add(new Point(startX, startY));
+                }else if (drawPathsEnabled) {
+                    pathPoints.clear();
+                    pathPoints.add(new Point(e.getX(), e.getY()));
+                    currentPath.reset();
+                    currentPath.moveTo(e.getX(), e.getY());
+                    currentShape = Figure.PATH;
+                    repaint();
                 }
             }
 
@@ -95,6 +105,12 @@ public class ImagePanel extends JPanel {
                 if (drawPolylinesEnabled) {
                     endX = e.getX();
                     endY = e.getY();
+                    repaint();
+                }
+                
+                if (drawPathsEnabled) {
+                    pathPoints.add(new Point(e.getX(), e.getY()));
+                    currentPath.lineTo(e.getX(), e.getY());
                     repaint();
                 }
                 
@@ -123,6 +139,11 @@ public class ImagePanel extends JPanel {
                     int[] yPoints = polylinePoints.stream().mapToInt(p -> p.y).toArray();
                     drawPolyline(xPoints, yPoints, polylinePoints.size());
                     polylinePoints.clear();
+                   
+                }else if (drawPathsEnabled) {
+                    pathPoints.add(new Point(e.getX(), e.getY()));
+                    paths.add(currentPath);
+                    currentPath = new Path2D.Double();
                    
                 }
                 
@@ -211,6 +232,21 @@ public class ImagePanel extends JPanel {
                 g.drawLine(start.x, start.y, end.x, end.y);
                 start = end;
             }
+        }else if (drawPathsEnabled) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(Color.BLACK);
+            for (Path2D path : paths) {
+                g2d.draw(path);
+            }
+            if (!pathPoints.isEmpty()) {
+                Point start = pathPoints.get(0);
+                for (int i = 1; i < pathPoints.size(); i++) {
+                    Point end = pathPoints.get(i);
+                    g2d.drawLine(start.x, start.y, end.x, end.y);
+                    start = end;
+                }
+            }
+            g2d.dispose();
         }
     }
 
@@ -269,6 +305,11 @@ public class ImagePanel extends JPanel {
     public void setDrawPolylinesEnabled(boolean enabled) {
     	drawPolylinesEnabled = enabled;
     }
+    
+    public void setDrawPathsEnabled(boolean enabled) {
+        drawPathsEnabled = enabled;
+    }
+
     
 
 

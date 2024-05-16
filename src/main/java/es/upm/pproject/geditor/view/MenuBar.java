@@ -19,6 +19,7 @@ public class MenuBar extends JMenuBar {
     private boolean drawLinesEnabled = false;
     private boolean drawPolygonsEnabled = false;
     private boolean drawPolylinesEnabled = false;
+    private boolean drawPathsEnabled = false;
     
 
     public MenuBar(ImageController controller) {
@@ -70,6 +71,10 @@ public class MenuBar extends JMenuBar {
         JMenuItem polylineMouseItem = new JMenuItem("Draw Polyline");
         figuresMouseMenu.add(polylineMouseItem);
         polylineMouseItem.addActionListener(e -> setCurrentShape(Figure.POLYLINE));
+        
+        JMenuItem pathMouseItem = new JMenuItem("Draw Path");
+        figuresMouseMenu.add(pathMouseItem);
+        pathMouseItem.addActionListener(e -> setCurrentShape(Figure.PATH));
 
         JMenu figuresKeyMenu = new JMenu("Figures Key");
         this.add(figuresKeyMenu);
@@ -388,37 +393,51 @@ public class MenuBar extends JMenuBar {
     // ********************************************************************************
 
     public void setCurrentShape(Figure shape) {
-        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE || shape == Figure.LINE || shape == Figure.POLYGON || shape == Figure.POLYLINE) {
+        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE || shape == Figure.LINE ||
+        		shape == Figure.POLYGON || shape == Figure.POLYLINE || shape == Figure.PATH) {
             if (shape == Figure.RECTANGLE) {
                 drawRectanglesEnabled = !drawRectanglesEnabled;
                 drawCirclesEnabled = false;
                 drawLinesEnabled = false;
                 drawPolygonsEnabled = false;
                 drawPolylinesEnabled = false;
+                drawPathsEnabled = false;
             } else if (shape == Figure.CIRCLE) {
                 drawCirclesEnabled = !drawCirclesEnabled;
                 drawRectanglesEnabled = false;
                 drawLinesEnabled = false;
                 drawPolygonsEnabled = false;
                 drawPolylinesEnabled = false;
+                drawPathsEnabled = false;
             } else if (shape == Figure.LINE) {
                 drawLinesEnabled = !drawLinesEnabled;
                 drawRectanglesEnabled = false;
                 drawCirclesEnabled = false;
                 drawPolygonsEnabled = false;
                 drawPolylinesEnabled = false;
+                drawPathsEnabled = false;
             } else if (shape == Figure.POLYGON) {
                 drawPolygonsEnabled = !drawPolygonsEnabled;
                 drawRectanglesEnabled = false;
                 drawCirclesEnabled = false;
                 drawLinesEnabled = false;
                 drawPolylinesEnabled = false;
+                drawPathsEnabled = false;
             }else if (shape == Figure.POLYLINE) {
             	drawPolylinesEnabled = !drawPolylinesEnabled;
                 drawRectanglesEnabled = false;
                 drawCirclesEnabled = false;
                 drawLinesEnabled = false;
                 drawPolygonsEnabled = false;
+                drawPathsEnabled = false;
+            } else if (shape == Figure.PATH) {
+            	drawPathsEnabled = !drawPathsEnabled;
+                drawRectanglesEnabled = false;
+                drawCirclesEnabled = false;
+                drawLinesEnabled = false;
+                drawPolygonsEnabled = false;
+                drawPolylinesEnabled = false;
+                
 
             }
             controller.getView().setDrawRectanglesEnabled(drawRectanglesEnabled);
@@ -426,6 +445,7 @@ public class MenuBar extends JMenuBar {
             controller.getView().setDrawLinesEnabled(drawLinesEnabled);
             controller.getView().setDrawPolygonsEnabled(drawPolygonsEnabled);
             controller.getView().setDrawPolylinesEnabled(drawPolylinesEnabled);
+            controller.getView().setDrawPathsEnabled(drawPathsEnabled);
         }
     }
 
