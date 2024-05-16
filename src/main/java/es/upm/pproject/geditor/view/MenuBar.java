@@ -18,6 +18,8 @@ public class MenuBar extends JMenuBar {
     private boolean drawCirclesEnabled = false;
     private boolean drawLinesEnabled = false;
     private boolean drawPolygonsEnabled = false;
+    private boolean drawPolylinesEnabled = false;
+    
 
     public MenuBar(ImageController controller) {
         super();
@@ -64,6 +66,10 @@ public class MenuBar extends JMenuBar {
         JMenuItem polygonMouseItem = new JMenuItem("Draw Polygon");
         figuresMouseMenu.add(polygonMouseItem);
         polygonMouseItem.addActionListener(e -> setCurrentShape(Figure.POLYGON));
+        
+        JMenuItem polylineMouseItem = new JMenuItem("Draw Polyline");
+        figuresMouseMenu.add(polylineMouseItem);
+        polylineMouseItem.addActionListener(e -> setCurrentShape(Figure.POLYLINE));
 
         JMenu figuresKeyMenu = new JMenu("Figures Key");
         this.add(figuresKeyMenu);
@@ -382,33 +388,44 @@ public class MenuBar extends JMenuBar {
     // ********************************************************************************
 
     public void setCurrentShape(Figure shape) {
-        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE || shape == Figure.LINE || shape == Figure.POLYGON) {
+        if (shape == Figure.RECTANGLE || shape == Figure.CIRCLE || shape == Figure.LINE || shape == Figure.POLYGON || shape == Figure.POLYLINE) {
             if (shape == Figure.RECTANGLE) {
                 drawRectanglesEnabled = !drawRectanglesEnabled;
                 drawCirclesEnabled = false;
                 drawLinesEnabled = false;
                 drawPolygonsEnabled = false;
+                drawPolylinesEnabled = false;
             } else if (shape == Figure.CIRCLE) {
                 drawCirclesEnabled = !drawCirclesEnabled;
                 drawRectanglesEnabled = false;
                 drawLinesEnabled = false;
                 drawPolygonsEnabled = false;
+                drawPolylinesEnabled = false;
             } else if (shape == Figure.LINE) {
                 drawLinesEnabled = !drawLinesEnabled;
                 drawRectanglesEnabled = false;
                 drawCirclesEnabled = false;
                 drawPolygonsEnabled = false;
+                drawPolylinesEnabled = false;
             } else if (shape == Figure.POLYGON) {
                 drawPolygonsEnabled = !drawPolygonsEnabled;
                 drawRectanglesEnabled = false;
                 drawCirclesEnabled = false;
                 drawLinesEnabled = false;
+                drawPolylinesEnabled = false;
+            }else if (shape == Figure.POLYLINE) {
+            	drawPolylinesEnabled = !drawPolylinesEnabled;
+                drawRectanglesEnabled = false;
+                drawCirclesEnabled = false;
+                drawLinesEnabled = false;
+                drawPolygonsEnabled = false;
 
             }
             controller.getView().setDrawRectanglesEnabled(drawRectanglesEnabled);
             controller.getView().setDrawCirclesEnabled(drawCirclesEnabled);
             controller.getView().setDrawLinesEnabled(drawLinesEnabled);
             controller.getView().setDrawPolygonsEnabled(drawPolygonsEnabled);
+            controller.getView().setDrawPolylinesEnabled(drawPolylinesEnabled);
         }
     }
 

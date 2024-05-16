@@ -28,11 +28,13 @@ public class ImagePanel extends JPanel {
     private List<Point> polygonPoints = new ArrayList<>();
     private List<Polyline> polylines = new ArrayList<>();
     private List<Path2D> paths = new ArrayList<>();
+    private List<Point> polylinePoints = new ArrayList<>();
 
     private boolean drawRectanglesEnabled = false;
     private boolean drawCirclesEnabled = false;
     private boolean drawLinesEnabled = false;
     private boolean drawPolygonsEnabled = false;
+    private boolean drawPolylinesEnabled = false;
     private Polygon currentPolygon = new Polygon();
 
     MainFrame mainFrame;
@@ -75,6 +77,11 @@ public class ImagePanel extends JPanel {
                         currentPolygon = new Polygon();
                     }
                     currentShape = Figure.POLYGON;
+                }else if (drawPolylinesEnabled) {
+                    startX = e.getX();
+                    startY = e.getY();
+                    currentShape = Figure.POLYLINE;
+                    polylinePoints.add(new Point(startX, startY));
                 }
             }
 
@@ -85,6 +92,12 @@ public class ImagePanel extends JPanel {
                     endY = e.getY();
                     repaint();
                 }
+                if (drawPolylinesEnabled) {
+                    endX = e.getX();
+                    endY = e.getY();
+                    repaint();
+                }
+                
             }
 
             @Override
@@ -102,8 +115,22 @@ public class ImagePanel extends JPanel {
                 } else if (currentShape == Figure.LINE) {
                     Line2D.Double line = new Line2D.Double(startX, startY, endX, endY);
                     lines.add(line);
+                }else if (drawPolylinesEnabled) {
+                    endX = e.getX();
+                    endY = e.getY();
+                    polylinePoints.add(new Point(endX, endY));
+                    int[] xPoints = polylinePoints.stream().mapToInt(p -> p.x).toArray();
+                    int[] yPoints = polylinePoints.stream().mapToInt(p -> p.y).toArray();
+                    drawPolyline(xPoints, yPoints, polylinePoints.size());
+                    polylinePoints.clear();
+                   
                 }
+                
+                
+            
+                
                 repaint();
+                
             }
 
         };
@@ -234,10 +261,17 @@ public class ImagePanel extends JPanel {
     public void setDrawLinesEnabled(boolean enabled) {
         drawLinesEnabled = enabled;
     }
-
+    
     public void setDrawPolygonsEnabled(boolean enabled) {
         drawPolygonsEnabled = enabled;
     }
+    
+    public void setDrawPolylinesEnabled(boolean enabled) {
+    	drawPolylinesEnabled = enabled;
+    }
+    
+
+
     
     public void drawPath(Path2D path) {
         paths.add(path);
