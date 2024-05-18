@@ -20,7 +20,6 @@ public class SVGEditorView extends JFrame {
 
         canvas = new SVGCanvas();
         add(canvas, BorderLayout.CENTER);
-
         // add menu
         JMenuBar menuBar = new JMenuBar();
 
@@ -80,7 +79,7 @@ public class SVGEditorView extends JFrame {
             controller.createNewImage(newWidth, newHeight);
         });
 
-        // resize an existing image
+        // resize an existing image action listener
         JMenuItem resizeMenuItem = getJMenuBar().getMenu(0).getItem(1);
         resizeMenuItem.addActionListener((ActionEvent e) -> {
             try {
@@ -101,10 +100,8 @@ public class SVGEditorView extends JFrame {
         // Background color change action listener
         JMenuItem backgroundColorMenuItem = getJMenuBar().getMenu(0).getItem(2);
         backgroundColorMenuItem.addActionListener((ActionEvent e) -> {
-            // TODO: fix bg color retrieval
-            // Color currentColor = model.getBackgroundColor();
-
-            Color newColor = JColorChooser.showDialog(null, "Choose Background Color", Color.BLUE);
+            Color currentColor = canvas.getDocument().getBackgroundColor();
+            Color newColor = JColorChooser.showDialog(null, "Choose Background Color", currentColor);
             if (newColor != null) {
                 controller.changeBackgroundColor(newColor);
             }

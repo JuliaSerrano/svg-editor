@@ -3,19 +3,24 @@ package es.upm.pproject.geditor.view;
 import javax.swing.*;
 import java.awt.*;
 
-import es.upm.pproject.geditor.controller.SVGEditorController;
+// import es.upm.pproject.geditor.controller.SVGEditorController;
 import es.upm.pproject.geditor.model.SVGDocument;
 import es.upm.pproject.geditor.model.SVGElement;
 
 public class SVGCanvas extends JPanel {
     private SVGDocument document;
-    private SVGEditorController controller;
+    // private SVGEditorController controller;
 
     public void setDocument(SVGDocument document) {
         this.document = document;
+
         if (document != null) {
             setPreferredSize(new Dimension(document.getWidth(), document.getHeight()));
         }
+    }
+
+    public SVGDocument getDocument() {
+        return this.document;
     }
 
     @Override
@@ -24,7 +29,6 @@ public class SVGCanvas extends JPanel {
         if (document == null) {
             return;
         }
-
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(document.getBackgroundColor());
         g2d.fillRect(0, 0, document.getWidth(), document.getHeight());
