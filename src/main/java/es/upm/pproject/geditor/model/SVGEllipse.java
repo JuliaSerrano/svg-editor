@@ -1,30 +1,26 @@
 package es.upm.pproject.geditor.model;
 
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.Ellipse2D;
 
-public class SVGRectangle extends SVGElement {
+public class SVGEllipse extends SVGElement {
     private int width;
     private int height;
 
-    // public SVGRectangle() {
-
-    // }
-
-    public SVGRectangle(int x, int y, int width, int height, Color fillColor, double fillOpacity, Color strokeColor,
+    public SVGEllipse(int x, int y, int width, int height, Color fillColor, double fillOpacity, Color strokeColor,
             double strokeOpacity, double strokeWidth) {
         super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
         this.width = width;
         this.height = height;
-        this.shape = new Rectangle2D.Double(x, y, width, height);
+        this.shape = new Ellipse2D.Double(x, y, width, height);
     }
 
-    // TODO: adapt Color to a color code SVG would understand
     @Override
     public String toSVGString() {
         return String.format(
-                "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
-                x, y, width, height, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+                "<ellipse cx=\"%d\" cy=\"%d\" rx=\"%d\" ry=\"%d\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
+                x + width / 2, y + height / 2, width / 2, height / 2, fillColor, fillOpacity,
+                strokeColor, strokeOpacity, strokeWidth);
     }
 
     // Getters and setters

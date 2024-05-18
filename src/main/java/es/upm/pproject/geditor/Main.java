@@ -7,7 +7,6 @@ import es.upm.pproject.geditor.view.SVGEditorView;
 public class Main {
     public static void main(String[] args) {
         SVGModel model = new SVGModel(1200, 800);
-        SVGEditorView view = new SVGEditorView();
-        SVGEditorController controller = new SVGEditorController(model, view);
+        SVGEditorView view = new SVGEditorView(model);
     }
 }

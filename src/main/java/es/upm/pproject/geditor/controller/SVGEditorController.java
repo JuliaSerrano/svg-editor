@@ -4,7 +4,9 @@ import java.awt.Color;
 
 import javax.swing.JOptionPane;
 
+import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.model.SVGModel;
+import es.upm.pproject.geditor.model.SVGRectangle;
 import es.upm.pproject.geditor.view.SVGCanvas;
 import es.upm.pproject.geditor.view.SVGEditorView;
 
@@ -32,6 +34,14 @@ public class SVGEditorController {
 
     public void changeBackgroundColor(Color color) {
         model.getDocument().setBackgroundColor(color);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void addElement(SVGElement element) {
+        // Add the element to the SVGDocument in the model
+        model.getDocument().addElement(element);
+
+        // Update the canvas view to reflect the changes
         view.updateCanvas(model.getDocument());
     }
 

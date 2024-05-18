@@ -1,35 +1,38 @@
 package es.upm.pproject.geditor.model;
 
+import java.awt.Color;
 import java.awt.Shape;
 
 public abstract class SVGElement {
-    public String type;
-    public int x;
-    public int y;
-    public int width;
-    public int height;
-    public String fillColor;
-    public double fillOpacity;
-    public String strokeColor;
-    public double strokeWidth;
-    public double strokeOpacity;
+    protected Shape shape;
+    protected int x;
+    protected int y;
+    protected Color fillColor;
+    protected double fillOpacity;
+    protected Color strokeColor;
+    protected double strokeWidth;
+    protected double strokeOpacity;
 
-    public SVGElement(String type, int x, int y) {
-        this.type = type;
+    public SVGElement(int x, int y, Color fillColor, double fillOpacity, Color strokeColor, double strokeOpacity,
+            double strokeWidth) {
         this.x = x;
         this.y = y;
+        this.fillColor = fillColor;
+        this.fillOpacity = fillOpacity;
+        this.strokeColor = strokeColor;
+        this.strokeOpacity = strokeOpacity;
+        this.strokeWidth = strokeWidth;
     }
-
-    // Getters and setters
 
     public abstract String toSVGString();
 
-    public String getType() {
-        return type;
+    // Getters and setters
+    public Shape getShape() {
+        return shape;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setShape(Shape shape) {
+        this.shape = shape;
     }
 
     public int getX() {
@@ -48,27 +51,11 @@ public abstract class SVGElement {
         this.y = y;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public String getFillColor() {
+    public Color getFillColor() {
         return fillColor;
     }
 
-    public void setFillColor(String fillColor) {
+    public void setFillColor(Color fillColor) {
         this.fillColor = fillColor;
     }
 
@@ -80,11 +67,11 @@ public abstract class SVGElement {
         this.fillOpacity = fillOpacity;
     }
 
-    public String getStrokeColor() {
+    public Color getStrokeColor() {
         return strokeColor;
     }
 
-    public void setStrokeColor(String strokeColor) {
+    public void setStrokeColor(Color strokeColor) {
         this.strokeColor = strokeColor;
     }
 
@@ -103,7 +90,4 @@ public abstract class SVGElement {
     public void setStrokeOpacity(double strokeOpacity) {
         this.strokeOpacity = strokeOpacity;
     }
-
-    public abstract Shape getShape();
-
 }
