@@ -12,5 +12,5 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script:
-    - mvn verify sonar:sonar -Dsonar.id=200119 -Dsonar.login=squ_f7fc8e22943a014173b3b496b33603e3dae031e9
+    - mvn verify sonar:sonar -Dsonar.id=200119 -Dsonar.login=squ_f7fc8e22943a014173b3b496b33603e3dae031e9 -Dsonar.branch.name=$CI_COMMIT_REF_NAME
   allow_failure: true
