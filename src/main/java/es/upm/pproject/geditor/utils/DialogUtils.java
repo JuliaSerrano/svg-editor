@@ -13,12 +13,12 @@ import es.upm.pproject.geditor.model.SVGRectangle;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+//TODO: refactor to remove duplications
 public class DialogUtils {
 
-    public static SVGRectangle showRectangleInputDialog(Component parent, String title) {
+    public static SVGRectangle showRectangleDialog(Component parent, String title) {
         JTextField xField = new JTextField(5);
         JTextField yField = new JTextField(5);
         JTextField widthField = new JTextField(5);

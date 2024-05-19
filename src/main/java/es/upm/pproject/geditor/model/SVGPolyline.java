@@ -10,7 +10,7 @@ public class SVGPolyline extends SVGElement {
 
     public SVGPolyline(List<Integer> xPoints, List<Integer> yPoints, Color strokeColor, double strokeOpacity,
             double strokeWidth) {
-        super(xPoints.get(0), yPoints.get(0), strokeColor, 1.0, strokeColor, strokeOpacity, strokeWidth);
+        super(xPoints.get(0), yPoints.get(0), null, 1.0, strokeColor, strokeOpacity, strokeWidth);
         this.xPoints = xPoints;
         this.yPoints = yPoints;
         this.shape = createPath(xPoints, yPoints);
