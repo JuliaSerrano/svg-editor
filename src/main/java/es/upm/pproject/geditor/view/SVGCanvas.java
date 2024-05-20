@@ -52,7 +52,7 @@ public class SVGCanvas extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 shapeCreator.finishShape(e);
                 repaint(); // Ensure repaint after finishing the shape
-                finishShape();
+                // finishShape();
             }
         });
 
