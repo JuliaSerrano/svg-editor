@@ -8,6 +8,9 @@ import es.upm.pproject.geditor.controller.SVGEditorController;
 import es.upm.pproject.geditor.model.SVGDocument;
 import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.view.ui.ShapeCreator;
+import es.upm.pproject.geditor.view.ui.PolygonCreator;
+import es.upm.pproject.geditor.view.ui.PolylineCreator;
+
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -46,22 +49,27 @@ public class SVGCanvas extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 shapeCreator.startShape(e);
+                if (isPolyCreator(shapeCreator)) {
+                    repaint();
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                shapeCreator.finishShape(e);
-                repaint(); // Ensure repaint after finishing the shape
-                // finishShape();
+                if (!isPolyCreator(shapeCreator)) {
+                    shapeCreator.finishShape(e);
+                    repaint(); 
+                }
             }
         });
 
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                shapeCreator.updateShape(e);
-                repaint(); // Repaint during dragging to show the shape being drawn
-
+                if (!isPolyCreator(shapeCreator)) {
+                    shapeCreator.updateShape(e);
+                    repaint();
+                }
             }
         });
     }
@@ -93,6 +101,10 @@ public class SVGCanvas extends JPanel {
         }
         g2d.dispose();
 
+    }
+
+    private boolean isPolyCreator(ShapeCreator shapeCreator) {
+        return (shapeCreator instanceof PolygonCreator || shapeCreator instanceof PolylineCreator);
     }
 
 }

@@ -14,29 +14,45 @@ public class PolygonCreator implements ShapeCreator {
     private List<Integer> xPoints;
     private List<Integer> yPoints;
     private Path2D.Double currentPolygon;
+    boolean drawing;
 
     public PolygonCreator(SVGEditorController controller) {
         this.controller = controller;
         xPoints = new ArrayList<>();
         yPoints = new ArrayList<>();
+        drawing = false;
         currentPolygon = new Path2D.Double();
     }
 
     @Override
     public void startShape(MouseEvent e) {
+        if (drawing) {
+            updateShape(e);
+        } else {
+            createShape(e);
+        }
+    }
+
+    private void createShape(MouseEvent e) {
         xPoints.clear();
         yPoints.clear();
         currentPolygon.reset();
+
         currentPolygon.moveTo(e.getX(), e.getY());
         xPoints.add(e.getX());
         yPoints.add(e.getY());
+        drawing = true;
     }
 
     @Override
     public void updateShape(MouseEvent e) {
-        currentPolygon.lineTo(e.getX(), e.getY());
-        xPoints.add(e.getX());
-        yPoints.add(e.getY());
+        if (e.getClickCount() == 2) {
+            finishShape(e);
+        } else {
+            currentPolygon.lineTo(e.getX(), e.getY());
+            xPoints.add(e.getX());
+            yPoints.add(e.getY());
+        }
     }
 
     @Override
@@ -46,6 +62,7 @@ public class PolygonCreator implements ShapeCreator {
         xPoints.clear();
         yPoints.clear();
         currentPolygon.reset();
+        drawing = false;
     }
 
     @Override

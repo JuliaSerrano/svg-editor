@@ -14,29 +14,45 @@ public class PolylineCreator implements ShapeCreator {
     private List<Integer> xPoints;
     private List<Integer> yPoints;
     private Path2D.Double currentPolyline;
+    boolean drawing;
 
     public PolylineCreator(SVGEditorController controller) {
         this.controller = controller;
         xPoints = new ArrayList<>();
         yPoints = new ArrayList<>();
+        drawing = false;
         currentPolyline = new Path2D.Double();
     }
 
     @Override
     public void startShape(MouseEvent e) {
+        if (drawing) {
+            updateShape(e);
+        } else {
+            createShape(e);
+        }
+    }
+
+    private void createShape(MouseEvent e) {
         xPoints.clear();
         yPoints.clear();
         currentPolyline.reset();
+
         currentPolyline.moveTo(e.getX(), e.getY());
         xPoints.add(e.getX());
         yPoints.add(e.getY());
+        drawing = true;
     }
 
     @Override
     public void updateShape(MouseEvent e) {
-        currentPolyline.lineTo(e.getX(), e.getY());
-        xPoints.add(e.getX());
-        yPoints.add(e.getY());
+        if (e.getClickCount() == 2) {
+            finishShape(e);
+        } else {
+            currentPolyline.lineTo(e.getX(), e.getY());
+            xPoints.add(e.getX());
+            yPoints.add(e.getY());
+        }
     }
 
     @Override
@@ -46,6 +62,7 @@ public class PolylineCreator implements ShapeCreator {
         xPoints.clear();
         yPoints.clear();
         currentPolyline.reset();
+        drawing = false;
     }
 
     @Override
