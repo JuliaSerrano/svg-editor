@@ -2,6 +2,7 @@ package es.upm.pproject.geditor.controller;
 
 import java.awt.Color;
 
+import java.awt.*;
 import javax.swing.JOptionPane;
 
 import es.upm.pproject.geditor.model.SVGElement;
@@ -24,12 +25,14 @@ public class SVGEditorController {
     public void createNewImage(int width, int height) {
         model = new SVGModel(width, height);
         view.updateCanvas(model.getDocument());
+        view.resizeEditor(width, height);
     }
 
     public void resizeImage(int width, int height) {
         model.getDocument().setWidth(width);
         model.getDocument().setHeight(height);
         view.updateCanvas(model.getDocument());
+        view.resizeEditor(width, height);
     }
 
     public void changeBackgroundColor(Color color) {

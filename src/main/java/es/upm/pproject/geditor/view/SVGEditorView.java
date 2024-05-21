@@ -165,6 +165,13 @@ public class SVGEditorView extends JFrame {
     public void updateCanvas(SVGDocument document) {
         canvas.setDocument(document);
         canvas.repaint();
+
+    }
+
+    public void resizeEditor(int width, int height) {
+        setPreferredSize(new Dimension(width, height));
+        pack();
+        setLocationRelativeTo(null);
     }
 
     private void addActionListeners() {
