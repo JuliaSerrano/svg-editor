@@ -181,6 +181,11 @@ public class SVGEditorView extends JFrame {
             controller.createNewImage(newWidth, newHeight);
         });
 
+        editListeners();
+        shapeListeners();
+    }
+
+    public void editListeners() {
         // resize an existing image action listener
         JMenuItem resizeMenuItem = getJMenuBar().getMenu(1).getItem(0);
         resizeMenuItem.addActionListener((ActionEvent e) -> {
@@ -208,8 +213,10 @@ public class SVGEditorView extends JFrame {
                 controller.changeBackgroundColor(newColor);
             }
         });
+    }
 
-        // Shapes listeners
+    public void shapeListeners() {
+
         // Action listeners for rectangle submenu items
         rectangleByKeyboardMenuItem.addActionListener(e -> {
             SVGRectangle rect = DialogUtils.showRectangleDialog(this, "Create Rectangle");
