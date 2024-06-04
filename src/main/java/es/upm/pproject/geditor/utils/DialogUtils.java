@@ -84,7 +84,6 @@ public class DialogUtils {
             return new SVGCircle(centerX, centerY, radius, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
         }
         return null;
-
     }
 
     public static SVGEllipse showEllipseDialog(Component parent, String title) {
@@ -221,7 +220,7 @@ public class DialogUtils {
         // Show the dialog box
         int result = JOptionPane.showConfirmDialog(parent, panel, title, JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
+        if (result == JOptionPane.OK_OPTION && vertices.size() > 2) {
             // Convert the list of vertices to arrays of coordinates
             List<Integer> xPoints = new ArrayList<>();
             List<Integer> yPoints = new ArrayList<>();

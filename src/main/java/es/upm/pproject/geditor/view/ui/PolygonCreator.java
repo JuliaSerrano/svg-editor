@@ -46,7 +46,7 @@ public class PolygonCreator implements ShapeCreator {
 
     @Override
     public void updateShape(MouseEvent e) {
-        if (e.getClickCount() == 2) {
+        if (e.getClickCount() == 2 && xPoints.size() > 2){
             finishShape(e);
         } else {
             currentPolygon.lineTo(e.getX(), e.getY());
