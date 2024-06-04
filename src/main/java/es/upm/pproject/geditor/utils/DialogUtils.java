@@ -18,6 +18,11 @@ import java.util.List;
 //TODO: refactor to remove duplications
 public class DialogUtils {
 
+    // Private constructor to prevent instantiation
+    private DialogUtils() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static SVGRectangle showRectangleDialog(Component parent, String title) {
         JTextField xField = new JTextField(5);
         JTextField yField = new JTextField(5);
