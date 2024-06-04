@@ -3,8 +3,6 @@ package es.upm.pproject.geditor.view;
 import javax.swing.*;
 import java.awt.*;
 
-import es.upm.pproject.geditor.controller.SVGEditorController;
-// import es.upm.pproject.geditor.controller.SVGEditorController;
 import es.upm.pproject.geditor.model.SVGDocument;
 import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.view.ui.ShapeCreator;
@@ -16,12 +14,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SVGCanvas extends JPanel {
-    private SVGDocument document;
-    private SVGEditorController controller;
-    private ShapeCreator shapeCreator;
+    private transient SVGDocument document;
+    private transient ShapeCreator shapeCreator;
 
-    public SVGCanvas(SVGEditorController controller) {
-        this.controller = controller;
+    public SVGCanvas() {
+        addMouseListeners();
     }
 
     public void setDocument(SVGDocument document) {
@@ -37,11 +34,6 @@ public class SVGCanvas extends JPanel {
 
     public void finishShape() {
         this.shapeCreator = null;
-    }
-
-    public void setController(SVGEditorController controller) {
-        this.controller = controller;
-        addMouseListeners();
     }
 
     private void addMouseListeners() {
@@ -85,7 +77,6 @@ public class SVGCanvas extends JPanel {
         g2d.fillRect(0, 0, document.getWidth(), document.getHeight());
         for (SVGElement element : document.getElements()) {
             g2d.setColor(element.getFillColor());
-            // g2d.fill(element.getShape());
             g2d.setColor(element.getStrokeColor());
             g2d.setStroke(new BasicStroke((float) element.getStrokeWidth()));
             g2d.draw(element.getShape());

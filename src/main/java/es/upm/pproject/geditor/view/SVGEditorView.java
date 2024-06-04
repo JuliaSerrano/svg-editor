@@ -26,9 +26,8 @@ import java.awt.event.ActionEvent;
 
 public class SVGEditorView extends JFrame {
     private SVGCanvas canvas;
-    private SVGEditorController controller;
-    // private SVGModel model;
-    private SVGDocument document;
+    private transient SVGEditorController controller;
+    private transient SVGDocument document;
 
     // Instance variables for menu items
     private JMenuItem rectangleByKeyboardMenuItem;
@@ -47,18 +46,16 @@ public class SVGEditorView extends JFrame {
     private JMenuItem pathByMouseMenuItem;
 
     public SVGEditorView(SVGModel model) {
-        // this.model = model;
         this.document = model.getDocument();
         controller = new SVGEditorController(model, this); // Initialize
-                                                           // controller
+                                   // controller
 
         setTitle("SVG Editor");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(this.document.getWidth(), this.document.getHeight()));
 
-        canvas = new SVGCanvas(controller);
-        canvas.setController(controller); // Set controller for canvas
+        canvas = new SVGCanvas();
         add(canvas, BorderLayout.CENTER);
 
         // add menu
@@ -92,57 +89,59 @@ public class SVGEditorView extends JFrame {
         JMenu shapeMenu = new JMenu("Add Shape");
 
         // Rectangle submenu
+        final String byKeyboard = "By Keyboard";
+        final String byMouse = "By Mouse";
         JMenu rectangleSubMenu = new JMenu("Rectangle");
-        rectangleByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        rectangleByMouseMenuItem = new JMenuItem("By Mouse");
+        rectangleByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        rectangleByMouseMenuItem = new JMenuItem(byMouse);
         rectangleSubMenu.add(rectangleByKeyboardMenuItem);
         rectangleSubMenu.add(rectangleByMouseMenuItem);
         shapeMenu.add(rectangleSubMenu);
 
         // Circle submenu
         JMenu circleSubMenu = new JMenu("Circle");
-        circleByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        circleByMouseMenuItem = new JMenuItem("By Mouse");
+        circleByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        circleByMouseMenuItem = new JMenuItem(byMouse);
         circleSubMenu.add(circleByKeyboardMenuItem);
         circleSubMenu.add(circleByMouseMenuItem);
         shapeMenu.add(circleSubMenu);
 
         // Ellipse submenu
         JMenu ellipseSubMenu = new JMenu("Ellipse");
-        ellipseByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        ellipseByMouseMenuItem = new JMenuItem("By Mouse");
+        ellipseByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        ellipseByMouseMenuItem = new JMenuItem(byMouse);
         ellipseSubMenu.add(ellipseByKeyboardMenuItem);
         ellipseSubMenu.add(ellipseByMouseMenuItem);
         shapeMenu.add(ellipseSubMenu);
 
         // Line submenu
         JMenu lineSubMenu = new JMenu("Line");
-        lineByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        lineByMouseMenuItem = new JMenuItem("By Mouse");
+        lineByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        lineByMouseMenuItem = new JMenuItem(byMouse);
         lineSubMenu.add(lineByKeyboardMenuItem);
         lineSubMenu.add(lineByMouseMenuItem);
         shapeMenu.add(lineSubMenu);
 
         // Polyline submenu
         JMenu polylineSubMenu = new JMenu("Polyline");
-        polylineByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        polylineByMouseMenuItem = new JMenuItem("By Mouse");
+        polylineByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        polylineByMouseMenuItem = new JMenuItem(byMouse);
         polylineSubMenu.add(polylineByKeyboardMenuItem);
         polylineSubMenu.add(polylineByMouseMenuItem);
         shapeMenu.add(polylineSubMenu);
 
         // Polygon submenu
         JMenu polygonSubMenu = new JMenu("Polygon");
-        polygonByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        polygonByMouseMenuItem = new JMenuItem("By Mouse");
+        polygonByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        polygonByMouseMenuItem = new JMenuItem(byMouse);
         polygonSubMenu.add(polygonByKeyboardMenuItem);
         polygonSubMenu.add(polygonByMouseMenuItem);
         shapeMenu.add(polygonSubMenu);
 
         // Path submenu
         JMenu pathSubMenu = new JMenu("Path");
-        pathByKeyboardMenuItem = new JMenuItem("By Keyboard");
-        pathByMouseMenuItem = new JMenuItem("By Mouse");
+        pathByKeyboardMenuItem = new JMenuItem(byKeyboard);
+        pathByMouseMenuItem = new JMenuItem(byMouse);
         pathSubMenu.add(pathByKeyboardMenuItem);
         pathSubMenu.add(pathByMouseMenuItem);
         shapeMenu.add(pathSubMenu);
@@ -151,7 +150,6 @@ public class SVGEditorView extends JFrame {
 
         setJMenuBar(menuBar);
         addActionListeners();
-        // addMouseListeners();
 
         pack();
         setLocationRelativeTo(null);
@@ -249,7 +247,6 @@ public class SVGEditorView extends JFrame {
             EllipseCreator ellipseCreator = new EllipseCreator(controller);
             canvas.createShape(ellipseCreator);
         });
-        ;
 
         // Action listeners for line submenu items (keyboard and mouse)
         lineByKeyboardMenuItem.addActionListener(e -> {
