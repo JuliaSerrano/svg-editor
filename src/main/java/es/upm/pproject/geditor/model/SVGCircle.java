@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 
 public class SVGCircle extends SVGElement {
-    private int radius;
+    private double radius;
 
-    public SVGCircle(int x, int y, int radius, Color fillColor, double fillOpacity, Color strokeColor,
+    public SVGCircle(double x, double y, double radius, Color fillColor, double fillOpacity, Color strokeColor,
             double strokeOpacity, double strokeWidth) {
         super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
         this.radius = radius;
@@ -22,7 +22,7 @@ public class SVGCircle extends SVGElement {
     }
 
     // Getters and setters
-    public int getRadius() {
+    public double getRadius() {
         return radius;
     }
 

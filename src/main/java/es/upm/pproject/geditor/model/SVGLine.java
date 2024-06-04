@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.geom.Line2D;
 
 public class SVGLine extends SVGElement {
-    private int x2;
-    private int y2;
+    private double x2;
+    private double y2;
 
-    public SVGLine(int x1, int y1, int x2, int y2, Color strokeColor, double strokeOpacity, double strokeWidth) {
+    public SVGLine(double x1, double y1, double x2, double y2, Color strokeColor, double strokeOpacity, double strokeWidth) {
         super(x1, y1, strokeColor, 1.0, strokeColor, strokeOpacity, strokeWidth);
         this.x2 = x2;
         this.y2 = y2;
@@ -22,19 +22,19 @@ public class SVGLine extends SVGElement {
     }
 
     // Getters and setters
-    public int getX2() {
+    public double getX2() {
         return x2;
     }
 
-    public void setX2(int x2) {
+    public void setX2(double x2) {
         this.x2 = x2;
     }
 
-    public int getY2() {
+    public double getY2() {
         return y2;
     }
 
-    public void setY2(int y2) {
+    public void setY2(double y2) {
         this.y2 = y2;
     }
 }

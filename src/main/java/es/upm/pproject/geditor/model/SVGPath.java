@@ -8,7 +8,7 @@ import java.awt.geom.PathIterator;
 public class SVGPath extends SVGElement {
     private Path2D path;
 
-    public SVGPath(int x, int y, Color fillColor, double fillOpacity, Color strokeColor,
+    public SVGPath(double x, double y, Color fillColor, double fillOpacity, Color strokeColor,
             double strokeOpacity, double strokeWidth, Path2D path) {
         super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
         this.path = path;

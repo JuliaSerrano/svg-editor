@@ -5,15 +5,15 @@ import java.awt.Shape;
 
 public abstract class SVGElement {
     protected Shape shape;
-    protected int x;
-    protected int y;
+    protected double x;
+    protected double y;
     protected Color fillColor;
     protected double fillOpacity;
     protected Color strokeColor;
     protected double strokeWidth;
     protected double strokeOpacity;
 
-    public SVGElement(int x, int y, Color fillColor, double fillOpacity, Color strokeColor, double strokeOpacity,
+    public SVGElement(double x, double y, Color fillColor, double fillOpacity, Color strokeColor, double strokeOpacity,
             double strokeWidth) {
         this.x = x;
         this.y = y;
@@ -35,19 +35,19 @@ public abstract class SVGElement {
         this.shape = shape;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 

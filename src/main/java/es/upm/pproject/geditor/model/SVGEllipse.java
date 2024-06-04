@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 
 public class SVGEllipse extends SVGElement {
-    private int width;
-    private int height;
+    private double width;
+    private double height;
 
-    public SVGEllipse(int x, int y, int width, int height, Color fillColor, double fillOpacity, Color strokeColor,
+    public SVGEllipse(double x, double y, double width, double height, Color fillColor, double fillOpacity, Color strokeColor,
             double strokeOpacity, double strokeWidth) {
         super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
         this.width = width;
@@ -24,19 +24,19 @@ public class SVGEllipse extends SVGElement {
     }
 
     // Getters and setters
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 }
