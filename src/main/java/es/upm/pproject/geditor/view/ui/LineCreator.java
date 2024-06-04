@@ -10,8 +10,8 @@ import es.upm.pproject.geditor.model.SVGLine;
 public class LineCreator implements ShapeCreator {
     private SVGEditorController controller;
     private Line2D.Double currentLine;
-    private int startX;
-    private int startY;
+    private double startX;
+    private double startY;
 
     public LineCreator(SVGEditorController controller) {
         this.controller = controller;
@@ -34,8 +34,8 @@ public class LineCreator implements ShapeCreator {
     @Override
     public void finishShape(MouseEvent e) {
         if (currentLine != null) {
-            int x2 = e.getX();
-            int y2 = e.getY();
+            double x2 = e.getX();
+            double y2 = e.getY();
             SVGLine line = new SVGLine(startX, startY, x2, y2, Color.BLACK, 1.0, 1.0);
             controller.addElement(line);
             currentLine = null;

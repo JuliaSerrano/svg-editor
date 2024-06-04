@@ -10,8 +10,8 @@ import es.upm.pproject.geditor.model.SVGCircle;
 public class CircleCreator implements ShapeCreator {
     private SVGEditorController controller;
     private Ellipse2D.Double currentCircle;
-    private int startX;
-    private int startY;
+    private double startX;
+    private double startY;
 
     public CircleCreator(SVGEditorController controller) {
         this.controller = controller;
@@ -27,7 +27,7 @@ public class CircleCreator implements ShapeCreator {
     @Override
     public void updateShape(MouseEvent e) {
         if (currentCircle != null) {
-            int radius = (int) Math.sqrt(Math.pow(e.getX() - startX, 2) + Math.pow(e.getY() - startY, 2));
+            double radius = Math.sqrt(Math.pow(e.getX() - startX, 2) + Math.pow(e.getY() - startY, 2));
             currentCircle.setFrameFromCenter(startX, startY, startX + radius, startY + radius);
         }
     }
@@ -35,9 +35,7 @@ public class CircleCreator implements ShapeCreator {
     @Override
     public void finishShape(MouseEvent e) {
         if (currentCircle != null) {
-            int radius = (int) Math.sqrt(Math.pow(e.getX() - startX, 2) + Math.pow(e.getY() - startY, 2));
-            int x = startX - radius;
-            int y = startY - radius;
+            double radius = Math.sqrt(Math.pow(e.getX() - startX, 2) + Math.pow(e.getY() - startY, 2));
             SVGCircle circle = new SVGCircle(startX, startY, radius, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
             controller.addElement(circle);
             currentCircle = null;

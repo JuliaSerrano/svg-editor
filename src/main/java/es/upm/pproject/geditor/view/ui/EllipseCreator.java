@@ -10,8 +10,8 @@ import es.upm.pproject.geditor.model.SVGEllipse;
 public class EllipseCreator implements ShapeCreator {
     private SVGEditorController controller;
     private Ellipse2D.Double currentEllipse;
-    private int startX;
-    private int startY;
+    private double startX;
+    private double startY;
 
     public EllipseCreator(SVGEditorController controller) {
         this.controller = controller;
@@ -27,10 +27,10 @@ public class EllipseCreator implements ShapeCreator {
     @Override
     public void updateShape(MouseEvent e) {
         if (currentEllipse != null) {
-            int width = Math.abs(e.getX() - startX);
-            int height = Math.abs(e.getY() - startY);
-            int x = Math.min(e.getX(), startX);
-            int y = Math.min(e.getY(), startY);
+            double width = Math.abs(e.getX() - startX);
+            double height = Math.abs(e.getY() - startY);
+            double x = Math.min(e.getX(), startX);
+            double y = Math.min(e.getY(), startY);
             currentEllipse.setFrame(x, y, width, height);
         }
     }
@@ -38,10 +38,10 @@ public class EllipseCreator implements ShapeCreator {
     @Override
     public void finishShape(MouseEvent e) {
         if (currentEllipse != null) {
-            int width = Math.abs(e.getX() - startX);
-            int height = Math.abs(e.getY() - startY);
-            int x = Math.min(e.getX(), startX);
-            int y = Math.min(e.getY(), startY);
+            double width = Math.abs(e.getX() - startX);
+            double height = Math.abs(e.getY() - startY);
+            double x = Math.min(e.getX(), startX);
+            double y = Math.min(e.getY(), startY);
             SVGEllipse ellipse = new SVGEllipse(x, y, width, height, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
             controller.addElement(ellipse);
             currentEllipse = null;
