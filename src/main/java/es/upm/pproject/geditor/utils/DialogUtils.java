@@ -136,7 +136,7 @@ public class DialogUtils {
         panel.add(endYField);
 
         // Mostrar el cuadro de diálogo
-        int result = JOptionPane.showConfirmDialog(null, panel, "Draw Line", JOptionPane.OK_CANCEL_OPTION,
+        int result = JOptionPane.showConfirmDialog(parent, panel, title, JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             // Obtener los valores ingresados por el usuario y convertirlos a enteros
@@ -177,7 +177,7 @@ public class DialogUtils {
         });
 
         // Mostrar el cuadro de diálogo
-        int result = JOptionPane.showConfirmDialog(null, panel, "Draw Polyline", JOptionPane.OK_CANCEL_OPTION,
+        int result = JOptionPane.showConfirmDialog(parent, panel, title, JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             // Convertir la lista de puntos a listas de coordenadas
@@ -219,7 +219,7 @@ public class DialogUtils {
         });
 
         // Show the dialog box
-        int result = JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_CANCEL_OPTION,
+        int result = JOptionPane.showConfirmDialog(parent, panel, title, JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             // Convert the list of vertices to arrays of coordinates
@@ -265,7 +265,7 @@ public class DialogUtils {
         });
 
         // Show the dialog box
-        int result = JOptionPane.showConfirmDialog(null, panel, title, JOptionPane.OK_CANCEL_OPTION,
+        int result = JOptionPane.showConfirmDialog(parent, panel, title, JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             // Create a new Path2D object to store the path
