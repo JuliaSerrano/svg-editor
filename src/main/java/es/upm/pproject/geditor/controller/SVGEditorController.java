@@ -2,19 +2,13 @@ package es.upm.pproject.geditor.controller;
 
 import java.awt.Color;
 
-import java.awt.*;
-import javax.swing.JOptionPane;
-
 import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.model.SVGModel;
-import es.upm.pproject.geditor.model.SVGRectangle;
-import es.upm.pproject.geditor.view.SVGCanvas;
 import es.upm.pproject.geditor.view.SVGEditorView;
 
 public class SVGEditorController {
     private SVGModel model;
     private SVGEditorView view;
-    private SVGCanvas canvas;
 
     public SVGEditorController(SVGModel model, SVGEditorView view) {
         this.model = model;
