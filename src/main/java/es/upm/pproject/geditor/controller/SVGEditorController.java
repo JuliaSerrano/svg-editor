@@ -2,11 +2,16 @@ package es.upm.pproject.geditor.controller;
 
 import java.awt.Color;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.model.SVGModel;
 import es.upm.pproject.geditor.view.SVGEditorView;
 
 public class SVGEditorController {
+    private static final Logger logger = LoggerFactory.getLogger(SVGEditorController.class);
+
     private SVGModel model;
     private SVGEditorView view;
 
@@ -17,6 +22,8 @@ public class SVGEditorController {
     }
 
     public void createNewImage(int width, int height) {
+        logger.info("Creating new image with width {} and height {}", width, height);
+
         model = new SVGModel(width, height);
         view.updateCanvas(model.getDocument());
         view.resizeEditor(width, height);
