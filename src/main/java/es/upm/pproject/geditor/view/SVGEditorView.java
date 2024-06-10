@@ -1,5 +1,6 @@
 package es.upm.pproject.geditor.view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import es.upm.pproject.geditor.controller.SVGEditorController;
@@ -23,6 +24,7 @@ import es.upm.pproject.geditor.view.ui.RectangleCreator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class SVGEditorView extends JFrame {
     private SVGCanvas canvas;
@@ -48,7 +50,7 @@ public class SVGEditorView extends JFrame {
     public SVGEditorView(SVGModel model) {
         this.document = model.getDocument();
         controller = new SVGEditorController(model, this); // Initialize
-                                   // controller
+        // controller
 
         setTitle("SVG Editor");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -57,6 +59,10 @@ public class SVGEditorView extends JFrame {
 
         canvas = new SVGCanvas();
         add(canvas, BorderLayout.CENTER);
+
+        // Create the side panel with options
+        JPanel optionsPanel = createToolBox();
+        add(optionsPanel, BorderLayout.WEST);
 
         // add menu
         JMenuBar menuBar = new JMenuBar();
@@ -154,6 +160,34 @@ public class SVGEditorView extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    private JPanel createToolBox() {
+        JPanel optionsPanel = new JPanel(new BorderLayout());
+        optionsPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
+        optionsPanel.setPreferredSize(new Dimension(115, getHeight()));
+
+        JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);
+        toolBar.setFloatable(false);
+
+        JToggleButton selectButton = new JToggleButton("Select");
+        selectButton.setToolTipText("Select");
+        selectButton.addActionListener(e -> {
+            if (selectButton.isSelected()) {
+                selectButton.setText("In Selection");
+                // Activate select mode in canvas
+                canvas.setMode(SVGCanvas.Mode.SELECT);
+            } else {
+                selectButton.setText("Select");
+                // Deactivate select mode in canvas or revert to default mode
+                canvas.setMode(SVGCanvas.Mode.DEFAULT);
+            }
+        });
+
+        toolBar.add(selectButton);
+        optionsPanel.add(toolBar, BorderLayout.NORTH);
+
+        return optionsPanel;
     }
 
     public void setController(SVGEditorController controller) {

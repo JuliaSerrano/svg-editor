@@ -9,13 +9,28 @@ import es.upm.pproject.geditor.view.ui.ShapeCreator;
 import es.upm.pproject.geditor.view.ui.PolygonCreator;
 import es.upm.pproject.geditor.view.ui.PolylineCreator;
 
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SVGCanvas extends JPanel {
     private transient SVGDocument document;
     private transient ShapeCreator shapeCreator;
+    private SVGElement selectedElement;
+
+    public enum Mode {
+        DEFAULT,
+        SELECT
+    }
+
+    private Mode mode = Mode.DEFAULT;
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+        if (mode == Mode.DEFAULT) {
+            selectedElement = null;
+            repaint();
+        }
+    }
 
     public SVGCanvas() {
         addMouseListeners();
@@ -40,17 +55,21 @@ public class SVGCanvas extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                shapeCreator.startShape(e);
-                if (isPolyCreator(shapeCreator)) {
-                    repaint();
+                if (mode == Mode.SELECT) {
+                    selectElementAt(e.getPoint());
+                } else {
+                    shapeCreator.startShape(e);
+                    if (isPolyCreator(shapeCreator)) {
+                        repaint();
+                    }
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (!isPolyCreator(shapeCreator)) {
+                if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.finishShape(e);
-                    repaint(); 
+                    repaint();
                 }
             }
         });
@@ -58,7 +77,7 @@ public class SVGCanvas extends JPanel {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (!isPolyCreator(shapeCreator)) {
+                if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.updateShape(e);
                     repaint();
                 }
@@ -76,6 +95,13 @@ public class SVGCanvas extends JPanel {
         g2d.setColor(document.getBackgroundColor());
         g2d.fillRect(0, 0, document.getWidth(), document.getHeight());
         for (SVGElement element : document.getElements()) {
+            if (element == selectedElement) {
+                // Draw selection highlight
+                g2d.setColor(Color.RED);
+                g2d.setStroke(new BasicStroke(3));
+                g2d.draw(element.getShape());
+            }
+
             g2d.setColor(element.getFillColor());
             g2d.setColor(element.getStrokeColor());
             g2d.setStroke(new BasicStroke((float) element.getStrokeWidth()));
@@ -98,4 +124,19 @@ public class SVGCanvas extends JPanel {
         return (shapeCreator instanceof PolygonCreator || shapeCreator instanceof PolylineCreator);
     }
 
+    private void selectElementAt(Point point) {
+        if (document == null) {
+            return;
+        }
+
+        for (SVGElement element : document.getElements()) {
+            if (element.getShape().contains(point)) {
+                selectedElement = element;
+                repaint();
+                return;
+            }
+        }
+        selectedElement = null;
+        repaint();
+    }
 }
