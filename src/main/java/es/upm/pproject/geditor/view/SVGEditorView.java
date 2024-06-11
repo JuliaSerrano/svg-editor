@@ -1,6 +1,5 @@
 package es.upm.pproject.geditor.view;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import es.upm.pproject.geditor.controller.SVGEditorController;
@@ -24,7 +23,6 @@ import es.upm.pproject.geditor.view.ui.RectangleCreator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 
 public class SVGEditorView extends JFrame {
     private SVGCanvas canvas;
@@ -60,7 +58,7 @@ public class SVGEditorView extends JFrame {
         canvas = new SVGCanvas();
         add(canvas, BorderLayout.CENTER);
 
-        // Create the side panel with options
+        // side panel
         JPanel optionsPanel = createToolBox();
         add(optionsPanel, BorderLayout.WEST);
 
@@ -165,7 +163,7 @@ public class SVGEditorView extends JFrame {
     private JPanel createToolBox() {
         JPanel optionsPanel = new JPanel(new BorderLayout());
         optionsPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
-        optionsPanel.setPreferredSize(new Dimension(115, getHeight()));
+        optionsPanel.setPreferredSize(new Dimension(130, getHeight()));
 
         JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);
         toolBar.setFloatable(false);
@@ -185,6 +183,66 @@ public class SVGEditorView extends JFrame {
         });
 
         toolBar.add(selectButton);
+
+        // Fill color picker
+        JButton fillColorButton = new JButton("Fill Color");
+        fillColorButton.addActionListener(e -> {
+            Color newColor = JColorChooser.showDialog(null, "Choose Fill Color", Color.BLACK);
+            if (newColor != null) {
+                // Set fill color to the selected color
+                canvas.changeSelectedElementFillColor(newColor);
+            }
+        });
+        toolBar.add(fillColorButton);
+
+        // Fill opacity slider
+        JSlider fillOpacitySlider = new JSlider(0, 100, 100); // From 0% to 100%
+        fillOpacitySlider.setPaintTicks(true);
+        fillOpacitySlider.setPaintLabels(true);
+        fillOpacitySlider.setMajorTickSpacing(25);
+        fillOpacitySlider.setMinorTickSpacing(5);
+        fillOpacitySlider.setToolTipText("Fill Opacity");
+        fillOpacitySlider.addChangeListener(e -> {
+            int opacity = fillOpacitySlider.getValue();
+            canvas.changeSelectedElementFillOpacity(opacity / 100.0);
+        });
+        toolBar.add(new JLabel("Fill Opacity"));
+        toolBar.add(fillOpacitySlider);
+
+        // Line color picker
+        JButton lineColorButton = new JButton("Line Color");
+        lineColorButton.addActionListener(e -> {
+            Color newColor = JColorChooser.showDialog(null, "Choose Line Color", Color.BLACK);
+            if (newColor != null) {
+                canvas.changeSelectedElementStrokeColor(newColor);
+            }
+        });
+        toolBar.add(lineColorButton);
+
+        // Stroke width spinner
+        JSpinner strokeWidthSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
+        strokeWidthSpinner.setToolTipText("Line Width");
+        strokeWidthSpinner.addChangeListener(e -> {
+            int lineWidth = (int) strokeWidthSpinner.getValue();
+            canvas.changeSelectedElementStrokeWidth(lineWidth);
+        });
+        toolBar.add(new JLabel("Line Width"));
+        toolBar.add(strokeWidthSpinner);
+
+        // Stroke opacity slider
+        JSlider strokeOpacitySlider = new JSlider(0, 100, 100); // From 0% to 100%
+        strokeOpacitySlider.setPaintTicks(true);
+        strokeOpacitySlider.setPaintLabels(true);
+        strokeOpacitySlider.setMajorTickSpacing(25);
+        strokeOpacitySlider.setMinorTickSpacing(5);
+        strokeOpacitySlider.setToolTipText("Stroke Opacity");
+        strokeOpacitySlider.addChangeListener(e -> {
+            int opacity = strokeOpacitySlider.getValue();
+            canvas.changeSelectedElementStrokeOpacity(opacity / 100.0);
+        });
+        toolBar.add(new JLabel("Stroke Opacity"));
+        toolBar.add(strokeOpacitySlider);
+
         optionsPanel.add(toolBar, BorderLayout.NORTH);
 
         return optionsPanel;
@@ -197,7 +255,6 @@ public class SVGEditorView extends JFrame {
     public void updateCanvas(SVGDocument document) {
         canvas.setDocument(document);
         canvas.repaint();
-
     }
 
     public void resizeEditor(int width, int height) {

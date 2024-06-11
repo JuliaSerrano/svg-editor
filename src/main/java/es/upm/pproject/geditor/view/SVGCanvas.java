@@ -51,6 +51,41 @@ public class SVGCanvas extends JPanel {
         this.shapeCreator = null;
     }
 
+    public void changeSelectedElementFillColor(Color newColor) {
+        if (selectedElement != null) {
+            selectedElement.setFillColor(newColor);
+            repaint();
+        }
+    }
+
+    public void changeSelectedElementFillOpacity(double fillOpacity) {
+        if (selectedElement != null) {
+            selectedElement.setFillOpacity(fillOpacity);
+            repaint();
+        }
+    }
+
+    public void changeSelectedElementStrokeColor(Color color) {
+        if (selectedElement != null) {
+            selectedElement.setStrokeColor(color);
+            repaint();
+        }
+    }
+
+    public void changeSelectedElementStrokeWidth(double strokeWidth) {
+        if (selectedElement != null) {
+            selectedElement.setStrokeWidth(strokeWidth);
+            repaint();
+        }
+    }
+
+    public void changeSelectedElementStrokeOpacity(double strokeOpacity) {
+        if (selectedElement != null) {
+            selectedElement.setStrokeOpacity(strokeOpacity);
+            repaint();
+        }
+    }
+
     private void addMouseListeners() {
         addMouseListener(new MouseAdapter() {
             @Override
@@ -95,6 +130,37 @@ public class SVGCanvas extends JPanel {
         g2d.setColor(document.getBackgroundColor());
         g2d.fillRect(0, 0, document.getWidth(), document.getHeight());
         for (SVGElement element : document.getElements()) {
+
+            // Fill color, opacity
+            if (element.getFillColor() != null) {
+                Color fillColor = new Color(
+                        element.getFillColor().getRed(),
+                        element.getFillColor().getGreen(),
+                        element.getFillColor().getBlue(),
+                        (int) (element.getFillOpacity() * 255));
+                g2d.setColor(fillColor);
+                g2d.fill(element.getShape());
+            }
+
+            // Stroke color, stroke opacity, and stroke width
+            if (element.getStrokeColor() != null) {
+                System.out.println("Stroke opacity: " + element.getStrokeOpacity());
+                Color strokeColor = new Color(
+                        element.getStrokeColor().getRed(),
+                        element.getStrokeColor().getGreen(),
+                        element.getStrokeColor().getBlue(),
+                        (int) (element.getStrokeOpacity() * 255));
+                g2d.setColor(strokeColor);
+                g2d.setStroke(new BasicStroke(
+                        (float) element.getStrokeWidth(),
+                        BasicStroke.CAP_BUTT, // TODO:?
+                        BasicStroke.JOIN_MITER, // TODO:?
+                        10.0f // TODO:? Miter limit (default value)
+                ));
+            }
+
+            // TODO: otra forma de mostrar que un elemento esta seleccionado para que se vea
+            // si se cambia stroke
             if (element == selectedElement) {
                 // Draw selection highlight
                 g2d.setColor(Color.RED);
@@ -102,9 +168,6 @@ public class SVGCanvas extends JPanel {
                 g2d.draw(element.getShape());
             }
 
-            g2d.setColor(element.getFillColor());
-            g2d.setColor(element.getStrokeColor());
-            g2d.setStroke(new BasicStroke((float) element.getStrokeWidth()));
             g2d.draw(element.getShape());
         }
 
