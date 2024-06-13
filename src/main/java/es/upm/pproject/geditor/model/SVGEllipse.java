@@ -7,7 +7,8 @@ public class SVGEllipse extends SVGElement {
     private double width;
     private double height;
 
-    public SVGEllipse(double x, double y, double width, double height, Color fillColor, double fillOpacity, Color strokeColor,
+    public SVGEllipse(double x, double y, double width, double height, Color fillColor, double fillOpacity,
+            Color strokeColor,
             double strokeOpacity, double strokeWidth) {
         super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
         this.width = width;
@@ -21,6 +22,13 @@ public class SVGEllipse extends SVGElement {
                 "<ellipse cx=\"%d\" cy=\"%d\" rx=\"%d\" ry=\"%d\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
                 x + width / 2, y + height / 2, width / 2, height / 2, fillColor, fillOpacity,
                 strokeColor, strokeOpacity, strokeWidth);
+    }
+
+    @Override
+    public void move(double dx, double dy) {
+        this.x += dx;
+        this.y += dy;
+        this.shape = new Ellipse2D.Double(x, y, width, height);
     }
 
     // Getters and setters

@@ -36,4 +36,9 @@ public class SVGPolyline extends SVGElement {
                 "<polyline points=\"%s\" style=\"fill:none; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
                 pointsBuilder.toString(), strokeColor, strokeOpacity, strokeWidth);
     }
+
+    @Override
+    public void move(double dx, double dy) {
+        // TODO: first fix polyline creation
+    }
 }

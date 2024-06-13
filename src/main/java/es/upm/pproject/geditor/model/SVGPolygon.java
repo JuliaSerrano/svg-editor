@@ -38,6 +38,11 @@ public class SVGPolygon extends SVGElement {
         return svgString.toString();
     }
 
+    @Override
+    public void move(double dx, double dy) {
+        // TODO: first fix polygon creation
+    }
+
     // Getters and setters
     public List<Integer> getXPoints() {
         return xPoints;

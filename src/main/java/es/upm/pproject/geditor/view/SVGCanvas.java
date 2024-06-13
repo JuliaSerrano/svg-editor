@@ -9,13 +9,17 @@ import es.upm.pproject.geditor.view.ui.ShapeCreator;
 import es.upm.pproject.geditor.view.ui.PolygonCreator;
 import es.upm.pproject.geditor.view.ui.PolylineCreator;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 
 public class SVGCanvas extends JPanel {
     private transient SVGDocument document;
     private transient ShapeCreator shapeCreator;
     private SVGElement selectedElement;
+    private Point initialMousePoint;
 
     public enum Mode {
         DEFAULT,
@@ -91,7 +95,9 @@ public class SVGCanvas extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (mode == Mode.SELECT) {
+                    finishShape();
                     selectElementAt(e.getPoint());
+                    initialMousePoint = e.getPoint();
                 } else {
                     shapeCreator.startShape(e);
                     if (isPolyCreator(shapeCreator)) {
@@ -102,7 +108,13 @@ public class SVGCanvas extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
+                if (mode == Mode.SELECT && selectedElement != null && initialMousePoint != null) {
+                    Point finalMousePoint = e.getPoint();
+                    double dx = finalMousePoint.getX() - initialMousePoint.getX();
+                    double dy = finalMousePoint.getY() - initialMousePoint.getY();
+                    selectedElement.move(dx, dy);
+                    repaint();
+                } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.finishShape(e);
                     repaint();
                 }
@@ -112,8 +124,61 @@ public class SVGCanvas extends JPanel {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
+                if (mode == Mode.SELECT && selectedElement != null && initialMousePoint != null) {
+                    Point currentMousePoint = e.getPoint();
+                    double dx = currentMousePoint.getX() - initialMousePoint.getX();
+                    double dy = currentMousePoint.getY() - initialMousePoint.getY();
+                    selectedElement.move(dx, dy);
+                    initialMousePoint = currentMousePoint;
+                    repaint();
+                } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.updateShape(e);
+                    repaint();
+                }
+            }
+        });
+    }
+
+    private void addKeyBindings() {
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
+        getActionMap().put("moveUp", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedElement != null) {
+                    selectedElement.move(0, -5); // Move up by 5 pixels
+                    repaint();
+                }
+            }
+        });
+
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
+        getActionMap().put("moveDown", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedElement != null) {
+                    selectedElement.move(0, 5); // Move down by 5 pixels
+                    repaint();
+                }
+            }
+        });
+
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
+        getActionMap().put("moveLeft", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedElement != null) {
+                    selectedElement.move(-5, 0); // Move left by 5 pixels
+                    repaint();
+                }
+            }
+        });
+
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
+        getActionMap().put("moveRight", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedElement != null) {
+                    selectedElement.move(5, 0); // Move right by 5 pixels
                     repaint();
                 }
             }
@@ -144,7 +209,6 @@ public class SVGCanvas extends JPanel {
 
             // Stroke color, stroke opacity, and stroke width
             if (element.getStrokeColor() != null) {
-                System.out.println("Stroke opacity: " + element.getStrokeOpacity());
                 Color strokeColor = new Color(
                         element.getStrokeColor().getRed(),
                         element.getStrokeColor().getGreen(),
@@ -191,9 +255,17 @@ public class SVGCanvas extends JPanel {
         if (document == null) {
             return;
         }
+        final double tolerance = 5.0;
 
         for (SVGElement element : document.getElements()) {
-            if (element.getShape().contains(point)) {
+            if (element.getShape() instanceof Line2D) {
+                Line2D line = (Line2D) element.getShape();
+                if (line.ptSegDist(point) <= tolerance) {
+                    selectedElement = element;
+                    repaint();
+                    return;
+                }
+            } else if (element.getShape().contains(point)) {
                 selectedElement = element;
                 repaint();
                 return;

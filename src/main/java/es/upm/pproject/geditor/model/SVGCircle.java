@@ -21,6 +21,13 @@ public class SVGCircle extends SVGElement {
                 strokeWidth);
     }
 
+    @Override
+    public void move(double dx, double dy) {
+        this.x += dx;
+        this.y += dy;
+        this.shape = new Ellipse2D.Double(x - radius, y - radius, 2 * radius, 2 * radius);
+    }
+
     // Getters and setters
     public double getRadius() {
         return radius;

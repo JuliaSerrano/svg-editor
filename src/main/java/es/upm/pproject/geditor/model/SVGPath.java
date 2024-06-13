@@ -51,6 +51,11 @@ public class SVGPath extends SVGElement {
         return sb.toString();
     }
 
+    @Override
+    public void move(double dx, double dy) {
+        // TODO: first fix path creation
+    }
+
     // Getters and setters
     public Path2D getPath() {
         return path;

@@ -13,7 +13,8 @@ public abstract class SVGElement {
     protected double strokeWidth;
     protected double strokeOpacity;
 
-    protected SVGElement(double x, double y, Color fillColor, double fillOpacity, Color strokeColor, double strokeOpacity,
+    protected SVGElement(double x, double y, Color fillColor, double fillOpacity, Color strokeColor,
+            double strokeOpacity,
             double strokeWidth) {
         this.x = x;
         this.y = y;
@@ -90,4 +91,6 @@ public abstract class SVGElement {
     public void setStrokeOpacity(double strokeOpacity) {
         this.strokeOpacity = strokeOpacity;
     }
+
+    public abstract void move(double dx, double dy);
 }

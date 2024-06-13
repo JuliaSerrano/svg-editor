@@ -1,14 +1,15 @@
 package es.upm.pproject.geditor.model;
 
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 public class SVGRectangle extends SVGElement {
     private double width;
     private double height;
 
-    public SVGRectangle(double x, double y, double width, double height, Color fillColor, double fillOpacity, Color strokeColor,
-            double strokeOpacity, double strokeWidth) {
+    public SVGRectangle(double x, double y, double width, double height, Color fillColor, double fillOpacity,
+            Color strokeColor, double strokeOpacity, double strokeWidth) {
         super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
         this.width = width;
         this.height = height;
@@ -38,5 +39,11 @@ public class SVGRectangle extends SVGElement {
 
     public void setHeight(double height) {
         this.height = height;
+    }
+
+    @Override
+    public void move(double dx, double dy) {
+        AffineTransform transform = AffineTransform.getTranslateInstance(dx, dy);
+        shape = transform.createTransformedShape(shape);
     }
 }
