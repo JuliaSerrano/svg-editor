@@ -37,7 +37,9 @@ public class SVGCanvas extends JPanel {
     }
 
     public SVGCanvas() {
+        setFocusable(true);
         addMouseListeners();
+        addKeyBindings();
     }
 
     public void setDocument(SVGDocument document) {
@@ -94,6 +96,7 @@ public class SVGCanvas extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                requestFocusInWindow(); // Request focus
                 if (mode == Mode.SELECT) {
                     finishShape();
                     selectElementAt(e.getPoint());
@@ -140,7 +143,7 @@ public class SVGCanvas extends JPanel {
     }
 
     private void addKeyBindings() {
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
         getActionMap().put("moveUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,7 +154,7 @@ public class SVGCanvas extends JPanel {
             }
         });
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "moveDown");
         getActionMap().put("moveDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,7 +165,7 @@ public class SVGCanvas extends JPanel {
             }
         });
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "moveLeft");
         getActionMap().put("moveLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -173,7 +176,7 @@ public class SVGCanvas extends JPanel {
             }
         });
 
-        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
+        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "moveRight");
         getActionMap().put("moveRight", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -221,18 +224,23 @@ public class SVGCanvas extends JPanel {
                         BasicStroke.JOIN_MITER, // TODO:?
                         10.0f // TODO:? Miter limit (default value)
                 ));
-            }
-
-            // TODO: otra forma de mostrar que un elemento esta seleccionado para que se vea
-            // si se cambia stroke
-            if (element == selectedElement) {
-                // Draw selection highlight
-                g2d.setColor(Color.RED);
-                g2d.setStroke(new BasicStroke(3));
                 g2d.draw(element.getShape());
+
             }
 
-            g2d.draw(element.getShape());
+            // Draw selection handle points
+            if (element == selectedElement) {
+                g2d.setColor(Color.RED);
+                Rectangle bounds = element.getShape().getBounds();
+                int handleSize = 6;
+                g2d.fillRect(bounds.x - handleSize / 2, bounds.y - handleSize / 2, handleSize, handleSize);
+                g2d.fillRect(bounds.x + bounds.width - handleSize / 2, bounds.y - handleSize / 2, handleSize,
+                        handleSize);
+                g2d.fillRect(bounds.x - handleSize / 2, bounds.y + bounds.height - handleSize / 2, handleSize,
+                        handleSize);
+                g2d.fillRect(bounds.x + bounds.width - handleSize / 2, bounds.y + bounds.height - handleSize / 2,
+                        handleSize, handleSize);
+            }
         }
 
         // Draw the current shape if it exists

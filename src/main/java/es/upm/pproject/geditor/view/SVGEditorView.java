@@ -45,6 +45,8 @@ public class SVGEditorView extends JFrame {
     private JMenuItem pathByKeyboardMenuItem;
     private JMenuItem pathByMouseMenuItem;
 
+    private JToolBar toolBar;
+
     public SVGEditorView(SVGModel model) {
         this.document = model.getDocument();
         controller = new SVGEditorController(model, this); // Initialize
@@ -165,7 +167,7 @@ public class SVGEditorView extends JFrame {
         optionsPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
         optionsPanel.setPreferredSize(new Dimension(130, getHeight()));
 
-        JToolBar toolBar = new JToolBar(JToolBar.VERTICAL);
+        toolBar = new JToolBar(JToolBar.VERTICAL);
         toolBar.setFloatable(false);
 
         JToggleButton selectButton = new JToggleButton("Select");
@@ -310,18 +312,21 @@ public class SVGEditorView extends JFrame {
 
         // Action listeners for rectangle submenu items
         rectangleByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGRectangle rect = DialogUtils.showRectangleDialog(this, "Create Rectangle");
             if (rect != null) {
                 controller.addElement(rect);
             }
         });
         rectangleByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             RectangleCreator rectangleCreator = new RectangleCreator(controller);
             canvas.createShape(rectangleCreator);
         });
 
         // Action listeners for circle submenu items (keyboard and mouse)
         circleByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGCircle circle = DialogUtils.showCircleDialog(this, "Create Circle");
             if (circle != null) {
                 controller.addElement(circle);
@@ -329,12 +334,14 @@ public class SVGEditorView extends JFrame {
         });
 
         circleByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             CircleCreator circleCreator = new CircleCreator(controller);
             canvas.createShape(circleCreator);
         });
 
         // Action listeners for ellipse submenu items (keyboard and mouse)
         ellipseByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGEllipse ellipse = DialogUtils.showEllipseDialog(this, "Create Ellipse");
             if (ellipse != null) {
                 controller.addElement(ellipse);
@@ -342,12 +349,14 @@ public class SVGEditorView extends JFrame {
         });
 
         ellipseByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             EllipseCreator ellipseCreator = new EllipseCreator(controller);
             canvas.createShape(ellipseCreator);
         });
 
         // Action listeners for line submenu items (keyboard and mouse)
         lineByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGLine line = DialogUtils.showLineDialog(this, "Create Line");
             if (line != null) {
                 controller.addElement(line);
@@ -355,12 +364,14 @@ public class SVGEditorView extends JFrame {
         });
 
         lineByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             LineCreator lineCreator = new LineCreator(controller);
             canvas.createShape(lineCreator);
         });
 
         // Action listeners for polyline submenu items (keyboard and mouse)
         polylineByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGPolyline polyline = DialogUtils.showPolylineDialog(this, "Create Polyline");
             if (polyline != null) {
                 controller.addElement(polyline);
@@ -368,12 +379,14 @@ public class SVGEditorView extends JFrame {
         });
 
         polylineByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             PolylineCreator polylineCreator = new PolylineCreator(controller);
             canvas.createShape(polylineCreator);
         });
 
         // Action listeners for polygon submenu items (keyboard and mouse)
         polygonByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGPolygon polygon = DialogUtils.showPolygonDialog(this, "Create Polygon");
             if (polygon != null) {
                 controller.addElement(polygon);
@@ -381,12 +394,14 @@ public class SVGEditorView extends JFrame {
         });
 
         polygonByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             PolygonCreator polygonCreator = new PolygonCreator(controller);
             canvas.createShape(polygonCreator);
         });
 
         // Action listeners for path submenu items (keyboard and mouse)
         pathByKeyboardMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             SVGPath path = DialogUtils.showPathDialog(this, "Create Path");
             if (path != null) {
                 controller.addElement(path);
@@ -394,10 +409,25 @@ public class SVGEditorView extends JFrame {
         });
 
         pathByMouseMenuItem.addActionListener(e -> {
+            deselectSelectionMode();
             PathCreator pathCreator = new PathCreator(controller);
             canvas.createShape(pathCreator);
         });
 
+    }
+
+    private void deselectSelectionMode() {
+        for (Component comp : toolBar.getComponents()) {
+            if (comp instanceof JToggleButton) {
+                JToggleButton toggleButton = (JToggleButton) comp;
+                if (toggleButton.getText().equals("In Selection")) {
+                    toggleButton.setSelected(false);
+                    toggleButton.setText("Select");
+                    canvas.setMode(SVGCanvas.Mode.DEFAULT);
+                    break;
+                }
+            }
+        }
     }
 
 }
