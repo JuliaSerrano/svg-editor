@@ -14,11 +14,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
 public class SVGCanvas extends JPanel {
     private transient SVGDocument document;
     private transient ShapeCreator shapeCreator;
-    private SVGElement selectedElement;
+    private ArrayList<SVGElement> selectedElements;
     private Point initialMousePoint;
 
     public enum Mode {
@@ -31,13 +32,14 @@ public class SVGCanvas extends JPanel {
     public void setMode(Mode mode) {
         this.mode = mode;
         if (mode == Mode.DEFAULT) {
-            selectedElement = null;
+            selectedElements.clear();
             repaint();
         }
     }
 
     public SVGCanvas() {
         setFocusable(true);
+        selectedElements = new ArrayList<>();
         addMouseListeners();
         addKeyBindings();
     }
@@ -58,46 +60,46 @@ public class SVGCanvas extends JPanel {
     }
 
     public void changeSelectedElementFillColor(Color newColor) {
-        if (selectedElement != null) {
-            selectedElement.setFillColor(newColor);
-            repaint();
+        for (SVGElement element : selectedElements) {
+            element.setFillColor(newColor);
         }
+        repaint();
     }
 
     public void changeSelectedElementFillOpacity(double fillOpacity) {
-        if (selectedElement != null) {
-            selectedElement.setFillOpacity(fillOpacity);
-            repaint();
+        for (SVGElement element : selectedElements) {
+            element.setFillOpacity(fillOpacity);
         }
+        repaint();
     }
 
     public void changeSelectedElementStrokeColor(Color color) {
-        if (selectedElement != null) {
-            selectedElement.setStrokeColor(color);
-            repaint();
+        for (SVGElement element : selectedElements) {
+            element.setStrokeColor(color);
         }
+        repaint();
     }
 
     public void changeSelectedElementStrokeWidth(double strokeWidth) {
-        if (selectedElement != null) {
-            selectedElement.setStrokeWidth(strokeWidth);
-            repaint();
+        for (SVGElement element : selectedElements) {
+            element.setStrokeWidth(strokeWidth);
         }
+        repaint();
     }
 
     public void changeSelectedElementStrokeOpacity(double strokeOpacity) {
-        if (selectedElement != null) {
-            selectedElement.setStrokeOpacity(strokeOpacity);
-            repaint();
+        for (SVGElement element : selectedElements) {
+            element.setStrokeOpacity(strokeOpacity);
         }
+        repaint();
     }
 
     public void removeSelectedElement() {
-        if (selectedElement != null) {
-            document.removeElement(selectedElement);
-            selectedElement = null;
-            repaint();
+        for (SVGElement element : selectedElements) {
+            document.removeElement(element);
         }
+        selectedElements.clear();
+        repaint();
     }
 
     private void addMouseListeners() {
@@ -107,7 +109,11 @@ public class SVGCanvas extends JPanel {
                 requestFocusInWindow(); // Request focus
                 if (mode == Mode.SELECT) {
                     finishShape();
-                    selectElementAt(e.getPoint());
+                    if (e.isControlDown()) {
+                        toggleElementAt(e.getPoint());
+                    } else {
+                        selectElementAt(e.getPoint());
+                    }
                     initialMousePoint = e.getPoint();
                 } else {
                     shapeCreator.startShape(e);
@@ -119,13 +125,9 @@ public class SVGCanvas extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (mode == Mode.SELECT && selectedElement != null && initialMousePoint != null) {
-                    Point finalMousePoint = e.getPoint();
-                    double dx = finalMousePoint.getX() - initialMousePoint.getX();
-                    double dy = finalMousePoint.getY() - initialMousePoint.getY();
-                    selectedElement.move(dx, dy);
-                    repaint();
-                } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
+                // if (mode == Mode.SELECT) {
+                initialMousePoint = null;
+                if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.finishShape(e);
                     repaint();
                 }
@@ -135,11 +137,11 @@ public class SVGCanvas extends JPanel {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (mode == Mode.SELECT && selectedElement != null && initialMousePoint != null) {
+                if (mode == Mode.SELECT && initialMousePoint != null) {
                     Point currentMousePoint = e.getPoint();
                     double dx = currentMousePoint.getX() - initialMousePoint.getX();
                     double dy = currentMousePoint.getY() - initialMousePoint.getY();
-                    selectedElement.move(dx, dy);
+                    moveSelectedElements(dx, dy);
                     initialMousePoint = currentMousePoint;
                     repaint();
                 } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
@@ -150,15 +152,19 @@ public class SVGCanvas extends JPanel {
         });
     }
 
+    private void moveSelectedElements(double dx, double dy) {
+        for (SVGElement element : selectedElements) {
+            element.move(dx, dy);
+        }
+    }
+
     private void addKeyBindings() {
         getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
         getActionMap().put("moveUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedElement != null) {
-                    selectedElement.move(0, -5); // Move up by 5 pixels
-                    repaint();
-                }
+                moveSelectedElements(0, -5); // Move up by 5 pixels
+                repaint();
             }
         });
 
@@ -166,10 +172,8 @@ public class SVGCanvas extends JPanel {
         getActionMap().put("moveDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedElement != null) {
-                    selectedElement.move(0, 5); // Move down by 5 pixels
-                    repaint();
-                }
+                moveSelectedElements(0, 5); // Move down by 5 pixels
+                repaint();
             }
         });
 
@@ -177,10 +181,8 @@ public class SVGCanvas extends JPanel {
         getActionMap().put("moveLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedElement != null) {
-                    selectedElement.move(-5, 0); // Move left by 5 pixels
-                    repaint();
-                }
+                moveSelectedElements(-5, 0); // Move left by 5 pixels
+                repaint();
             }
         });
 
@@ -188,10 +190,8 @@ public class SVGCanvas extends JPanel {
         getActionMap().put("moveRight", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedElement != null) {
-                    selectedElement.move(5, 0); // Move right by 5 pixels
-                    repaint();
-                }
+                moveSelectedElements(5, 0); // Move right by 5 pixels
+                repaint();
             }
         });
     }
@@ -237,7 +237,7 @@ public class SVGCanvas extends JPanel {
             }
 
             // Draw selection handle points
-            if (element == selectedElement) {
+            if (selectedElements.contains(element)) {
                 g2d.setColor(Color.RED);
                 Rectangle bounds = element.getShape().getBounds();
                 int handleSize = 6;
@@ -277,17 +277,49 @@ public class SVGCanvas extends JPanel {
             if (element.getShape() instanceof Line2D) {
                 Line2D line = (Line2D) element.getShape();
                 if (line.ptSegDist(point) <= tolerance) {
-                    selectedElement = element;
+                    selectedElements.clear();
+                    selectedElements.add(element);
                     repaint();
                     return;
                 }
             } else if (element.getShape().contains(point)) {
-                selectedElement = element;
+                selectedElements.clear();
+                selectedElements.add(element);
                 repaint();
                 return;
             }
         }
-        selectedElement = null;
+        selectedElements.clear();
         repaint();
+    }
+
+    private void toggleElementAt(Point point) {
+        if (document == null) {
+            return;
+        }
+        final double tolerance = 5.0;
+
+        for (SVGElement element : document.getElements()) {
+            if (element.getShape() instanceof Line2D) {
+                Line2D line = (Line2D) element.getShape();
+                if (line.ptSegDist(point) <= tolerance) {
+                    if (selectedElements.contains(element)) {
+                        selectedElements.remove(element);
+                    } else {
+                        selectedElements.add(element);
+                    }
+                    repaint();
+                    return;
+                }
+            } else if (element.getShape().contains(point)) {
+                if (selectedElements.contains(element)) {
+                    selectedElements.remove(element);
+                } else {
+                    selectedElements.add(element);
+                }
+                repaint();
+                return;
+            }
+        }
     }
 }
