@@ -245,6 +245,13 @@ public class SVGEditorView extends JFrame {
         toolBar.add(new JLabel("Stroke Opacity"));
         toolBar.add(strokeOpacitySlider);
 
+        // Delete button
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(e -> {
+            canvas.removeSelectedElement();
+        });
+        toolBar.add(deleteButton);
+
         optionsPanel.add(toolBar, BorderLayout.NORTH);
 
         return optionsPanel;

@@ -92,6 +92,14 @@ public class SVGCanvas extends JPanel {
         }
     }
 
+    public void removeSelectedElement() {
+        if (selectedElement != null) {
+            document.removeElement(selectedElement);
+            selectedElement = null;
+            repaint();
+        }
+    }
+
     private void addMouseListeners() {
         addMouseListener(new MouseAdapter() {
             @Override
