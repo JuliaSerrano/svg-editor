@@ -2,6 +2,7 @@ package es.upm.pproject.geditor.model;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SVGPolyline extends SVGElement {
@@ -11,8 +12,8 @@ public class SVGPolyline extends SVGElement {
     public SVGPolyline(List<Integer> xPoints, List<Integer> yPoints, Color strokeColor, double strokeOpacity,
             double strokeWidth) {
         super(xPoints.get(0), yPoints.get(0), null, 1.0, strokeColor, strokeOpacity, strokeWidth);
-        this.xPoints = xPoints;
-        this.yPoints = yPoints;
+        this.xPoints = new ArrayList<>(xPoints);
+        this.yPoints = new ArrayList<>(yPoints);
         this.shape = createPath(xPoints, yPoints);
     }
 
@@ -39,6 +40,15 @@ public class SVGPolyline extends SVGElement {
 
     @Override
     public void move(double dx, double dy) {
-        // TODO: first fix polyline creation
+        if (xPoints.size() != yPoints.size()) {
+            throw new IllegalStateException("The number of xPoints and yPoints must be equal.");
+        }
+
+        for (int i = 0; i < xPoints.size(); i++) {
+            xPoints.set(i, xPoints.get(i) + (int) dx);
+            yPoints.set(i, yPoints.get(i) + (int) dy);
+        }
+        this.shape = createPath(xPoints, yPoints);
     }
+
 }

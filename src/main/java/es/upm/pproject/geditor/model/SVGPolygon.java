@@ -2,6 +2,7 @@ package es.upm.pproject.geditor.model;
 
 import java.awt.Color;
 import java.awt.Polygon;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SVGPolygon extends SVGElement {
@@ -11,9 +12,13 @@ public class SVGPolygon extends SVGElement {
 
     public SVGPolygon(List<Integer> xPoints, List<Integer> yPoints, int numPoints, Color fillColor, double fillOpacity,
             Color strokeColor, double strokeOpacity, double strokeWidth) {
+
         super(xPoints.get(0), yPoints.get(0), fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
-        this.xPoints = xPoints;
-        this.yPoints = yPoints;
+        if (xPoints == null || yPoints == null) {
+            throw new IllegalArgumentException("Point lists cannot be null.");
+        }
+        this.xPoints = new ArrayList<>(xPoints);
+        this.yPoints = new ArrayList<>(yPoints);
         this.numPoints = numPoints;
         this.shape = createPolygon(xPoints, yPoints, numPoints);
     }
@@ -40,7 +45,12 @@ public class SVGPolygon extends SVGElement {
 
     @Override
     public void move(double dx, double dy) {
-        // TODO: first fix polygon creation
+
+        for (int i = 0; i < numPoints; i++) {
+            xPoints.set(i, xPoints.get(i) + (int) dx);
+            yPoints.set(i, yPoints.get(i) + (int) dy);
+        }
+        this.shape = createPolygon(xPoints, yPoints, numPoints);
     }
 
     // Getters and setters

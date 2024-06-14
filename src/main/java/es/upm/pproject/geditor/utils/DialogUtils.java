@@ -281,7 +281,7 @@ public class DialogUtils {
             }
 
             // Return the SVGPath object
-            return new SVGPath(0, 0, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0, path);
+            return new SVGPath(0, 0, null, 1.0, Color.BLACK, 1.0, 1.0, path);
         }
         return null;
     }

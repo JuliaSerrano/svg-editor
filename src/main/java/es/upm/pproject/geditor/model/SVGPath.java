@@ -53,7 +53,35 @@ public class SVGPath extends SVGElement {
 
     @Override
     public void move(double dx, double dy) {
-        // TODO: first fix path creation
+        PathIterator iterator = path.getPathIterator(null);
+        Path2D newPath = new Path2D.Double();
+        float[] coords = new float[6];
+
+        while (!iterator.isDone()) {
+            int type = iterator.currentSegment(coords);
+            switch (type) {
+                case PathIterator.SEG_MOVETO:
+                    newPath.moveTo(coords[0] + dx, coords[1] + dy);
+                    break;
+                case PathIterator.SEG_LINETO:
+                    newPath.lineTo(coords[0] + dx, coords[1] + dy);
+                    break;
+                case PathIterator.SEG_QUADTO:
+                    newPath.quadTo(coords[0] + dx, coords[1] + dy, coords[2] + dx, coords[3] + dy);
+                    break;
+                case PathIterator.SEG_CUBICTO:
+                    newPath.curveTo(coords[0] + dx, coords[1] + dy, coords[2] + dx, coords[3] + dy, coords[4] + dx,
+                            coords[5] + dy);
+                    break;
+                case PathIterator.SEG_CLOSE:
+                    newPath.closePath();
+                    break;
+            }
+            iterator.next();
+        }
+
+        this.path = newPath;
+        this.shape = newPath; // Update the shape reference to the new path
     }
 
     // Getters and setters

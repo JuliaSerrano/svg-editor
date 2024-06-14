@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
 public class SVGCanvas extends JPanel {
@@ -282,6 +283,14 @@ public class SVGCanvas extends JPanel {
                     repaint();
                     return;
                 }
+            } else if (element.getShape() instanceof Path2D) {
+                Path2D path = (Path2D) element.getShape();
+                if (path.contains(point)) {
+                    selectedElements.clear();
+                    selectedElements.add(element);
+                    repaint();
+                    return;
+                }
             } else if (element.getShape().contains(point)) {
                 selectedElements.clear();
                 selectedElements.add(element);
@@ -311,6 +320,17 @@ public class SVGCanvas extends JPanel {
                     repaint();
                     return;
                 }
+            } else if (element.getShape() instanceof Path2D) {
+                Path2D path = (Path2D) element.getShape();
+                if (path.contains(point)) {
+                    if (selectedElements.contains(element)) {
+                        selectedElements.remove(element);
+                    } else {
+                        selectedElements.add(element);
+                    }
+                    repaint();
+                    return;
+                }
             } else if (element.getShape().contains(point)) {
                 if (selectedElements.contains(element)) {
                     selectedElements.remove(element);
@@ -322,4 +342,5 @@ public class SVGCanvas extends JPanel {
             }
         }
     }
+
 }
