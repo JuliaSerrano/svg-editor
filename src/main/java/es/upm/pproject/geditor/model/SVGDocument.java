@@ -55,13 +55,17 @@ public class SVGDocument {
     }
     public String toSVGString() {
         StringBuilder svg = new StringBuilder();
+
+        String indent = "  "; // Two spaces
+        String newLine = System.lineSeparator() + System.lineSeparator();
+
         svg.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">", width, height));
-        svg.append(System.lineSeparator());
-        svg.append(String.format("<rect width=\"100%%\" height=\"100%%\" fill=\"%s\" />", colorToHex(backgroundColor)));
-        svg.append(System.lineSeparator());
+        svg.append(newLine);
+        svg.append(indent + String.format("<rect width=\"100%%\" height=\"100%%\" fill=\"%s\" />", colorToHex(backgroundColor)));
+        svg.append(newLine);
         
         for (SVGElement element : elements) {
-            svg.append(element.toSVGString()).append(System.lineSeparator());
+            svg.append(indent + element.toSVGString()).append(newLine);
         }
 
         svg.append("</svg>");
