@@ -290,6 +290,12 @@ public class SVGEditorView extends JFrame {
     }
 
     private void addActionListeners() {
+        fileListeners();
+        editListeners();
+        shapeListeners();
+    }
+
+    private void fileListeners() {
         // New image action listener
         JMenuItem newMenuItem = getJMenuBar().getMenu(0).getItem(0);
         newMenuItem.addActionListener((ActionEvent e) -> {
@@ -328,11 +334,26 @@ public class SVGEditorView extends JFrame {
             }
         });
 
-        editListeners();
-        shapeListeners();
+        // Open image action listener
+        JMenuItem openMenuItem = getJMenuBar().getMenu(0).getItem(2);
+        openMenuItem.addActionListener((ActionEvent e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Open SVG Image");
+
+            // Add a file filter for SVG files
+            FileNameExtensionFilter svgFilter = new FileNameExtensionFilter("SVG (*.svg)", "svg");
+            fileChooser.setFileFilter(svgFilter);
+
+            int userSelection = fileChooser.showOpenDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String filename = fileChooser.getSelectedFile().getAbsolutePath();
+                controller.openSVGFile(filename);
+            }
+        });
     }
 
-    public void editListeners() {
+    private void editListeners() {
         // resize an existing image action listener
         JMenuItem resizeMenuItem = getJMenuBar().getMenu(1).getItem(0);
         resizeMenuItem.addActionListener((ActionEvent e) -> {
@@ -362,7 +383,7 @@ public class SVGEditorView extends JFrame {
         });
     }
 
-    public void shapeListeners() {
+    private void shapeListeners() {
 
         // Action listeners for rectangle submenu items
         rectangleByKeyboardMenuItem.addActionListener(e -> {
@@ -482,5 +503,9 @@ public class SVGEditorView extends JFrame {
                 }
             }
         }
+    }
+
+    public void showErrorDialog(String message) {
+        JOptionPane.showMessageDialog(this, message, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
     }
 }

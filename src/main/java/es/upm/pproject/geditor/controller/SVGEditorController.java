@@ -1,11 +1,16 @@
 package es.upm.pproject.geditor.controller;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.util.XMLResourceDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.svg.SVGDocument;
 
 import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.model.SVGModel;
@@ -61,7 +66,25 @@ public class SVGEditorController {
     }
 
     public void openSVGFile(String filename) {
-        // Open SVG file and update model and view
+        String parser = XMLResourceDescriptor.getXMLParserClassName();
+        SAXSVGDocumentFactory factory = new SAXSVGDocumentFactory(parser);
+        try {
+            SVGDocument document = (SVGDocument) factory.createDocument(new File(filename).toURI().toString());
+            Element svgRoot = document.getDocumentElement();
+
+            int svgWidth = Integer.parseInt(svgRoot.getAttribute("width"));
+            int svgHeight = Integer.parseInt(svgRoot.getAttribute("height"));
+            createNewImage(svgWidth, svgHeight);
+
+            SVGParser.parseDocument(document, model);
+            view.updateCanvas(model.getDocument());
+            logger.info("Successfully loaded SVG file from {}", filename);
+        } catch (IOException e) {
+            view.showErrorDialog("Error loading SVG file: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            view.showErrorDialog("Unsupported SVG element: " + e.getMessage());
+        }
+
     }
 
     public void undo() {
