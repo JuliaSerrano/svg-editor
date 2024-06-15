@@ -1,6 +1,7 @@
 package es.upm.pproject.geditor.view;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import es.upm.pproject.geditor.controller.SVGEditorController;
 import es.upm.pproject.geditor.model.SVGCircle;
@@ -23,6 +24,7 @@ import es.upm.pproject.geditor.view.ui.RectangleCreator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 public class SVGEditorView extends JFrame {
     private SVGCanvas canvas;
@@ -46,6 +48,8 @@ public class SVGEditorView extends JFrame {
     private JMenuItem pathByMouseMenuItem;
 
     private JToolBar toolBar;
+
+    private static final String ERROR_TITLE = "Error";
 
     public SVGEditorView(SVGModel model) {
         this.document = model.getDocument();
@@ -316,8 +320,10 @@ public class SVGEditorView extends JFrame {
                         filename += ".svg"; // Add .svg extension if not present
                     }
                     controller.saveImage(filename);
+                    JOptionPane.showMessageDialog(null, "File saved successfully at: " + filename, "Save Confirmation",
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Invalid filename.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Invalid filename.", ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -336,11 +342,11 @@ public class SVGEditorView extends JFrame {
                 if (newWidth > 0 && newHeight > 0) {
                     controller.resizeImage(newWidth, newHeight);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Dimensions must be positive numbers.", "Error",
+                    JOptionPane.showMessageDialog(null, "Dimensions must be positive numbers.", ERROR_TITLE,
                             JOptionPane.ERROR_MESSAGE);
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Please enter valid numbers for width and height.", "Error",
+                JOptionPane.showMessageDialog(null, "Please enter valid numbers for width and height.", ERROR_TITLE,
                         JOptionPane.ERROR_MESSAGE);
             }
         });
