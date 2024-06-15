@@ -252,6 +252,20 @@ public class SVGEditorView extends JFrame {
         });
         toolBar.add(deleteButton);
 
+        // Group button
+        JButton groupButton = new JButton("Group");
+        groupButton.addActionListener(e -> {
+            canvas.groupSelectedElements();
+        });
+        toolBar.add(groupButton);
+
+        // Ungroup button
+        JButton ungroupButton = new JButton("Ungroup");
+        ungroupButton.addActionListener(e -> {
+            canvas.ungroupSelectedElements();
+        });
+        toolBar.add(ungroupButton);
+
         optionsPanel.add(toolBar, BorderLayout.NORTH);
 
         return optionsPanel;
