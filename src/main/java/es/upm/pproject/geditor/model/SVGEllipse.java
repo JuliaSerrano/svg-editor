@@ -16,12 +16,14 @@ public class SVGEllipse extends SVGElement {
         this.shape = new Ellipse2D.Double(x, y, width, height);
     }
 
+    
+   
     @Override
     public String toSVGString() {
         return String.format(
-                "<ellipse cx=\"%d\" cy=\"%d\" rx=\"%d\" ry=\"%d\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
-                x + width / 2, y + height / 2, width / 2, height / 2, fillColor, fillOpacity,
-                strokeColor, strokeOpacity, strokeWidth);
+                "<ellipse cx=\"%.2f\" cy=\"%.2f\" rx=\"%.2f\" ry=\"%.2f\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
+                x + width / 2, y + height / 2, width / 2, height / 2, colorToHex(fillColor), fillOpacity, colorToHex(strokeColor),
+                strokeOpacity, strokeWidth);
     }
 
     @Override

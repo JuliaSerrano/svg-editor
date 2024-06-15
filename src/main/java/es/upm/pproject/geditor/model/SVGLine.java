@@ -15,11 +15,12 @@ public class SVGLine extends SVGElement {
         this.shape = new Line2D.Double(x1, y1, x2, y2);
     }
 
+    
     @Override
     public String toSVGString() {
         return String.format(
-                "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
-                x, y, x2, y2, strokeColor, strokeOpacity, strokeWidth);
+                "<line x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\" style=\"stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
+                x, y, x2, y2, colorToHex(strokeColor), strokeOpacity, strokeWidth);
     }
 
     @Override

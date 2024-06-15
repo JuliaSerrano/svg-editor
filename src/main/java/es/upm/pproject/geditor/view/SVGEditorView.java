@@ -49,8 +49,7 @@ public class SVGEditorView extends JFrame {
 
     public SVGEditorView(SVGModel model) {
         this.document = model.getDocument();
-        controller = new SVGEditorController(model, this); // Initialize
-        // controller
+        controller = new SVGEditorController(model, this); // Initialize controller
 
         setTitle("SVG Editor");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -295,6 +294,26 @@ public class SVGEditorView extends JFrame {
             controller.createNewImage(newWidth, newHeight);
         });
 
+        // Save image action listener
+        JMenuItem saveMenuItem = getJMenuBar().getMenu(0).getItem(1);
+        saveMenuItem.addActionListener((ActionEvent e) -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save SVG Image");
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String filename = fileChooser.getSelectedFile().getAbsolutePath();
+                if (filename != null && !filename.trim().isEmpty()) {
+                    if (!filename.toLowerCase().endsWith(".svg")) {
+                        filename += ".svg"; // Add .svg extension if not present
+                    }
+                    controller.saveImage(filename);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid filename.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         editListeners();
         shapeListeners();
     }
@@ -450,5 +469,4 @@ public class SVGEditorView extends JFrame {
             }
         }
     }
-
 }

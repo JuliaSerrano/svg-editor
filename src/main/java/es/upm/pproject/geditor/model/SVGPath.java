@@ -43,14 +43,19 @@ public class SVGPath extends SVGElement {
         }
 
         // Append style attributes
-        sb.append("\" style=\"fill:").append(fillColor).append("; fill-opacity:")
-                .append(fillOpacity).append("; stroke:").append(strokeColor)
-                .append("; stroke-opacity:").append(strokeOpacity).append("; stroke-width:").append(strokeWidth)
-                .append("\" />");
+        sb.append("\" style=\"");
+        if (fillColor != null) {
+            sb.append("fill:").append(colorToHex(fillColor)).append("; fill-opacity:").append(fillOpacity).append("; ");
+        } else {
+            sb.append("fill:none; ");
+        }
+        if (strokeColor != null) {
+            sb.append("stroke:").append(colorToHex(strokeColor)).append("; stroke-opacity:").append(strokeOpacity).append("; ");
+        }
+        sb.append("stroke-width:").append(strokeWidth).append("\" />");
 
         return sb.toString();
     }
-
     @Override
     public void move(double dx, double dy) {
         PathIterator iterator = path.getPathIterator(null);

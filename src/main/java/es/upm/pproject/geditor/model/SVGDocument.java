@@ -53,4 +53,19 @@ public class SVGDocument {
     public void removeElement(SVGElement element) {
         elements.remove(element);
     }
+    public String toSVGString() {
+        StringBuilder svg = new StringBuilder();
+        svg.append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">\n", width, height));
+        
+        for (SVGElement element : elements) {
+            svg.append(element.toSVGString()).append("\n");
+        }
+
+        svg.append("</svg>");
+        return svg.toString();
+    }
+
+    private String colorToHex(Color color) {
+        return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+    }
 }

@@ -93,4 +93,7 @@ public abstract class SVGElement {
     }
 
     public abstract void move(double dx, double dy);
+    protected String colorToHex(Color color) {
+        return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+    }
 }

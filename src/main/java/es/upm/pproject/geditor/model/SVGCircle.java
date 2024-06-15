@@ -12,13 +12,12 @@ public class SVGCircle extends SVGElement {
         this.radius = radius;
         this.shape = new Ellipse2D.Double(x - radius, y - radius, 2 * radius, 2 * radius);
     }
-
+    
     @Override
     public String toSVGString() {
         return String.format(
-                "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
-                x, y, radius, fillColor, fillOpacity, strokeColor, strokeOpacity,
-                strokeWidth);
+                "<circle cx=\"%.2f\" cy=\"%.2f\" r=\"%.2f\" style=\"fill:%s; fill-opacity:%.2f; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
+                x, y, radius, colorToHex(fillColor), fillOpacity, colorToHex(strokeColor), strokeOpacity, strokeWidth);
     }
 
     @Override

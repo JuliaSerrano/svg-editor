@@ -29,20 +29,20 @@ public class SVGPolygon extends SVGElement {
             polygon.addPoint(xPoints.get(i), yPoints.get(i));
         }
         return polygon;
-    }
-
+    }  
+    
+    
     @Override
     public String toSVGString() {
         StringBuilder svgString = new StringBuilder("<polygon points=\"");
         for (int i = 0; i < numPoints; i++) {
-            svgString.append(xPoints.get(i)).append(",").append(yPoints.get(i)).append(" ");
+            svgString.append(String.format("%d,%d ", xPoints.get(i), yPoints.get(i)));
         }
-        svgString.append("\" style=\"fill:").append(fillColor).append(";fill-opacity:").append(fillOpacity)
-                .append(";stroke:").append(strokeColor).append(";stroke-opacity:").append(strokeOpacity)
+        svgString.append("\" style=\"fill:").append(colorToHex(fillColor)).append(";fill-opacity:").append(fillOpacity)
+                .append(";stroke:").append(colorToHex(strokeColor)).append(";stroke-opacity:").append(strokeOpacity)
                 .append(";stroke-width:").append(strokeWidth).append("\" />");
         return svgString.toString();
     }
-
     @Override
     public void move(double dx, double dy) {
 

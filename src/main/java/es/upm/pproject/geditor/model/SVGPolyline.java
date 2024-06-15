@@ -26,6 +26,7 @@ public class SVGPolyline extends SVGElement {
         return path;
     }
 
+    
     @Override
     public String toSVGString() {
         StringBuilder pointsBuilder = new StringBuilder();
@@ -35,7 +36,7 @@ public class SVGPolyline extends SVGElement {
 
         return String.format(
                 "<polyline points=\"%s\" style=\"fill:none; stroke:%s; stroke-opacity:%.2f; stroke-width:%.2f\" />",
-                pointsBuilder.toString(), strokeColor, strokeOpacity, strokeWidth);
+                pointsBuilder.toString().trim(), colorToHex(strokeColor), strokeOpacity, strokeWidth);
     }
 
     @Override

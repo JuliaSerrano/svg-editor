@@ -1,6 +1,8 @@
 package es.upm.pproject.geditor.controller;
 
 import java.awt.Color;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,12 @@ public class SVGEditorController {
     }
 
     public void saveImage(String filename) {
-        // Save SVGDocument to file
+        try (FileWriter writer = new FileWriter(filename)) {
+            writer.write(model.getDocument().toSVGString());
+            logger.info("Image saved as {}", filename);
+        } catch (IOException e) {
+            logger.error("Failed to save image", e);
+        }
     }
 
     public void openSVGFile(String filename) {
