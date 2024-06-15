@@ -299,6 +299,14 @@ public class SVGEditorView extends JFrame {
         saveMenuItem.addActionListener((ActionEvent e) -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save SVG Image");
+
+            // Set the default filename to "Untitled.svg"
+            fileChooser.setSelectedFile(new File("Untitled.svg"));
+
+            // Add a file filter for SVG files
+            FileNameExtensionFilter svgFilter = new FileNameExtensionFilter("SVG (*.svg)", "svg");
+            fileChooser.setFileFilter(svgFilter);
+
             int userSelection = fileChooser.showSaveDialog(this);
 
             if (userSelection == JFileChooser.APPROVE_OPTION) {
