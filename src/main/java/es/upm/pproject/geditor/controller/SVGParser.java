@@ -8,9 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.awt.Color;
 import java.awt.geom.Path2D;
-import java.io.File;
 
-import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.svg.SVGDocument;
@@ -25,7 +23,6 @@ import es.upm.pproject.geditor.model.SVGPath;
 import es.upm.pproject.geditor.model.SVGPolygon;
 import es.upm.pproject.geditor.model.SVGPolyline;
 import es.upm.pproject.geditor.model.SVGRectangle;
-import es.upm.pproject.geditor.view.SVGEditorView;
 
 public class SVGParser {
 
