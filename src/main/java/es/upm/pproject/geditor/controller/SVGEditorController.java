@@ -65,8 +65,20 @@ public class SVGEditorController {
     public void moveSelectedElements(List<SVGElement> selectedElements, double dx, double dy) {
         Command moveElementsCommand = new MoveElementsCommand(selectedElements, dx, dy);
         commandManager.executeCommand(moveElementsCommand);
-    
-        view.updateCanvas(model.getDocument());
+
+        boolean outOfBounds = false;
+        for (SVGElement element : selectedElements) {
+            if (!element.isWithinBounds(model.getDocument().getWidth(), model.getDocument().getHeight())) {
+                outOfBounds = true;
+                break;
+            }
+        }
+
+        if (outOfBounds) {
+            commandManager.undo();
+        } else {
+            view.updateCanvas(model.getDocument());
+        }
     }
 
     public void changeSelectedElementFillColor(List<SVGElement> selectedElements, Color newColor) {

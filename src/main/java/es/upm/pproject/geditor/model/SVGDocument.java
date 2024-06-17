@@ -54,6 +54,7 @@ public class SVGDocument {
     public void addElement(SVGElement element) {
         if (element.isWithinBounds(width, height)) {
             elements.add(element);
+            logger.info("Element {} added to the document", element.getShape());
         } else {
             logger.warn("Element is out of bounds and will not be added to the document");
         }

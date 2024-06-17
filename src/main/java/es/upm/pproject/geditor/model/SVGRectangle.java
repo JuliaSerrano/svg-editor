@@ -43,6 +43,8 @@ public class SVGRectangle extends SVGElement {
 
     @Override
     public void move(double dx, double dy) {
+        this.x += dx;
+        this.y += dy;
         AffineTransform transform = AffineTransform.getTranslateInstance(dx, dy);
         shape = transform.createTransformedShape(shape);
     }

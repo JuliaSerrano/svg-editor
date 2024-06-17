@@ -19,7 +19,6 @@ public class AddElementCommand implements Command {
     @Override
     public void execute() {
         document.addElement(element);
-        logger.info("Created a {} element", element.getShape());
     }
 
     @Override
