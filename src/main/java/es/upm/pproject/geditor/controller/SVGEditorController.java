@@ -45,7 +45,8 @@ public class SVGEditorController {
     }
 
     public void changeBackgroundColor(Color color) {
-        model.getDocument().setBackgroundColor(color);
+        Command changeBgColorCommand = new ChangeBgColorCommand(model.getDocument(), color);
+        commandManager.executeCommand(changeBgColorCommand);
         view.updateCanvas(model.getDocument());
     }
 
