@@ -37,7 +37,7 @@ public class SVGParser {
         // First is the background color
         Element bgElement = (Element) svgElements.item(0);
         String bgColor = bgElement.getAttribute("fill");
-        model.getDocument().setBackgroundColor(Color.decode(bgColor));
+        model.getDocument().setBackgroundColor(parseColor(bgColor, Color.WHITE));
 
         // Set to keep track of processed elements to avoid duplication for elements
         // within groups
@@ -220,7 +220,38 @@ public class SVGParser {
         if (colorStr == null || colorStr.isEmpty() || colorStr.equals("none")) {
             return defaultColor;
         }
-        return Color.decode(colorStr);
+
+        // support for named colors
+        switch (colorStr) {
+            case "black":
+                return Color.BLACK;
+            case "blue":
+                return Color.BLUE;
+            case "cyan":
+                return Color.CYAN;
+            case "darkGray":
+                return Color.DARK_GRAY;
+            case "gray":
+                return Color.GRAY;
+            case "green":
+                return Color.GREEN;
+            case "lightGray":
+                return Color.LIGHT_GRAY;
+            case "magenta":
+                return Color.MAGENTA;
+            case "orange":
+                return Color.ORANGE;
+            case "pink":
+                return Color.PINK;
+            case "red":
+                return Color.RED;
+            case "white":
+                return Color.WHITE;
+            case "yellow":
+                return Color.YELLOW;
+            default:
+                return Color.decode(colorStr);
+        }
     }
 
     private static Map<String, String> parseStyle(String style) {
