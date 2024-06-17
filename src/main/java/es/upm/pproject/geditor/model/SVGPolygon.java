@@ -14,9 +14,7 @@ public class SVGPolygon extends SVGElement {
             Color strokeColor, double strokeOpacity, double strokeWidth) {
 
         super(xPoints.get(0), yPoints.get(0), fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
-        if (xPoints == null || yPoints == null) {
-            throw new IllegalArgumentException("Point lists cannot be null.");
-        }
+
         this.xPoints = new ArrayList<>(xPoints);
         this.yPoints = new ArrayList<>(yPoints);
         this.numPoints = numPoints;
@@ -29,9 +27,8 @@ public class SVGPolygon extends SVGElement {
             polygon.addPoint(xPoints.get(i), yPoints.get(i));
         }
         return polygon;
-    }  
-    
-    
+    }
+
     @Override
     public String toSVGString() {
         StringBuilder svgString = new StringBuilder("<polygon points=\"");
@@ -43,6 +40,7 @@ public class SVGPolygon extends SVGElement {
                 .append(";stroke-width:").append(strokeWidth).append("\" />");
         return svgString.toString();
     }
+
     @Override
     public void move(double dx, double dy) {
 
@@ -51,6 +49,15 @@ public class SVGPolygon extends SVGElement {
             yPoints.set(i, yPoints.get(i) + (int) dy);
         }
         this.shape = createPolygon(xPoints, yPoints, numPoints);
+    }
+
+    public boolean isWithinBounds(int width, int height) {
+        for (int i = 0; i < numPoints; i++) {
+            if (xPoints.get(i) < 0 || yPoints.get(i) < 0 || xPoints.get(i) > width || yPoints.get(i) > height) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Getters and setters

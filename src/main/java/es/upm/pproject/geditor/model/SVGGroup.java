@@ -41,6 +41,15 @@ public class SVGGroup extends SVGElement {
         }
     }
 
+    public boolean isWithinBounds(int width, int height) {
+        for (SVGElement element : elements) {
+            if (!element.isWithinBounds(width, height)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void setFillColor(Color fillColor) {
         for (SVGElement element : elements) {

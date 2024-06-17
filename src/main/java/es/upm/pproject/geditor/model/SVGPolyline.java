@@ -51,6 +51,18 @@ public class SVGPolyline extends SVGElement {
         }
         this.shape = createPath(xPoints, yPoints);
     }
+
+    public boolean isWithinBounds(int width, int height) {
+        for (int i = 0; i < xPoints.size(); i++) {
+            if (xPoints.get(i) < 0 || xPoints.get(i) > width || yPoints.get(i) < 0 || yPoints.get(i) > height) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Getters and setters
+
     public List<Integer> getXPoints() {
         return xPoints;
     }

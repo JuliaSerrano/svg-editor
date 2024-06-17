@@ -81,12 +81,46 @@ public class SVGPath extends SVGElement {
                 case PathIterator.SEG_CLOSE:
                     newPath.closePath();
                     break;
+                default:
+                    break;
             }
             iterator.next();
         }
 
         this.path = newPath;
         this.shape = newPath; // Update the shape reference to the new path
+    }
+
+    public boolean isWithinBounds(int width, int height) {
+        PathIterator iterator = path.getPathIterator(null);
+        float[] coords = new float[6];
+
+        while (!iterator.isDone()) {
+            int type = iterator.currentSegment(coords);
+            if (!areCoordinatesWithinBounds(coords, type, width, height)) {
+                return false;
+            }
+            iterator.next();
+        }
+
+        return true;
+    }
+
+    private boolean areCoordinatesWithinBounds(float[] coords, int type, int width, int height) {
+        switch (type) {
+            case PathIterator.SEG_MOVETO:
+            case PathIterator.SEG_LINETO:
+                return coords[0] >= 0 && coords[0] <= width && coords[1] >= 0 && coords[1] <= height;
+            case PathIterator.SEG_QUADTO:
+                return coords[0] >= 0 && coords[0] <= width && coords[1] >= 0 && coords[1] <= height &&
+                        coords[2] >= 0 && coords[2] <= width && coords[3] >= 0 && coords[3] <= height;
+            case PathIterator.SEG_CUBICTO:
+                return coords[0] >= 0 && coords[0] <= width && coords[1] >= 0 && coords[1] <= height &&
+                        coords[2] >= 0 && coords[2] <= width && coords[3] >= 0 && coords[3] <= height &&
+                        coords[4] >= 0 && coords[4] <= width && coords[5] >= 0 && coords[5] <= height;
+            default:
+                return true;
+        }
     }
 
     // Getters and setters

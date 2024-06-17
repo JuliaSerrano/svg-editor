@@ -12,7 +12,7 @@ public class SVGCircle extends SVGElement {
         this.radius = radius;
         this.shape = new Ellipse2D.Double(x - radius, y - radius, 2 * radius, 2 * radius);
     }
-    
+
     @Override
     public String toSVGString() {
         return String.format(
@@ -27,6 +27,10 @@ public class SVGCircle extends SVGElement {
         this.shape = new Ellipse2D.Double(x - radius, y - radius, 2 * radius, 2 * radius);
     }
 
+    public boolean isWithinBounds(int width, int height) {
+        return x - radius >= 0 && y - radius >= 0 && x + radius <= width && y + radius <= height;
+    }
+
     // Getters and setters
     public double getRadius() {
         return radius;
@@ -35,7 +39,7 @@ public class SVGCircle extends SVGElement {
     public void setRadius(int radius) {
         this.radius = radius;
     }
-    
+
     public double getCx() {
         return this.x;
     }

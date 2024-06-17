@@ -93,6 +93,9 @@ public abstract class SVGElement {
     }
 
     public abstract void move(double dx, double dy);
+
+    public abstract boolean isWithinBounds(int width, int height);
+
     protected String colorToHex(Color color) {
         return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }

@@ -48,4 +48,8 @@ public class SVGLine extends SVGElement {
     public void setY2(double y2) {
         this.y2 = y2;
     }
+
+    public boolean isWithinBounds(int width, int height) {
+        return x >= 0 && y >= 0 && x2 >= 0 && y2 >= 0 && x <= width && y <= height && x2 <= width && y2 <= height;
+    }
 }

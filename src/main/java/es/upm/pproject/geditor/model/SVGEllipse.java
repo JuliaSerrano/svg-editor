@@ -49,4 +49,10 @@ public class SVGEllipse extends SVGElement {
     public void setHeight(double height) {
         this.height = height;
     }
+
+    public boolean isWithinBounds(int width, int height) {
+        double rx = this.width / 2;
+        double ry = this.height / 2;
+        return x - rx >= 0 && y - ry >= 0 && x + rx <= width && y + ry <= height;
+    }
 }

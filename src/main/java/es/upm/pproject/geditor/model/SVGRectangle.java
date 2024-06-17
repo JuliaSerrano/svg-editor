@@ -46,4 +46,8 @@ public class SVGRectangle extends SVGElement {
         AffineTransform transform = AffineTransform.getTranslateInstance(dx, dy);
         shape = transform.createTransformedShape(shape);
     }
+
+    public boolean isWithinBounds(int width, int height) {
+        return x >= 0 && y >= 0 && x + this.width <= width && y + this.height <= height;
+    }
 }
