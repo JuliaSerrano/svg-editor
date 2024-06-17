@@ -51,5 +51,11 @@ public class SVGPolyline extends SVGElement {
         }
         this.shape = createPath(xPoints, yPoints);
     }
+    public List<Integer> getXPoints() {
+        return xPoints;
+    }
 
+    public List<Integer> getYPoints() {
+        return yPoints;
+    }
 }

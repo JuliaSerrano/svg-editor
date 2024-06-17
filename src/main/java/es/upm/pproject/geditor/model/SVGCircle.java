@@ -35,4 +35,12 @@ public class SVGCircle extends SVGElement {
     public void setRadius(int radius) {
         this.radius = radius;
     }
+    
+    public double getCx() {
+        return this.x;
+    }
+
+    public double getCy() {
+        return this.y;
+    }
 }
