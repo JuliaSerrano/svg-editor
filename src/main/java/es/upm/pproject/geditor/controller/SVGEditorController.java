@@ -92,6 +92,7 @@ public class SVGEditorController {
     }
 
     public void exit() {
+    	logger.info("Closing the SVG editor ...");
         System.exit(0);
     }
 
