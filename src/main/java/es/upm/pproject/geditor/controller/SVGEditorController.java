@@ -63,9 +63,9 @@ public class SVGEditorController {
     }
 
     public void moveSelectedElements(List<SVGElement> selectedElements, double dx, double dy) {
-        for (SVGElement element : selectedElements) {
-            element.move(dx, dy);
-        }
+        Command moveElementsCommand = new MoveElementsCommand(selectedElements, dx, dy);
+        commandManager.executeCommand(moveElementsCommand);
+    
         view.updateCanvas(model.getDocument());
     }
 
