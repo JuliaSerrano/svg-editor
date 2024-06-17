@@ -107,43 +107,20 @@ public class SVGEditorController {
     }
 
     public void groupSelectedElements(List<SVGElement> selectedElements) {
-        if (selectedElements.isEmpty()) {
-            return;
-        }
+        Command groupElementsCommand = new GroupElementsCommand(model.getDocument(), selectedElements);
+        commandManager.executeCommand(groupElementsCommand);
 
-        SVGGroup group = new SVGGroup();
-        for (SVGElement element : selectedElements) {
-            model.getDocument().removeElement(element);
-            group.addElement(element);
-        }
-
-        model.getDocument().addElement(group);
         selectedElements.clear();
-        selectedElements.add(group);
+        selectedElements.add(((GroupElementsCommand) groupElementsCommand).getGroup());
         view.updateCanvas(model.getDocument());
     }
 
     public void ungroupSelectedElements(List<SVGElement> selectedElements) {
-        ArrayList<SVGElement> elementsToRemove = new ArrayList<>();
-        ArrayList<SVGElement> elementsToAdd = new ArrayList<>();
+        Command ungroupElementsCommand = new UngroupElementsCommand(model.getDocument(), selectedElements);
+        commandManager.executeCommand(ungroupElementsCommand);
 
-        for (SVGElement element : selectedElements) {
-            if (element instanceof SVGGroup) {
-                SVGGroup group = (SVGGroup) element;
-                elementsToRemove.add(group);
-                elementsToAdd.addAll(group.getElements());
-            }
-        }
-
-        selectedElements.removeAll(elementsToRemove);
-        selectedElements.addAll(elementsToAdd);
-
-        for (SVGElement element : elementsToRemove) {
-            model.getDocument().removeElement(element);
-        }
-        for (SVGElement element : elementsToAdd) {
-            model.getDocument().addElement(element);
-        }
+        selectedElements.removeAll(((UngroupElementsCommand) ungroupElementsCommand).getElementsToRemove());
+        selectedElements.addAll(((UngroupElementsCommand) ungroupElementsCommand).getElementsToAdd());
 
         view.updateCanvas(model.getDocument());
     }
@@ -179,9 +156,10 @@ public class SVGEditorController {
 
     }
 
-    public void undo() {
+    public void undo(List<SVGElement> selectedElements) {
         commandManager.undo();
         // Update the canvas view to reflect the changes
+        selectedElements.clear();
         view.updateCanvas(model.getDocument());
     }
 
