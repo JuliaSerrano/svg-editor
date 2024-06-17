@@ -22,11 +22,12 @@ public class ChangeBgColorCommand implements Command {
     @Override
     public void execute() {
         document.setBackgroundColor(newColor);
+        logger.info("Changed background color to {}", newColor);
     }
 
     @Override
     public void undo() {
         document.setBackgroundColor(oldColor);
-        logger.info("Undoing background color change");
+        logger.info("Undoing background color from {} to {}", newColor, oldColor);
     }
 }

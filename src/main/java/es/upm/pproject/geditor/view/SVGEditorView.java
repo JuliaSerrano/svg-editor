@@ -1,5 +1,4 @@
 
-
 package es.upm.pproject.geditor.view;
 
 import javax.swing.*;
@@ -49,7 +48,7 @@ public class SVGEditorView extends JFrame {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(this.document.getWidth(), this.document.getHeight()));
 
-        canvas = new SVGCanvas();
+        canvas = new SVGCanvas(controller);
         add(canvas, BorderLayout.CENTER);
 
         // side panel
@@ -184,7 +183,7 @@ public class SVGEditorView extends JFrame {
             Color newColor = JColorChooser.showDialog(null, "Choose Fill Color", Color.BLACK);
             if (newColor != null) {
                 // Set fill color to the selected color
-                canvas.changeSelectedElementFillColor(newColor);
+                controller.changeSelectedElementFillColor(canvas.getSelectedElements(), newColor);
             }
         });
         toolBar.add(fillColorButton);
@@ -198,7 +197,7 @@ public class SVGEditorView extends JFrame {
         fillOpacitySlider.setToolTipText("Fill Opacity");
         fillOpacitySlider.addChangeListener(e -> {
             int opacity = fillOpacitySlider.getValue();
-            canvas.changeSelectedElementFillOpacity(opacity / 100.0);
+            controller.changeSelectedElementFillOpacity(canvas.getSelectedElements(), opacity / 100.0);
         });
         toolBar.add(new JLabel("Fill Opacity"));
         toolBar.add(fillOpacitySlider);
@@ -208,7 +207,7 @@ public class SVGEditorView extends JFrame {
         lineColorButton.addActionListener(e -> {
             Color newColor = JColorChooser.showDialog(null, "Choose Line Color", Color.BLACK);
             if (newColor != null) {
-                canvas.changeSelectedElementStrokeColor(newColor);
+                controller.changeSelectedElementStrokeColor(canvas.getSelectedElements(), newColor);
             }
         });
         toolBar.add(lineColorButton);
@@ -218,7 +217,7 @@ public class SVGEditorView extends JFrame {
         strokeWidthSpinner.setToolTipText("Line Width");
         strokeWidthSpinner.addChangeListener(e -> {
             int lineWidth = (int) strokeWidthSpinner.getValue();
-            canvas.changeSelectedElementStrokeWidth(lineWidth);
+            controller.changeSelectedElementStrokeWidth(canvas.getSelectedElements(), lineWidth);
         });
         toolBar.add(new JLabel("Line Width"));
         toolBar.add(strokeWidthSpinner);
@@ -232,30 +231,24 @@ public class SVGEditorView extends JFrame {
         strokeOpacitySlider.setToolTipText("Stroke Opacity");
         strokeOpacitySlider.addChangeListener(e -> {
             int opacity = strokeOpacitySlider.getValue();
-            canvas.changeSelectedElementStrokeOpacity(opacity / 100.0);
+            controller.changeSelectedElementStrokeOpacity(canvas.getSelectedElements(), opacity / 100.0);
         });
         toolBar.add(new JLabel("Stroke Opacity"));
         toolBar.add(strokeOpacitySlider);
 
         // Delete button
         JButton deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(e -> {
-            canvas.removeSelectedElement();
-        });
+        deleteButton.addActionListener(e -> controller.removeSelectedElement(canvas.getSelectedElements()));
         toolBar.add(deleteButton);
 
         // Group button
         JButton groupButton = new JButton("Group");
-        groupButton.addActionListener(e -> {
-            canvas.groupSelectedElements();
-        });
+        groupButton.addActionListener(e -> controller.groupSelectedElements(canvas.getSelectedElements()));
         toolBar.add(groupButton);
 
         // Ungroup button
         JButton ungroupButton = new JButton("Ungroup");
-        ungroupButton.addActionListener(e -> {
-            canvas.ungroupSelectedElements();
-        });
+        ungroupButton.addActionListener(e -> controller.ungroupSelectedElements(canvas.getSelectedElements()));
         toolBar.add(ungroupButton);
 
         optionsPanel.add(toolBar, BorderLayout.NORTH);
@@ -506,4 +499,3 @@ public class SVGEditorView extends JFrame {
         JOptionPane.showMessageDialog(this, message, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
     }
 }
-

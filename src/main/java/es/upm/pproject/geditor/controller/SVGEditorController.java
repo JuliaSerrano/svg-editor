@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
@@ -13,6 +15,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.svg.SVGDocument;
 
 import es.upm.pproject.geditor.model.SVGElement;
+import es.upm.pproject.geditor.model.SVGGroup;
 import es.upm.pproject.geditor.model.SVGModel;
 import es.upm.pproject.geditor.view.SVGEditorView;
 
@@ -59,6 +62,92 @@ public class SVGEditorController {
         view.updateCanvas(model.getDocument());
     }
 
+    public void moveSelectedElements(List<SVGElement> selectedElements, double dx, double dy) {
+        for (SVGElement element : selectedElements) {
+            element.move(dx, dy);
+        }
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void changeSelectedElementFillColor(List<SVGElement> selectedElements, Color newColor) {
+        Command changeFillColorCommand = new ChangeFillColorCommand(selectedElements, newColor);
+        commandManager.executeCommand(changeFillColorCommand);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void changeSelectedElementFillOpacity(List<SVGElement> selectedElements, double fillOpacity) {
+        Command changeFillOpacityCommand = new ChangeFillOpacityCommand(selectedElements, fillOpacity);
+        commandManager.executeCommand(changeFillOpacityCommand);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void changeSelectedElementStrokeColor(List<SVGElement> selectedElements, Color color) {
+        Command changeStrokeColorCommand = new ChangeStrokeColorCommand(selectedElements, color);
+        commandManager.executeCommand(changeStrokeColorCommand);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void changeSelectedElementStrokeWidth(List<SVGElement> selectedElements, double strokeWidth) {
+        Command changeStrokeWidthCommand = new ChangeStrokeWidthCommand(selectedElements, strokeWidth);
+        commandManager.executeCommand(changeStrokeWidthCommand);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void changeSelectedElementStrokeOpacity(List<SVGElement> selectedElements, double strokeOpacity) {
+        Command changeStrokeOpacityCommand = new ChangeStrokeOpacityCommand(selectedElements, strokeOpacity);
+        commandManager.executeCommand(changeStrokeOpacityCommand);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void removeSelectedElement(List<SVGElement> selectedElements) {
+        Command removeElementsCommand = new RemoveElementsCommand(model.getDocument(), selectedElements);
+        commandManager.executeCommand(removeElementsCommand);
+        selectedElements.clear();
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void groupSelectedElements(List<SVGElement> selectedElements) {
+        if (selectedElements.isEmpty()) {
+            return;
+        }
+
+        SVGGroup group = new SVGGroup();
+        for (SVGElement element : selectedElements) {
+            model.getDocument().removeElement(element);
+            group.addElement(element);
+        }
+
+        model.getDocument().addElement(group);
+        selectedElements.clear();
+        selectedElements.add(group);
+        view.updateCanvas(model.getDocument());
+    }
+
+    public void ungroupSelectedElements(List<SVGElement> selectedElements) {
+        ArrayList<SVGElement> elementsToRemove = new ArrayList<>();
+        ArrayList<SVGElement> elementsToAdd = new ArrayList<>();
+
+        for (SVGElement element : selectedElements) {
+            if (element instanceof SVGGroup) {
+                SVGGroup group = (SVGGroup) element;
+                elementsToRemove.add(group);
+                elementsToAdd.addAll(group.getElements());
+            }
+        }
+
+        selectedElements.removeAll(elementsToRemove);
+        selectedElements.addAll(elementsToAdd);
+
+        for (SVGElement element : elementsToRemove) {
+            model.getDocument().removeElement(element);
+        }
+        for (SVGElement element : elementsToAdd) {
+            model.getDocument().addElement(element);
+        }
+
+        view.updateCanvas(model.getDocument());
+    }
+
     public void saveImage(String filename) {
         try (FileWriter writer = new FileWriter(filename)) {
             writer.write(model.getDocument().toSVGString());
@@ -97,7 +186,7 @@ public class SVGEditorController {
     }
 
     public void exit() {
-    	logger.info("Closing the SVG editor ...");
+        logger.info("Closing the SVG editor ...");
         System.exit(0);
     }
 

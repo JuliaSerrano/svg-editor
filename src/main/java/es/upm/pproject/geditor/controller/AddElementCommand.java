@@ -19,11 +19,12 @@ public class AddElementCommand implements Command {
     @Override
     public void execute() {
         document.addElement(element);
+        logger.info("Created a {} element", element.getShape());
     }
 
     @Override
     public void undo() {
         document.removeElement(element);
-        logger.info("Undoing element creation");
+        logger.info("Undoing the creation of a {} element", element.getShape());
     }
 }

@@ -6,6 +6,7 @@ import java.awt.*;
 import es.upm.pproject.geditor.model.SVGDocument;
 import es.upm.pproject.geditor.model.SVGElement;
 import es.upm.pproject.geditor.model.SVGGroup;
+import es.upm.pproject.geditor.controller.SVGEditorController;
 import es.upm.pproject.geditor.view.ui.ShapeCreator;
 import es.upm.pproject.geditor.view.ui.PolygonCreator;
 import es.upm.pproject.geditor.view.ui.PolylineCreator;
@@ -17,11 +18,13 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SVGCanvas extends JPanel {
+    private transient SVGEditorController controller;
     private transient SVGDocument document;
     private transient ShapeCreator shapeCreator;
-    private ArrayList<SVGElement> selectedElements;
+    private transient ArrayList<SVGElement> selectedElements;
     private Point initialMousePoint;
 
     public enum Mode {
@@ -39,11 +42,16 @@ public class SVGCanvas extends JPanel {
         }
     }
 
-    public SVGCanvas() {
+    public SVGCanvas(SVGEditorController controller) {
+        this.controller = controller;
         setFocusable(true);
         selectedElements = new ArrayList<>();
         addMouseListeners();
         addKeyBindings();
+    }
+
+    public List<SVGElement> getSelectedElements() {
+        return selectedElements;
     }
 
     public void setDocument(SVGDocument document) {
@@ -59,91 +67,6 @@ public class SVGCanvas extends JPanel {
 
     public void finishShape() {
         this.shapeCreator = null;
-    }
-
-    public void changeSelectedElementFillColor(Color newColor) {
-        for (SVGElement element : selectedElements) {
-            element.setFillColor(newColor);
-        }
-        repaint();
-    }
-
-    public void changeSelectedElementFillOpacity(double fillOpacity) {
-        for (SVGElement element : selectedElements) {
-            element.setFillOpacity(fillOpacity);
-        }
-        repaint();
-    }
-
-    public void changeSelectedElementStrokeColor(Color color) {
-        for (SVGElement element : selectedElements) {
-            element.setStrokeColor(color);
-        }
-        repaint();
-    }
-
-    public void changeSelectedElementStrokeWidth(double strokeWidth) {
-        for (SVGElement element : selectedElements) {
-            element.setStrokeWidth(strokeWidth);
-        }
-        repaint();
-    }
-
-    public void changeSelectedElementStrokeOpacity(double strokeOpacity) {
-        for (SVGElement element : selectedElements) {
-            element.setStrokeOpacity(strokeOpacity);
-        }
-        repaint();
-    }
-
-    public void removeSelectedElement() {
-        for (SVGElement element : selectedElements) {
-            document.removeElement(element);
-        }
-        selectedElements.clear();
-        repaint();
-    }
-
-    public void groupSelectedElements() {
-        if (selectedElements.isEmpty()) {
-            return;
-        }
-
-        SVGGroup group = new SVGGroup();
-        for (SVGElement element : selectedElements) {
-            document.removeElement(element);
-            group.addElement(element);
-        }
-
-        document.addElement(group);
-        selectedElements.clear();
-        selectedElements.add(group);
-        repaint();
-    }
-
-    public void ungroupSelectedElements() {
-        ArrayList<SVGElement> elementsToRemove = new ArrayList<>();
-        ArrayList<SVGElement> elementsToAdd = new ArrayList<>();
-
-        for (SVGElement element : selectedElements) {
-            if (element instanceof SVGGroup) {
-                SVGGroup group = (SVGGroup) element;
-                elementsToRemove.add(group);
-                elementsToAdd.addAll(group.getElements());
-            }
-        }
-
-        selectedElements.removeAll(elementsToRemove);
-        selectedElements.addAll(elementsToAdd);
-
-        for (SVGElement element : elementsToRemove) {
-            document.removeElement(element);
-        }
-        for (SVGElement element : elementsToAdd) {
-            document.addElement(element);
-        }
-
-        repaint();
     }
 
     private void addMouseListeners() {
@@ -185,9 +108,8 @@ public class SVGCanvas extends JPanel {
                     Point currentMousePoint = e.getPoint();
                     double dx = currentMousePoint.getX() - initialMousePoint.getX();
                     double dy = currentMousePoint.getY() - initialMousePoint.getY();
-                    moveSelectedElements(dx, dy);
+                    controller.moveSelectedElements(selectedElements, dx, dy);
                     initialMousePoint = currentMousePoint;
-                    repaint();
                 } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.updateShape(e);
                     repaint();
@@ -196,19 +118,12 @@ public class SVGCanvas extends JPanel {
         });
     }
 
-    private void moveSelectedElements(double dx, double dy) {
-        for (SVGElement element : selectedElements) {
-            element.move(dx, dy);
-        }
-    }
-
     private void addKeyBindings() {
         getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "moveUp");
         getActionMap().put("moveUp", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveSelectedElements(0, -5); // Move up by 5 pixels
-                repaint();
+                controller.moveSelectedElements(selectedElements, 0, -5); // Move up by 5 pixels
             }
         });
 
@@ -216,8 +131,7 @@ public class SVGCanvas extends JPanel {
         getActionMap().put("moveDown", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveSelectedElements(0, 5); // Move down by 5 pixels
-                repaint();
+                controller.moveSelectedElements(selectedElements, 0, 5); // Move down by 5 pixels
             }
         });
 
@@ -225,8 +139,7 @@ public class SVGCanvas extends JPanel {
         getActionMap().put("moveLeft", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveSelectedElements(-5, 0); // Move left by 5 pixels
-                repaint();
+                controller.moveSelectedElements(selectedElements, -5, 0); // Move left by 5 pixels
             }
         });
 
@@ -234,8 +147,7 @@ public class SVGCanvas extends JPanel {
         getActionMap().put("moveRight", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moveSelectedElements(5, 0); // Move right by 5 pixels
-                repaint();
+                controller.moveSelectedElements(selectedElements, 5, 0); // Move right by 5 pixels
             }
         });
     }
@@ -436,5 +348,4 @@ public class SVGCanvas extends JPanel {
         }
         repaint();
     }
-
 }
