@@ -21,6 +21,7 @@ public class SVGEditorController {
 
     private SVGModel model;
     private SVGEditorView view;
+    private CommandManager commandManager = new CommandManager();
 
     public SVGEditorController(SVGModel model, SVGEditorView view) {
         this.model = model;
@@ -50,7 +51,8 @@ public class SVGEditorController {
 
     public void addElement(SVGElement element) {
         // Add the element to the SVGDocument in the model
-        model.getDocument().addElement(element);
+        Command addElementCommand = new AddElementCommand(model.getDocument(), element);
+        commandManager.executeCommand(addElementCommand);
 
         // Update the canvas view to reflect the changes
         view.updateCanvas(model.getDocument());
@@ -88,7 +90,9 @@ public class SVGEditorController {
     }
 
     public void undo() {
-        // Undo the last operation
+        commandManager.undo();
+        // Update the canvas view to reflect the changes
+        view.updateCanvas(model.getDocument());
     }
 
     public void exit() {

@@ -381,6 +381,10 @@ public class SVGEditorView extends JFrame {
                 controller.changeBackgroundColor(newColor);
             }
         });
+
+        // Undo action listener
+        JMenuItem undoMenuItem = getJMenuBar().getMenu(1).getItem(2);
+        undoMenuItem.addActionListener((ActionEvent e) -> controller.undo());
     }
 
     private void shapeListeners() {
