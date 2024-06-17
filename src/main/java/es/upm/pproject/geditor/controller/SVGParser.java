@@ -60,11 +60,18 @@ public class SVGParser {
         // Style attributes
         Map<String, String> styleMap = parseStyle(element.getAttribute("style"));
 
-        Color fillColor = parseColor(styleMap.get("fill"));
-        Double fillOpacity = parseDouble(styleMap.get("fill-opacity"));
-        Color strokeColor = parseColor(styleMap.get("stroke"));
-        Double strokeOpacity = parseDouble(styleMap.get("stroke-opacity"));
-        Double strokeWidth = parseDouble(styleMap.get("stroke-width"));
+        Color fillColor = parseColor(styleMap.get("fill"), Color.BLACK);
+        Double fillOpacity = parseDouble(styleMap.get("fill-opacity"), 1.0);
+        Color strokeColor = parseColor(styleMap.get("stroke"), Color.BLACK);
+        Double strokeOpacity = parseDouble(styleMap.get("stroke-opacity"), 1.0);
+        Double strokeWidth = parseDouble(styleMap.get("stroke-width"), 1.0);
+
+        // direct style attributes
+        fillColor = parseColor(element.getAttribute("fill"), fillColor);
+        fillOpacity = parseDouble(element.getAttribute("fill-opacity"), fillOpacity);
+        strokeColor = parseColor(element.getAttribute("stroke"), strokeColor);
+        strokeOpacity = parseDouble(element.getAttribute("stroke-opacity"), strokeOpacity);
+        strokeWidth = parseDouble(element.getAttribute("stroke-width"), strokeWidth);
 
         switch (tagName) {
             case "rect":
@@ -202,16 +209,16 @@ public class SVGParser {
         return group;
     }
 
-    private static double parseDouble(String value) {
+    private static double parseDouble(String value, double defaultValue) {
         if (value == null || value.isEmpty()) {
-            return 1.0;
+            return defaultValue;
         }
         return Double.parseDouble(value);
     }
 
-    private static Color parseColor(String colorStr) {
+    private static Color parseColor(String colorStr, Color defaultColor) {
         if (colorStr == null || colorStr.isEmpty() || colorStr.equals("none")) {
-            return null;
+            return defaultColor;
         }
         return Color.decode(colorStr);
     }
