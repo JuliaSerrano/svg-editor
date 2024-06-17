@@ -1,26 +1,14 @@
+
+
 package es.upm.pproject.geditor.view;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import es.upm.pproject.geditor.controller.SVGEditorController;
-import es.upm.pproject.geditor.model.SVGCircle;
-import es.upm.pproject.geditor.model.SVGDocument;
-import es.upm.pproject.geditor.model.SVGEllipse;
-import es.upm.pproject.geditor.model.SVGLine;
-import es.upm.pproject.geditor.model.SVGModel;
-import es.upm.pproject.geditor.model.SVGPath;
-import es.upm.pproject.geditor.model.SVGPolygon;
-import es.upm.pproject.geditor.model.SVGPolyline;
-import es.upm.pproject.geditor.model.SVGRectangle;
+import es.upm.pproject.geditor.model.*;
 import es.upm.pproject.geditor.utils.DialogUtils;
-import es.upm.pproject.geditor.view.ui.CircleCreator;
-import es.upm.pproject.geditor.view.ui.EllipseCreator;
-import es.upm.pproject.geditor.view.ui.LineCreator;
-import es.upm.pproject.geditor.view.ui.PathCreator;
-import es.upm.pproject.geditor.view.ui.PolygonCreator;
-import es.upm.pproject.geditor.view.ui.PolylineCreator;
-import es.upm.pproject.geditor.view.ui.RectangleCreator;
+import es.upm.pproject.geditor.view.ui.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -46,6 +34,7 @@ public class SVGEditorView extends JFrame {
     private JMenuItem polygonByMouseMenuItem;
     private JMenuItem pathByKeyboardMenuItem;
     private JMenuItem pathByMouseMenuItem;
+    private JMenuItem exitMenuItem;
 
     private JToolBar toolBar;
 
@@ -75,7 +64,7 @@ public class SVGEditorView extends JFrame {
         JMenuItem newMenuItem = new JMenuItem("New");
         JMenuItem openMenuItem = new JMenuItem("Open");
         JMenuItem saveMenuItem = new JMenuItem("Save");
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem = new JMenuItem("Exit");
 
         fileMenu.add(newMenuItem);
         fileMenu.add(saveMenuItem);
@@ -351,6 +340,10 @@ public class SVGEditorView extends JFrame {
                 controller.openSVGFile(filename);
             }
         });
+
+        // Exit application action listener
+        exitMenuItem = getJMenuBar().getMenu(0).getItem(3);
+        exitMenuItem.addActionListener((ActionEvent e) -> controller.exit());
     }
 
     private void editListeners() {
@@ -513,3 +506,4 @@ public class SVGEditorView extends JFrame {
         JOptionPane.showMessageDialog(this, message, ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
     }
 }
+
