@@ -74,25 +74,11 @@ public class SVGCanvas extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 requestFocusInWindow(); // Request focus
-                if (mode == Mode.SELECT) {
-                    finishShape();
-                    if (e.isControlDown()) {
-                        toggleElementAt(e.getPoint());
-                    } else {
-                        selectElementAt(e.getPoint());
-                    }
-                    initialMousePoint = e.getPoint();
-                } else {
-                    shapeCreator.startShape(e);
-                    if (isPolyCreator(shapeCreator)) {
-                        repaint();
-                    }
-                }
+                handleMousePressed(e);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                // if (mode == Mode.SELECT) {
                 initialMousePoint = null;
                 if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
                     shapeCreator.finishShape(e);
@@ -104,18 +90,39 @@ public class SVGCanvas extends JPanel {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (mode == Mode.SELECT && initialMousePoint != null) {
-                    Point currentMousePoint = e.getPoint();
-                    double dx = currentMousePoint.getX() - initialMousePoint.getX();
-                    double dy = currentMousePoint.getY() - initialMousePoint.getY();
-                    controller.moveSelectedElements(selectedElements, dx, dy);
-                    initialMousePoint = currentMousePoint;
-                } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
-                    shapeCreator.updateShape(e);
-                    repaint();
-                }
+                handleMouseDragged(e);
             }
         });
+    }
+
+    private void handleMousePressed(MouseEvent e) {
+        if (mode == Mode.SELECT) {
+            finishShape();
+            if (e.isControlDown()) {
+                toggleElementAt(e.getPoint());
+            } else {
+                selectElementAt(e.getPoint());
+            }
+            initialMousePoint = e.getPoint();
+        } else {
+            shapeCreator.startShape(e);
+            if (isPolyCreator(shapeCreator)) {
+                repaint();
+            }
+        }
+    }
+
+    private void handleMouseDragged(MouseEvent e) {
+        if (mode == Mode.SELECT && initialMousePoint != null) {
+            Point currentMousePoint = e.getPoint();
+            double dx = currentMousePoint.getX() - initialMousePoint.getX();
+            double dy = currentMousePoint.getY() - initialMousePoint.getY();
+            controller.moveSelectedElements(selectedElements, dx, dy);
+            initialMousePoint = currentMousePoint;
+        } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
+            shapeCreator.updateShape(e);
+            repaint();
+        }
     }
 
     private void addKeyBindings() {
@@ -236,19 +243,23 @@ public class SVGCanvas extends JPanel {
 
     private void drawGroupSelectionHandles(Graphics2D g2d, SVGGroup group) {
         Rectangle groupBounds = getGroupBounds(group);
-        g2d.setColor(Color.BLUE);
-        g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] { 5 }, 0));
-        g2d.draw(groupBounds);
+        if (groupBounds != null) {
+            g2d.setColor(Color.BLUE);
+            g2d.setStroke(
+                    new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[] { 5 }, 0));
+            g2d.draw(groupBounds);
 
-        int handleSize = 6;
-        g2d.setColor(Color.BLUE);
-        g2d.fillRect(groupBounds.x - handleSize / 2, groupBounds.y - handleSize / 2, handleSize, handleSize);
-        g2d.fillRect(groupBounds.x + groupBounds.width - handleSize / 2, groupBounds.y - handleSize / 2, handleSize,
-                handleSize);
-        g2d.fillRect(groupBounds.x - handleSize / 2, groupBounds.y + groupBounds.height - handleSize / 2, handleSize,
-                handleSize);
-        g2d.fillRect(groupBounds.x + groupBounds.width - handleSize / 2,
-                groupBounds.y + groupBounds.height - handleSize / 2, handleSize, handleSize);
+            int handleSize = 6;
+            g2d.setColor(Color.BLUE);
+            g2d.fillRect(groupBounds.x - handleSize / 2, groupBounds.y - handleSize / 2, handleSize, handleSize);
+            g2d.fillRect(groupBounds.x + groupBounds.width - handleSize / 2, groupBounds.y - handleSize / 2, handleSize,
+                    handleSize);
+            g2d.fillRect(groupBounds.x - handleSize / 2, groupBounds.y + groupBounds.height - handleSize / 2,
+                    handleSize,
+                    handleSize);
+            g2d.fillRect(groupBounds.x + groupBounds.width - handleSize / 2,
+                    groupBounds.y + groupBounds.height - handleSize / 2, handleSize, handleSize);
+        }
     }
 
     private Rectangle getGroupBounds(SVGGroup group) {
@@ -312,6 +323,7 @@ public class SVGCanvas extends JPanel {
         }
     }
 
+
     private void toggleElementAt(Point point) {
         if (document == null) {
             return;
@@ -323,28 +335,24 @@ public class SVGCanvas extends JPanel {
                 SVGGroup group = (SVGGroup) element;
                 for (SVGElement groupElement : group.getElements()) {
                     if (elementContainsPoint(groupElement, point, tolerance)) {
-                        toggleGroupSelection(group);
+                        toggleElementSelection(group);
                         repaint();
                         return;
                     }
                 }
             } else if (elementContainsPoint(element, point, tolerance)) {
-                if (selectedElements.contains(element)) {
-                    selectedElements.remove(element);
-                } else {
-                    selectedElements.add(element);
-                }
+                toggleElementSelection(element);
                 repaint();
                 return;
             }
         }
     }
 
-    private void toggleGroupSelection(SVGGroup group) {
-        if (selectedElements.contains(group)) {
-            selectedElements.remove(group);
+    private void toggleElementSelection(SVGElement element) {
+        if (selectedElements.contains(element)) {
+            selectedElements.remove(element);
         } else {
-            selectedElements.add(group);
+            selectedElements.add(element);
         }
         repaint();
     }

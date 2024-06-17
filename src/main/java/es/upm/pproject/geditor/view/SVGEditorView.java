@@ -38,6 +38,7 @@ public class SVGEditorView extends JFrame {
     private JToolBar toolBar;
 
     private static final String ERROR_TITLE = "Error";
+    private static final String SELECT_TXT = "Select";
 
     public SVGEditorView(SVGModel model) {
         this.document = model.getDocument();
@@ -158,18 +159,18 @@ public class SVGEditorView extends JFrame {
         optionsPanel.setBorder(BorderFactory.createTitledBorder("Tools"));
         optionsPanel.setPreferredSize(new Dimension(130, getHeight()));
 
-        toolBar = new JToolBar(JToolBar.VERTICAL);
+        toolBar = new JToolBar(SwingConstants.VERTICAL);
         toolBar.setFloatable(false);
 
-        JToggleButton selectButton = new JToggleButton("Select");
-        selectButton.setToolTipText("Select");
+        JToggleButton selectButton = new JToggleButton(SELECT_TXT);
+        selectButton.setToolTipText(SELECT_TXT);
         selectButton.addActionListener(e -> {
             if (selectButton.isSelected()) {
                 selectButton.setText("In Selection");
                 // Activate select mode in canvas
                 canvas.setMode(SVGCanvas.Mode.SELECT);
             } else {
-                selectButton.setText("Select");
+                selectButton.setText(SELECT_TXT);
                 // Deactivate select mode in canvas or revert to default mode
                 canvas.setMode(SVGCanvas.Mode.DEFAULT);
             }
@@ -487,7 +488,7 @@ public class SVGEditorView extends JFrame {
                 JToggleButton toggleButton = (JToggleButton) comp;
                 if (toggleButton.getText().equals("In Selection")) {
                     toggleButton.setSelected(false);
-                    toggleButton.setText("Select");
+                    toggleButton.setText(SELECT_TXT);
                     canvas.setMode(SVGCanvas.Mode.DEFAULT);
                     break;
                 }

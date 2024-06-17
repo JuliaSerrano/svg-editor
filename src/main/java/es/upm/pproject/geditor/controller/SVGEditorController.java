@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
@@ -15,7 +14,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.svg.SVGDocument;
 
 import es.upm.pproject.geditor.model.SVGElement;
-import es.upm.pproject.geditor.model.SVGGroup;
 import es.upm.pproject.geditor.model.SVGModel;
 import es.upm.pproject.geditor.view.SVGEditorView;
 
