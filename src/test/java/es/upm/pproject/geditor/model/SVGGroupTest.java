@@ -7,17 +7,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.awt.Color;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SVGGroupTest {
 
-    @Test
-    void testAddElement() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect = new SVGRectangle(10, 10, 50, 50);
+    private SVGGroup group;
+    private SVGRectangle rect;
+
+    @BeforeEach
+    void setUp() {
+        group = new SVGGroup();
+        rect = new SVGRectangle(10, 10, 50, 50);
 
         group.addElement(rect);
+    }
 
+    @Test
+    void testAddElement() {
         List<SVGElement> elements = group.getElements();
         assertEquals(1, elements.size());
         assertEquals(rect, elements.get(0));
@@ -25,10 +32,6 @@ class SVGGroupTest {
 
     @Test
     void testRemoveElement() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect = new SVGRectangle(10, 10, 50, 50);
-
-        group.addElement(rect);
         group.removeElement(rect);
 
         List<SVGElement> elements = group.getElements();
@@ -37,14 +40,11 @@ class SVGGroupTest {
 
     @Test
     void testToSVGString() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
-        rect1.setStyles(Color.RED, 1.0, Color.BLACK, 1.0, 1.0);
+        rect.setStyles(Color.RED, 1.0, Color.BLACK, 1.0, 1.0);
 
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
         rect2.setStyles(Color.BLUE, 0.5, Color.GREEN, 2, 0.5);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         String expectedSVGString = "<g>" +
@@ -57,11 +57,8 @@ class SVGGroupTest {
 
     @Test
     void testMove() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         group.move(10, 10);
@@ -75,11 +72,9 @@ class SVGGroupTest {
 
     @Test
     void testIsWithinBounds() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
+        group.addElement(rect);
         group.addElement(rect2);
 
         assertTrue(group.isWithinBounds(500, 500));
@@ -88,11 +83,8 @@ class SVGGroupTest {
 
     @Test
     void testSetFillColor() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         group.setFillColor(Color.YELLOW);
@@ -104,11 +96,8 @@ class SVGGroupTest {
 
     @Test
     void testSetFillOpacity() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         group.setFillOpacity(0.8);
@@ -120,11 +109,8 @@ class SVGGroupTest {
 
     @Test
     void testSetStrokeColor() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         group.setStrokeColor(Color.PINK);
@@ -136,11 +122,8 @@ class SVGGroupTest {
 
     @Test
     void testSetStrokeOpacity() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         group.setStrokeOpacity(0.6);
@@ -152,11 +135,8 @@ class SVGGroupTest {
 
     @Test
     void testSetStrokeWidth() {
-        SVGGroup group = new SVGGroup();
-        SVGRectangle rect1 = new SVGRectangle(10, 10, 50, 50);
         SVGRectangle rect2 = new SVGRectangle(70, 10, 50, 50);
 
-        group.addElement(rect1);
         group.addElement(rect2);
 
         group.setStrokeWidth(3.0);

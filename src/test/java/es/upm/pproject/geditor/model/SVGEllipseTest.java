@@ -5,46 +5,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SVGEllipseTest {
 
-    @Test
-    void testAddEllipseElement() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
+    private SVGDocument document;
+    private SVGEllipse element;
 
-        SVGElement element = new SVGEllipse(100, 100, 200, 100);
+    @BeforeEach
+    void setUp() {
+        document = new SVGDocument(1200, 800);
+        element = new SVGEllipse(100, 100, 200, 100);
 
         document.addElement(element);
+    }
 
+    @Test
+    void testAddEllipseElement() {
         assertEquals(1, document.getElements().size());
         assertEquals(element, document.getElements().get(0));
     }
 
     @Test
     void testAddEllipseElementOutOfBounds() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
+        SVGEllipse element2 = new SVGEllipse(1300, 900, 200, 100);
 
-        SVGElement element = new SVGEllipse(1300, 900, 200, 100);
+        document.addElement(element2);
 
-        document.addElement(element);
-
-        assertEquals(0, document.getElements().size()); 
+        assertEquals(1, document.getElements().size()); 
     }
     
     @Test
     void testRemoveEllipseElement() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
-        SVGElement element = new SVGEllipse(100, 100, 200, 100);
-
-        document.addElement(element);
         assertEquals(1, document.getElements().size());
 
         document.removeElement(element);
@@ -53,15 +46,7 @@ class SVGEllipseTest {
 
     @Test
     void testToSVGStringEllipse() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
-        SVGElement element = new SVGEllipse(100, 100, 200, 100);
-
         element.setStyles(Color.RED, 1.0, Color.BLACK, 2.0, 1.0);
-
-        document.addElement(element);
 
         String expectedSVGString = "<svg width=\"1200\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\">\n\n" +
                 "  <rect width=\"100%\" height=\"100%\" fill=\"#ffffff\" />\n\n" +
@@ -73,9 +58,6 @@ class SVGEllipseTest {
     
     @Test
     void testEllipseMove() {
-        SVGEllipse element = new SVGEllipse( 100, 100, 200, 100);
-
-
         element.move(10, 10);
 
         assertEquals(110, element.getX());
@@ -84,15 +66,11 @@ class SVGEllipseTest {
 
     @Test
     void testEllipseIsWithinBounds() {
-        SVGEllipse element = new SVGEllipse(100, 100, 200, 100);
-
         assertTrue(element.isWithinBounds(500, 500));
     }
 
     @Test
     void testEllipseColorToHex() {
-        SVGEllipse element = new SVGEllipse(100, 100, 200, 100);
-
         element.setStyles(Color.RED, 1.0, Color.BLACK, 1.0, 2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));

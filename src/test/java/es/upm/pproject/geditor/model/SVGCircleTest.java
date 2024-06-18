@@ -5,46 +5,38 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SVGCircleTest {
 
-    @Test
-    void testAddCircleElement() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
+    private SVGDocument document;
+    private SVGCircle element;
 
-        SVGElement element = new SVGCircle(100, 100, 50);
+    @BeforeEach
+    void setUp() {
+        document = new SVGDocument(1200, 800);
+        element = new SVGCircle(100, 100, 50);
 
         document.addElement(element);
+    }
 
+    @Test
+    void testAddCircleElement() {
         assertEquals(1, document.getElements().size());
         assertEquals(element, document.getElements().get(0));
     }
 
     @Test
     void testAddCircleElementOutOfBounds() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
+        SVGElement element2 = new SVGCircle(1300, 900, 50);
+        document.addElement(element2);
 
-        SVGElement element = new SVGCircle(1300, 900, 50);
-
-        document.addElement(element);
-
-        assertEquals(0, document.getElements().size()); 
+        assertEquals(1, document.getElements().size()); 
     }
     
     @Test
     void testRemoveCircleElement() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
-        SVGElement element = new SVGCircle(100, 100, 50);
-
-        document.addElement(element);
         assertEquals(1, document.getElements().size());
 
         document.removeElement(element);
@@ -53,15 +45,7 @@ class SVGCircleTest {
 
     @Test
     void testToSVGStringCircle() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
-        SVGElement element = new SVGCircle(100, 100, 50);
-
         element.setStyles(Color.RED, 1.0, Color.BLACK, 2.0, 1.0);
-
-        document.addElement(element);
 
         String expectedSVGString = "<svg width=\"1200\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\">\n\n" +
                 "  <rect width=\"100%\" height=\"100%\" fill=\"#ffffff\" />\n\n" +
@@ -73,8 +57,6 @@ class SVGCircleTest {
     
     @Test
     void testCircleMove() {
-        SVGCircle element = new SVGCircle(100, 100, 50);
-
         element.move(10, 10);
 
         assertEquals(110, element.getCx());
@@ -83,19 +65,6 @@ class SVGCircleTest {
 
     @Test
     void testCircleIsWithinBounds() {
-        SVGCircle element = new SVGCircle(100, 100, 50);
-
         assertTrue(element.isWithinBounds(500, 500));
-    }
-
-    @Test
-    void testCircleColorToHex() {
-        SVGCircle element = new SVGCircle(100, 100, 50);
-
-        element.setStyles(Color.RED, 1.0, Color.BLACK, 1.0, 2.0);
-
-        assertEquals("#ff0000", element.colorToHex(Color.RED));
-        assertEquals("#000000", element.colorToHex(Color.BLACK));
-        assertEquals("#ffffff", element.colorToHex(Color.WHITE));
     }
 }

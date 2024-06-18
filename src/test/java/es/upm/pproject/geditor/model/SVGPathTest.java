@@ -7,15 +7,17 @@ import java.awt.Color;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SVGPathTest {
 
-    @Test
-    void testAddPathElement() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
+    private SVGDocument document;
+    private SVGPath element;
+
+    @BeforeEach
+    void setUp() {
+        document = new SVGDocument(1200, 800);
 
         Path2D path = new Path2D.Double();
         path.moveTo(100, 100);
@@ -23,48 +25,34 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGElement element = new SVGPath(0, 0, path);
+        element = new SVGPath(0, 0, path);
 
         document.addElement(element);
+    }
 
+    @Test
+    void testAddPathElement() {
         assertEquals(1, document.getElements().size());
         assertEquals(element, document.getElements().get(0));
     }
 
     @Test
     void testAddPathElementOutOfBounds() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
         Path2D path = new Path2D.Double();
         path.moveTo(1300, 900);
         path.lineTo(1400, 1000);
         path.lineTo(1500, 1100);
         path.closePath();
 
-        SVGElement element = new SVGPath(0, 0, path);
+        SVGElement element2 = new SVGPath(0, 0, path);
 
-        document.addElement(element);
+        document.addElement(element2);
 
-        assertEquals(0, document.getElements().size());
+        assertEquals(1, document.getElements().size());
     }
     
     @Test
     void testRemovePathElement() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
-        Path2D path = new Path2D.Double();
-        path.moveTo(100, 100);
-        path.lineTo(200, 200);
-        path.lineTo(300, 100);
-        path.closePath();
-
-        SVGElement element = new SVGPath(100, 100, path);
-
-        document.addElement(element);
         assertEquals(1, document.getElements().size());
 
         document.removeElement(element);
@@ -73,21 +61,8 @@ class SVGPathTest {
 
     @Test
     void testToSVGStringPath() {
-        int width = 1200;
-        int height = 800;
-        SVGDocument document = new SVGDocument(width, height);
-
-        Path2D path = new Path2D.Double();
-        path.moveTo(100, 100);
-        path.lineTo(200, 200);
-        path.lineTo(300, 100);
-        path.closePath();
-
-        SVGElement element = new SVGPath(100, 100, path);
         element.setFillColor(Color.RED);
         element.setStrokeWidth(2.0);
-
-        document.addElement(element);
 
         String expectedSVGString = "<svg width=\"1200\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
                 "<rect width=\"100%\" height=\"100%\" fill=\"#ffffff\" />\n" +
@@ -99,14 +74,6 @@ class SVGPathTest {
     
     @Test
     void testPathMove() {
-        Path2D path = new Path2D.Double();
-        path.moveTo(100, 100);
-        path.lineTo(200, 200);
-        path.lineTo(300, 100);
-        path.closePath();
-
-        SVGPath element = new SVGPath(100, 100, path);
-
         element.move(10, 10);
 
         Path2D expectedPath = new Path2D.Double();
@@ -133,31 +100,6 @@ class SVGPathTest {
 
     @Test
     void testPathIsWithinBounds() {
-        Path2D path = new Path2D.Double();
-        path.moveTo(100, 100);
-        path.lineTo(200, 200);
-        path.lineTo(300, 100);
-        path.closePath();
-
-        SVGPath element = new SVGPath(100, 100, path);
-
         assertTrue(element.isWithinBounds(500, 500));
-    }
-
-    @Test
-    void testPathColorToHex() {
-        Path2D path = new Path2D.Double();
-        path.moveTo(100, 100);
-        path.lineTo(200, 200);
-        path.lineTo(300, 100);
-        path.closePath();
-
-        SVGPath element = new SVGPath(100, 100, path);
-        element.setFillColor(Color.RED);
-        element.setStrokeWidth(2.0);
-
-        assertEquals("#ff0000", element.colorToHex(Color.RED));
-        assertEquals("#000000", element.colorToHex(Color.BLACK));
-        assertEquals("#ffffff", element.colorToHex(Color.WHITE));
     }
 }
