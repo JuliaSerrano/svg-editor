@@ -162,6 +162,8 @@ public class SVGEditorView extends JFrame {
         toolBar = new JToolBar(SwingConstants.VERTICAL);
         toolBar.setFloatable(false);
 
+        toolBar.add(Box.createVerticalStrut(15)); // Space between buttons
+
         JToggleButton selectButton = new JToggleButton(SELECT_TXT);
         selectButton.setToolTipText(SELECT_TXT);
         selectButton.addActionListener(e -> {
@@ -177,6 +179,16 @@ public class SVGEditorView extends JFrame {
         });
 
         toolBar.add(selectButton);
+        toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
+
+        // Delete button
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(e -> controller.removeSelectedElement(canvas.getSelectedElements()));
+        toolBar.add(deleteButton);
+
+        toolBar.add(Box.createVerticalStrut(20)); // Space between groups of buttons
+        toolBar.add(new JSeparator(SwingConstants.HORIZONTAL)); // Separator line
+        toolBar.add(Box.createVerticalStrut(20)); // Space between groups of buttons
 
         // Fill color picker
         JButton fillColorButton = new JButton("Fill Color");
@@ -188,13 +200,14 @@ public class SVGEditorView extends JFrame {
             }
         });
         toolBar.add(fillColorButton);
+        toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
 
         // Fill opacity slider
         JSlider fillOpacitySlider = new JSlider(0, 100, 100); // From 0% to 100%
         fillOpacitySlider.setPaintTicks(true);
         fillOpacitySlider.setPaintLabels(true);
         fillOpacitySlider.setMajorTickSpacing(25);
-        fillOpacitySlider.setMinorTickSpacing(5);
+        fillOpacitySlider.setMinorTickSpacing(10);
         fillOpacitySlider.setToolTipText("Fill Opacity");
         fillOpacitySlider.addChangeListener(e -> {
             int opacity = fillOpacitySlider.getValue();
@@ -202,6 +215,10 @@ public class SVGEditorView extends JFrame {
         });
         toolBar.add(new JLabel("Fill Opacity"));
         toolBar.add(fillOpacitySlider);
+
+        toolBar.add(Box.createVerticalStrut(20)); // Space between groups of buttons
+        toolBar.add(new JSeparator(SwingConstants.HORIZONTAL));
+        toolBar.add(Box.createVerticalStrut(20)); // Space between groups of buttons
 
         // Line color picker
         JButton lineColorButton = new JButton("Line Color");
@@ -212,7 +229,7 @@ public class SVGEditorView extends JFrame {
             }
         });
         toolBar.add(lineColorButton);
-
+        toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
         // Stroke width spinner
         JSpinner strokeWidthSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 50, 1));
         strokeWidthSpinner.setToolTipText("Line Width");
@@ -222,13 +239,14 @@ public class SVGEditorView extends JFrame {
         });
         toolBar.add(new JLabel("Line Width"));
         toolBar.add(strokeWidthSpinner);
+        toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
 
         // Stroke opacity slider
         JSlider strokeOpacitySlider = new JSlider(0, 100, 100); // From 0% to 100%
         strokeOpacitySlider.setPaintTicks(true);
         strokeOpacitySlider.setPaintLabels(true);
         strokeOpacitySlider.setMajorTickSpacing(25);
-        strokeOpacitySlider.setMinorTickSpacing(5);
+        strokeOpacitySlider.setMinorTickSpacing(10);
         strokeOpacitySlider.setToolTipText("Stroke Opacity");
         strokeOpacitySlider.addChangeListener(e -> {
             int opacity = strokeOpacitySlider.getValue();
@@ -236,16 +254,15 @@ public class SVGEditorView extends JFrame {
         });
         toolBar.add(new JLabel("Stroke Opacity"));
         toolBar.add(strokeOpacitySlider);
-
-        // Delete button
-        JButton deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(e -> controller.removeSelectedElement(canvas.getSelectedElements()));
-        toolBar.add(deleteButton);
+        toolBar.add(Box.createVerticalStrut(20)); // Space between groups of buttons
+        toolBar.add(new JSeparator(SwingConstants.HORIZONTAL));
+        toolBar.add(Box.createVerticalStrut(20)); // Space between groups of buttons
 
         // Group button
         JButton groupButton = new JButton("Group");
         groupButton.addActionListener(e -> controller.groupSelectedElements(canvas.getSelectedElements()));
         toolBar.add(groupButton);
+        toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
 
         // Ungroup button
         JButton ungroupButton = new JButton("Ungroup");
