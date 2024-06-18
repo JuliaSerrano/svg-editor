@@ -22,20 +22,21 @@ public class SVGPath extends SVGElement {
         // Append the SVG path commands
         PathIterator iterator = path.getPathIterator(null);
         float[] coords = new float[6];
+        int x = 0;
+        int y = 1;
         while (!iterator.isDone()) {
             int type = iterator.currentSegment(coords);
             switch (type) {
                 case PathIterator.SEG_MOVETO:
-                    sb.append("M").append(coords[0]).append(" ").append(coords[1]).append(" ");
+                    sb.append("M").append(coords[x]).append(" ").append(coords[y]).append(" ");
                     break;
                 case PathIterator.SEG_LINETO:
-                    sb.append("L").append(coords[0]).append(" ").append(coords[1]).append(" ");
+                    sb.append("L").append(coords[x]).append(" ").append(coords[y]).append(" ");
                     break;
                 case PathIterator.SEG_CLOSE:
                     sb.append("Z");
                     break;
                 default:
-                    // Other path types like curves can be handled similarly
                     break;
             }
             iterator.next();
@@ -61,21 +62,28 @@ public class SVGPath extends SVGElement {
         Path2D newPath = new Path2D.Double();
         float[] coords = new float[6];
 
+        int pointX = 0;
+        int pointY = 1;
+        int point2X = 2;
+        int point2Y = 3;
+        int point3X = 4;
+        int point3Y = 5;
+
         while (!iterator.isDone()) {
             int type = iterator.currentSegment(coords);
             switch (type) {
                 case PathIterator.SEG_MOVETO:
-                    newPath.moveTo(coords[0] + dx, coords[1] + dy);
+                    newPath.moveTo(coords[pointX] + dx, coords[pointY] + dy);
                     break;
                 case PathIterator.SEG_LINETO:
-                    newPath.lineTo(coords[0] + dx, coords[1] + dy);
+                    newPath.lineTo(coords[pointX] + dx, coords[pointY] + dy);
                     break;
                 case PathIterator.SEG_QUADTO:
-                    newPath.quadTo(coords[0] + dx, coords[1] + dy, coords[2] + dx, coords[3] + dy);
+                    newPath.quadTo(coords[pointX] + dx, coords[pointY] + dy, coords[point2X] + dx, coords[point2Y] + dy);
                     break;
                 case PathIterator.SEG_CUBICTO:
-                    newPath.curveTo(coords[0] + dx, coords[1] + dy, coords[2] + dx, coords[3] + dy, coords[4] + dx,
-                            coords[5] + dy);
+                    newPath.curveTo(coords[pointX] + dx, coords[pointY] + dy, coords[point2X] + dx, coords[point2Y] + dy, coords[point3X] + dx,
+                            coords[point3Y] + dy);
                     break;
                 case PathIterator.SEG_CLOSE:
                     newPath.closePath();
@@ -106,17 +114,24 @@ public class SVGPath extends SVGElement {
     }
 
     private boolean areCoordinatesWithinBounds(float[] coords, int type, int width, int height) {
+        int pointX = 0;
+        int pointY = 1;
+        int point2X = 2;
+        int point2Y = 3;
+        int point3X = 4;
+        int point3Y = 5;
+
         switch (type) {
             case PathIterator.SEG_MOVETO:
             case PathIterator.SEG_LINETO:
-                return coords[0] >= 0 && coords[0] <= width && coords[1] >= 0 && coords[1] <= height;
+                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0 && coords[pointY] <= height;
             case PathIterator.SEG_QUADTO:
-                return coords[0] >= 0 && coords[0] <= width && coords[1] >= 0 && coords[1] <= height &&
-                        coords[2] >= 0 && coords[2] <= width && coords[3] >= 0 && coords[3] <= height;
+                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0 && coords[pointY] <= height &&
+                        coords[point2X] >= 0 && coords[point2X] <= width && coords[point2Y] >= 0 && coords[point2Y] <= height;
             case PathIterator.SEG_CUBICTO:
-                return coords[0] >= 0 && coords[0] <= width && coords[1] >= 0 && coords[1] <= height &&
-                        coords[2] >= 0 && coords[2] <= width && coords[3] >= 0 && coords[3] <= height &&
-                        coords[4] >= 0 && coords[4] <= width && coords[5] >= 0 && coords[5] <= height;
+                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0 && coords[pointY] <= height &&
+                        coords[point2X] >= 0 && coords[point2X] <= width && coords[point2Y] >= 0 && coords[point2Y] <= height &&
+                        coords[point3X] >= 0 && coords[point3X] <= width && coords[point3Y] >= 0 && coords[point3Y] <= height;
             default:
                 return true;
         }
