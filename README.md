@@ -8,6 +8,18 @@
 | Jorge García Plaza   | 200002             |
 | Julia Serrano Arrese | 200119             |
 
+## Installation and evaluation
+```bash
+git clone git@costa.ls.fi.upm.es:210254/svg-editor.git
+mvn test
+mvn clean verify sonar:sonar -Dsonar.id=200119 -Dsonar.login=squ_f7fc8e22943a014173b3b496b33603e3dae031e9
+```
+
+## Open GUI of the application
+```bash
+mvn exec:java
+```
+
 ## System Functionalities
 
 ### 1-Create a New Empty Image
