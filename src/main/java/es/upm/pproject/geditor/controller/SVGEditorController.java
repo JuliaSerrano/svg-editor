@@ -39,6 +39,7 @@ public class SVGEditorController {
     }
 
     public void resizeImage(int width, int height) {
+    	logger.info("Resize new image with width {} and height {}", width, height);
         model.getDocument().setWidth(width);
         model.getDocument().setHeight(height);
         view.updateCanvas(model.getDocument());

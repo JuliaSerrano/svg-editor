@@ -16,6 +16,12 @@ public class SVGDocument {
     private List<SVGElement> elements;
 
     public SVGDocument(int width, int height) {
+    	 if (width <= 0 || height <= 0) {
+    		 logger.error("Error: Values must be positive");
+             throw new IllegalArgumentException("Width and height must be positive values.");
+         }
+    	 
+    	 
         this.width = width;
         this.height = height;
         this.backgroundColor = Color.WHITE;
@@ -32,6 +38,10 @@ public class SVGDocument {
     }
 
     public void setWidth(int width) {
+    	if (width <= 0) {
+    		 logger.error("Error: Width must be positive");
+            throw new IllegalArgumentException("Width must be a positive value.");
+        }
         this.width = width;
     }
 
@@ -40,6 +50,10 @@ public class SVGDocument {
     }
 
     public void setHeight(int height) {
+    	if (height <= 0) {
+    		logger.error("Error: Height must be positive");
+            throw new IllegalArgumentException("Height must be a positive value.");
+        }
         this.height = height;
     }
 
