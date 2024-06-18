@@ -3,7 +3,6 @@ package es.upm.pproject.geditor.model;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 
-//ODO: REVISAR
 public class SVGPath extends SVGElement {
     private Path2D path;
 
@@ -50,12 +49,14 @@ public class SVGPath extends SVGElement {
             sb.append("fill:none; ");
         }
         if (strokeColor != null) {
-            sb.append("stroke:").append(colorToHex(strokeColor)).append("; stroke-opacity:").append(strokeOpacity).append("; ");
+            sb.append("stroke:").append(colorToHex(strokeColor)).append("; stroke-opacity:").append(strokeOpacity)
+                    .append("; ");
         }
         sb.append("stroke-width:").append(strokeWidth).append("\" />");
 
         return sb.toString();
     }
+
     @Override
     public void move(double dx, double dy) {
         PathIterator iterator = path.getPathIterator(null);
@@ -64,10 +65,6 @@ public class SVGPath extends SVGElement {
 
         int pointX = 0;
         int pointY = 1;
-        int point2X = 2;
-        int point2Y = 3;
-        int point3X = 4;
-        int point3Y = 5;
 
         while (!iterator.isDone()) {
             int type = iterator.currentSegment(coords);
@@ -77,13 +74,6 @@ public class SVGPath extends SVGElement {
                     break;
                 case PathIterator.SEG_LINETO:
                     newPath.lineTo(coords[pointX] + dx, coords[pointY] + dy);
-                    break;
-                case PathIterator.SEG_QUADTO:
-                    newPath.quadTo(coords[pointX] + dx, coords[pointY] + dy, coords[point2X] + dx, coords[point2Y] + dy);
-                    break;
-                case PathIterator.SEG_CUBICTO:
-                    newPath.curveTo(coords[pointX] + dx, coords[pointY] + dy, coords[point2X] + dx, coords[point2Y] + dy, coords[point3X] + dx,
-                            coords[point3Y] + dy);
                     break;
                 case PathIterator.SEG_CLOSE:
                     newPath.closePath();
@@ -116,22 +106,12 @@ public class SVGPath extends SVGElement {
     private boolean areCoordinatesWithinBounds(float[] coords, int type, int width, int height) {
         int pointX = 0;
         int pointY = 1;
-        int point2X = 2;
-        int point2Y = 3;
-        int point3X = 4;
-        int point3Y = 5;
 
         switch (type) {
             case PathIterator.SEG_MOVETO:
             case PathIterator.SEG_LINETO:
-                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0 && coords[pointY] <= height;
-            case PathIterator.SEG_QUADTO:
-                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0 && coords[pointY] <= height &&
-                        coords[point2X] >= 0 && coords[point2X] <= width && coords[point2Y] >= 0 && coords[point2Y] <= height;
-            case PathIterator.SEG_CUBICTO:
-                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0 && coords[pointY] <= height &&
-                        coords[point2X] >= 0 && coords[point2X] <= width && coords[point2Y] >= 0 && coords[point2Y] <= height &&
-                        coords[point3X] >= 0 && coords[point3X] <= width && coords[point3Y] >= 0 && coords[point3Y] <= height;
+                return coords[pointX] >= 0 && coords[pointX] <= width && coords[pointY] >= 0
+                        && coords[pointY] <= height;
             default:
                 return true;
         }
