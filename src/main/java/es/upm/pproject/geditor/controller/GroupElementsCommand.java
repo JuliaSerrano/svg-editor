@@ -3,6 +3,8 @@ package es.upm.pproject.geditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,15 @@ public class GroupElementsCommand implements Command {
 
     @Override
     public void execute() {
+        boolean hasGroup = elements.stream().anyMatch(element -> element instanceof SVGGroup);
+
+        if (hasGroup) {
+            JOptionPane.showMessageDialog(null,
+                    "Cannot group elements because groups cannot be nested.",
+                    "Grouping Error", JOptionPane.WARNING_MESSAGE);
+            logger.warn("Cannot group elements because there is an SVGGroup in the list.");
+            return;
+        }
         for (SVGElement element : elements) {
             document.removeElement(element);
             group.addElement(element);
