@@ -79,11 +79,7 @@ public class SVGCanvas extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                initialMousePoint = null;
-                if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
-                    shapeCreator.finishShape(e);
-                    repaint();
-                }
+                handleMouseReleased(e);
             }
         });
 
@@ -104,11 +100,19 @@ public class SVGCanvas extends JPanel {
                 selectElementAt(e.getPoint());
             }
             initialMousePoint = e.getPoint();
-        } else {
+        } else if (shapeCreator != null) {
             shapeCreator.startShape(e);
             if (isPolyCreator(shapeCreator)) {
                 repaint();
             }
+        }
+    }
+
+    private void handleMouseReleased(MouseEvent e) {
+        initialMousePoint = null;
+        if (mode != Mode.SELECT && !isPolyCreator(shapeCreator) && shapeCreator != null) {
+            shapeCreator.finishShape(e);
+            repaint();
         }
     }
 
@@ -119,7 +123,7 @@ public class SVGCanvas extends JPanel {
             double dy = currentMousePoint.getY() - initialMousePoint.getY();
             controller.moveSelectedElements(selectedElements, dx, dy);
             initialMousePoint = currentMousePoint;
-        } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator)) {
+        } else if (mode != Mode.SELECT && !isPolyCreator(shapeCreator) && shapeCreator != null) {
             shapeCreator.updateShape(e);
             repaint();
         }
@@ -322,7 +326,6 @@ public class SVGCanvas extends JPanel {
             return element.getShape().contains(point);
         }
     }
-
 
     private void toggleElementAt(Point point) {
         if (document == null) {
