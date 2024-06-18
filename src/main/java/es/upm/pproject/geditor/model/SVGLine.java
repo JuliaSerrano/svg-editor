@@ -1,15 +1,13 @@
 package es.upm.pproject.geditor.model;
 
-import java.awt.Color;
 import java.awt.geom.Line2D;
 
 public class SVGLine extends SVGElement {
     private double x2;
     private double y2;
 
-    public SVGLine(double x1, double y1, double x2, double y2, Color strokeColor, double strokeOpacity,
-            double strokeWidth) {
-        super(x1, y1, strokeColor, 1.0, strokeColor, strokeOpacity, strokeWidth);
+    public SVGLine(double x1, double y1, double x2, double y2) {
+        super(x1, y1);
         this.x2 = x2;
         this.y2 = y2;
         this.shape = new Line2D.Double(x1, y1, x2, y2);

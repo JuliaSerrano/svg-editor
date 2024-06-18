@@ -15,10 +15,7 @@ class SVGLineTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGLine(
-            100, 100, 300, 300,              // x1, y1, x2, y2
-            Color.BLACK, 1.0, 2.0            // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGLine(100, 100, 300, 300);
 
         document.addElement(element);
 
@@ -32,10 +29,7 @@ class SVGLineTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGLine(
-            1300, 900, 1500, 1100,           // x1, y1, x2, y2
-            Color.BLACK, 1.0, 2.0            // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGLine(1300, 900, 1500, 1100);
 
         document.addElement(element);
 
@@ -48,10 +42,7 @@ class SVGLineTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGLine(
-            100, 100, 300, 300,                // x1, y1, x2, y2
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGLine(100, 100, 300, 300);
 
         document.addElement(element);
         assertEquals(1, document.getElements().size());
@@ -66,10 +57,9 @@ class SVGLineTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGLine(
-            100, 100, 300, 300,                // x1, y1, x2, y2
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGLine(100, 100, 300, 300);
+
+        element.setStrokeWidth(2.0);
 
         document.addElement(element);
 
@@ -83,10 +73,7 @@ class SVGLineTest {
    
     @Test
     void testLineMove() {
-        SVGLine element = new SVGLine(
-            100, 100, 200, 200,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGLine element = new SVGLine(100, 100, 200, 200);
 
         element.move(10, 10);
 
@@ -98,20 +85,16 @@ class SVGLineTest {
 
     @Test
     void testLineIsWithinBounds() {
-        SVGLine element = new SVGLine(
-            100, 100, 200, 200,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGLine element = new SVGLine(100, 100, 200, 200);
 
         assertTrue(element.isWithinBounds(500, 500));
     }
 
     @Test
     void testLineColorToHex() {
-        SVGLine element = new SVGLine(
-            100, 100, 200, 200,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGLine element = new SVGLine(100, 100, 200, 200);
+
+        element.setStrokeWidth(2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));
         assertEquals("#000000", element.colorToHex(Color.BLACK));

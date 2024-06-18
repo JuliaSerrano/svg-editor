@@ -36,7 +36,7 @@ public class LineCreator implements ShapeCreator {
         if (currentLine != null) {
             double x2 = e.getX();
             double y2 = e.getY();
-            SVGLine line = new SVGLine(startX, startY, x2, y2, Color.BLACK, 1.0, 1.0);
+            SVGLine line = new SVGLine(startX, startY, x2, y2);
             controller.addElement(line);
             currentLine = null;
         }

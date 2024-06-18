@@ -1,6 +1,5 @@
 package es.upm.pproject.geditor.model;
 
-import java.awt.Color;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +8,9 @@ public class SVGPolyline extends SVGElement {
     private List<Integer> xPoints;
     private List<Integer> yPoints;
 
-    public SVGPolyline(List<Integer> xPoints, List<Integer> yPoints, Color strokeColor, double strokeOpacity,
-            double strokeWidth) {
-        super(xPoints.get(0), yPoints.get(0), null, 1.0, strokeColor, strokeOpacity, strokeWidth);
+    public SVGPolyline(List<Integer> xPoints, List<Integer> yPoints) {
+        super(xPoints.get(0), yPoints.get(0));
+        this.setFillColor(null);
         this.xPoints = new ArrayList<>(xPoints);
         this.yPoints = new ArrayList<>(yPoints);
         this.shape = createPath(xPoints, yPoints);

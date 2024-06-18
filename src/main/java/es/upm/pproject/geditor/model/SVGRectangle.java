@@ -1,15 +1,13 @@
 package es.upm.pproject.geditor.model;
 
-import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 public class SVGRectangle extends SVGElement {
     private double width;
     private double height;
 
-    public SVGRectangle(double x, double y, double width, double height, Color fillColor, double fillOpacity,
-            Color strokeColor, double strokeOpacity, double strokeWidth) {
-        super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+    public SVGRectangle(double x, double y, double width, double height) {
+        super(x, y);
         this.width = width;
         this.height = height;
         this.shape = new Rectangle2D.Double(x, y, width, height);

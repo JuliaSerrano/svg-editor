@@ -15,11 +15,7 @@ class SVGEllipseTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGEllipse(
-            100, 100, 200, 100,              // x, y, width, height
-            Color.RED, 1.0,                  // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0            // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGEllipse(100, 100, 200, 100);
 
         document.addElement(element);
 
@@ -33,11 +29,7 @@ class SVGEllipseTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGEllipse(
-            1300, 900, 200, 100,             // x, y, width, height
-            Color.RED, 1.0,                  // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0            // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGEllipse(1300, 900, 200, 100);
 
         document.addElement(element);
 
@@ -50,11 +42,7 @@ class SVGEllipseTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGEllipse(
-            100, 100, 200, 100,                // x, y, width, height
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGEllipse(100, 100, 200, 100);
 
         document.addElement(element);
         assertEquals(1, document.getElements().size());
@@ -69,11 +57,9 @@ class SVGEllipseTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGEllipse(
-            100, 100, 200, 100,                // x, y, width, height
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGEllipse(100, 100, 200, 100);
+
+        element.setStyles(Color.RED, 1.0, Color.BLACK, 2.0, 1.0);
 
         document.addElement(element);
 
@@ -87,11 +73,8 @@ class SVGEllipseTest {
     
     @Test
     void testEllipseMove() {
-        SVGEllipse element = new SVGEllipse(
-            100, 100, 200, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGEllipse element = new SVGEllipse( 100, 100, 200, 100);
+
 
         element.move(10, 10);
 
@@ -101,22 +84,16 @@ class SVGEllipseTest {
 
     @Test
     void testEllipseIsWithinBounds() {
-        SVGEllipse element = new SVGEllipse(
-            100, 100, 200, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGEllipse element = new SVGEllipse(100, 100, 200, 100);
 
         assertTrue(element.isWithinBounds(500, 500));
     }
 
     @Test
     void testEllipseColorToHex() {
-        SVGEllipse element = new SVGEllipse(
-            100, 100, 200, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGEllipse element = new SVGEllipse(100, 100, 200, 100);
+
+        element.setStyles(Color.RED, 1.0, Color.BLACK, 1.0, 2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));
         assertEquals("#000000", element.colorToHex(Color.BLACK));

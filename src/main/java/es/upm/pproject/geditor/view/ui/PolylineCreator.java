@@ -57,7 +57,7 @@ public class PolylineCreator implements ShapeCreator {
 
     @Override
     public void finishShape(MouseEvent e) {
-        SVGPolyline polyline = new SVGPolyline(xPoints, yPoints, Color.BLACK, 1.0, 1.0);
+        SVGPolyline polyline = new SVGPolyline(xPoints, yPoints);
         controller.addElement(polyline);
         xPoints.clear();
         yPoints.clear();

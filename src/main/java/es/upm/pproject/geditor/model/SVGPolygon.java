@@ -1,6 +1,5 @@
 package es.upm.pproject.geditor.model;
 
-import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +9,9 @@ public class SVGPolygon extends SVGElement {
     private List<Integer> yPoints;
     private int numPoints;
 
-    public SVGPolygon(List<Integer> xPoints, List<Integer> yPoints, int numPoints, Color fillColor, double fillOpacity,
-            Color strokeColor, double strokeOpacity, double strokeWidth) {
+    public SVGPolygon(List<Integer> xPoints, List<Integer> yPoints, int numPoints) {
 
-        super(xPoints.get(0), yPoints.get(0), fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        super(xPoints.get(0), yPoints.get(0));
 
         this.xPoints = new ArrayList<>(xPoints);
         this.yPoints = new ArrayList<>(yPoints);

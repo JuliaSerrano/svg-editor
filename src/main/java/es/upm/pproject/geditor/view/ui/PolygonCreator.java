@@ -57,7 +57,7 @@ public class PolygonCreator implements ShapeCreator {
 
     @Override
     public void finishShape(MouseEvent e) {
-        SVGPolygon polygon = new SVGPolygon(xPoints, yPoints, xPoints.size(), Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+        SVGPolygon polygon = new SVGPolygon(xPoints, yPoints, xPoints.size());
         controller.addElement(polygon);
         xPoints.clear();
         yPoints.clear();

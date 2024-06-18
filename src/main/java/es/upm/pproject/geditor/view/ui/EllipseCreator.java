@@ -42,7 +42,7 @@ public class EllipseCreator implements ShapeCreator {
             double height = Math.abs(e.getY() - startY);
             double x = Math.min(e.getX(), startX);
             double y = Math.min(e.getY(), startY);
-            SVGEllipse ellipse = new SVGEllipse(x, y, width, height, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+            SVGEllipse ellipse = new SVGEllipse(x, y, width, height);
             controller.addElement(ellipse);
             currentEllipse = null;
         }

@@ -36,7 +36,7 @@ public class CircleCreator implements ShapeCreator {
     public void finishShape(MouseEvent e) {
         if (currentCircle != null) {
             double radius = Math.sqrt(Math.pow(e.getX() - startX, 2) + Math.pow(e.getY() - startY, 2));
-            SVGCircle circle = new SVGCircle(startX, startY, radius, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+            SVGCircle circle = new SVGCircle(startX, startY, radius);
             controller.addElement(circle);
             currentCircle = null;
         }

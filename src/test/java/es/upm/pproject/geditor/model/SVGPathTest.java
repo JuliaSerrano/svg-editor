@@ -23,12 +23,7 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGElement element = new SVGPath(
-            0, 0,                          // x, y (starting position)
-            Color.RED, 1.0,                // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0,         // strokeColor, strokeOpacity, strokeWidth
-            path                           // Path2D object
-        );
+        SVGElement element = new SVGPath(0, 0, path);
 
         document.addElement(element);
 
@@ -48,12 +43,7 @@ class SVGPathTest {
         path.lineTo(1500, 1100);
         path.closePath();
 
-        SVGElement element = new SVGPath(
-            0, 0,                          // x, y (starting position)
-            Color.RED, 1.0,                // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0,         // strokeColor, strokeOpacity, strokeWidth
-            path                           // Path2D object
-        );
+        SVGElement element = new SVGPath(0, 0, path);
 
         document.addElement(element);
 
@@ -72,12 +62,7 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGElement element = new SVGPath(
-            100, 100,                          // x, y
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0,             // strokeColor, strokeOpacity, strokeWidth
-            path                               // path
-        );
+        SVGElement element = new SVGPath(100, 100, path);
 
         document.addElement(element);
         assertEquals(1, document.getElements().size());
@@ -98,12 +83,9 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGElement element = new SVGPath(
-            100, 100,                          // x, y
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0,             // strokeColor, strokeOpacity, strokeWidth
-            path                               // path
-        );
+        SVGElement element = new SVGPath(100, 100, path);
+        element.setFillColor(Color.RED);
+        element.setStrokeWidth(2.0);
 
         document.addElement(element);
 
@@ -123,12 +105,7 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGPath element = new SVGPath(
-            100, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0,
-            path
-        );
+        SVGPath element = new SVGPath(100, 100, path);
 
         element.move(10, 10);
 
@@ -162,12 +139,7 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGElement element = new SVGPath(
-            100, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0,
-            path
-        );
+        SVGPath element = new SVGPath(100, 100, path);
 
         assertTrue(element.isWithinBounds(500, 500));
     }
@@ -180,12 +152,9 @@ class SVGPathTest {
         path.lineTo(300, 100);
         path.closePath();
 
-        SVGElement element = new SVGPath(
-            100, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0,
-            path
-        );
+        SVGPath element = new SVGPath(100, 100, path);
+        element.setFillColor(Color.RED);
+        element.setStrokeWidth(2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));
         assertEquals("#000000", element.colorToHex(Color.BLACK));

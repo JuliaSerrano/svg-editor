@@ -101,7 +101,9 @@ public class SVGParser {
         double y = Double.parseDouble(element.getAttribute("y"));
         double width = Double.parseDouble(element.getAttribute("width"));
         double height = Double.parseDouble(element.getAttribute("height"));
-        return new SVGRectangle(x, y, width, height, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        SVGRectangle rect = new SVGRectangle(x, y, width, height);
+        rect.setStyles(fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        return rect;
     }
 
     private static SVGCircle parseCircle(Element element, Color fillColor, Double fillOpacity, Color strokeColor,
@@ -109,7 +111,9 @@ public class SVGParser {
         double cx = Double.parseDouble(element.getAttribute("cx"));
         double cy = Double.parseDouble(element.getAttribute("cy"));
         double r = Double.parseDouble(element.getAttribute("r"));
-        return new SVGCircle(cx, cy, r, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        SVGCircle circle = new SVGCircle(cx, cy, r);
+        circle.setStyles(fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        return circle;
     }
 
     private static SVGEllipse parseEllipse(Element element, Color fillColor, Double fillOpacity, Color strokeColor,
@@ -118,7 +122,9 @@ public class SVGParser {
         double cy = Double.parseDouble(element.getAttribute("cy"));
         double rx = Double.parseDouble(element.getAttribute("rx"));
         double ry = Double.parseDouble(element.getAttribute("ry"));
-        return new SVGEllipse(cx, cy, rx, ry, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        SVGEllipse ellipse = new SVGEllipse(cx, cy, rx, ry);
+        ellipse.setStyles(fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        return ellipse;
     }
 
     private static SVGLine parseLine(Element element, Color strokeColor, Double strokeOpacity, Double strokeWidth) {
@@ -126,7 +132,9 @@ public class SVGParser {
         double y1 = Double.parseDouble(element.getAttribute("y1"));
         double x2 = Double.parseDouble(element.getAttribute("x2"));
         double y2 = Double.parseDouble(element.getAttribute("y2"));
-        return new SVGLine(x1, y1, x2, y2, strokeColor, strokeOpacity, strokeWidth);
+        SVGLine line = new SVGLine(x1, y1, x2, y2);
+        line.setStyles(null, 0, strokeColor, strokeOpacity, strokeWidth);
+        return line;
     }
 
     private static SVGPolyline parsePolyline(Element element, Color strokeColor, Double strokeOpacity,
@@ -142,7 +150,9 @@ public class SVGParser {
             yPoints.add(Integer.parseInt(coords[1]));
         }
 
-        return new SVGPolyline(xPoints, yPoints, strokeColor, strokeOpacity, strokeWidth);
+        SVGPolyline polyline = new SVGPolyline(xPoints, yPoints);
+        polyline.setStyles(null, 0, strokeColor, strokeOpacity, strokeWidth);
+        return polyline;
     }
 
     private static SVGPolygon parsePolygon(Element element, Color fillColor, Double fillOpacity, Color strokeColor,
@@ -158,8 +168,9 @@ public class SVGParser {
             yPoints.add(Integer.parseInt(coords[1]));
         }
 
-        return new SVGPolygon(xPoints, yPoints, xPoints.size(), fillColor, fillOpacity, strokeColor, strokeOpacity,
-                strokeWidth);
+        SVGPolygon polygon = new SVGPolygon(xPoints, yPoints, xPoints.size());
+        polygon.setStyles(fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        return polygon;
     }
 
     private static SVGPath parsePath(Element element, Color fillColor, Double fillOpacity, Color strokeColor,
@@ -190,7 +201,9 @@ public class SVGParser {
                     break;
             }
         }
-        return new SVGPath(0, 0, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth, path);
+        SVGPath pathElement = new SVGPath(0, 0, path);
+        pathElement.setStyles(fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+        return pathElement;
     }
 
     private static SVGGroup parseGroup(Element element, Set<Element> processedElements) {

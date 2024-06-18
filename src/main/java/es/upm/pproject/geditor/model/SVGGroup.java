@@ -8,7 +8,7 @@ public class SVGGroup extends SVGElement {
     private List<SVGElement> elements;
 
     public SVGGroup() {
-        super(0, 0, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0); // Default styles
+        super(0, 0); // Default styles
         this.elements = new ArrayList<>();
     }
 

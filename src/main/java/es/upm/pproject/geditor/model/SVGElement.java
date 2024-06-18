@@ -13,16 +13,14 @@ public abstract class SVGElement {
     protected double strokeWidth;
     protected double strokeOpacity;
 
-    protected SVGElement(double x, double y, Color fillColor, double fillOpacity, Color strokeColor,
-            double strokeOpacity,
-            double strokeWidth) {
+    protected SVGElement(double x, double y) {
         this.x = x;
         this.y = y;
-        this.fillColor = fillColor;
-        this.fillOpacity = fillOpacity;
-        this.strokeColor = strokeColor;
-        this.strokeOpacity = strokeOpacity;
-        this.strokeWidth = strokeWidth;
+        this.fillColor = Color.BLACK;
+        this.fillOpacity = 1.0;
+        this.strokeColor = Color.BLACK;
+        this.strokeOpacity = 1.0;
+        this.strokeWidth = 1.0;
     }
 
     public abstract String toSVGString();
@@ -89,6 +87,14 @@ public abstract class SVGElement {
     }
 
     public void setStrokeOpacity(double strokeOpacity) {
+        this.strokeOpacity = strokeOpacity;
+    }
+
+    public void setStyles(Color fillColor, double fillOpacity, Color strokeColor, double strokeWidth, double strokeOpacity) {
+        this.fillColor = fillColor;
+        this.fillOpacity = fillOpacity;
+        this.strokeColor = strokeColor;
+        this.strokeWidth = strokeWidth;
         this.strokeOpacity = strokeOpacity;
     }
 

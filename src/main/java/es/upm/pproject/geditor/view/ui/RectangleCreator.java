@@ -36,7 +36,7 @@ public class RectangleCreator implements ShapeCreator {
             int height = Math.abs(e.getY() - currentRectangle.y);
             int x = Math.min(e.getX(), currentRectangle.x);
             int y = Math.min(e.getY(), currentRectangle.y);
-            SVGRectangle rect = new SVGRectangle(x, y, width, height, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+            SVGRectangle rect = new SVGRectangle(x, y, width, height);
             controller.addElement(rect);
             currentRectangle = null;
         }

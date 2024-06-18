@@ -16,11 +16,7 @@ class SVGRectangleTest {
         SVGDocument document = new SVGDocument(width, height);
         
        
-        SVGElement element = new SVGRectangle(
-            100, 100, 200, 200,                // x, y, width, height
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGRectangle(100, 100, 200, 200);
 
         document.addElement(element);
 
@@ -35,11 +31,7 @@ class SVGRectangleTest {
         SVGDocument document = new SVGDocument(width, height);
         
         
-        SVGElement element = new SVGRectangle(
-            1300, 900, 200, 200,               // x, y, width, height
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGRectangle(1300, 900, 200, 200);
 
         document.addElement(element);
 
@@ -52,11 +44,7 @@ class SVGRectangleTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGRectangle(
-            100, 100, 200, 200,                // x, y, width, height
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGRectangle(100, 100, 200, 200);
 
         document.addElement(element);
         assertEquals(1, document.getElements().size());
@@ -71,11 +59,9 @@ class SVGRectangleTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGRectangle(
-            100, 100, 200, 200,                // x, y, width, height
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGRectangle(100, 100, 200, 200);
+        element.setFillColor(Color.RED);
+        element.setStrokeWidth(2.0);
 
         document.addElement(element);
 
@@ -89,11 +75,7 @@ class SVGRectangleTest {
     
     @Test
     void testRectangleMove() {
-        SVGRectangle element = new SVGRectangle(
-            100, 100, 200, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGRectangle element = new SVGRectangle(100, 100, 200, 200);
 
         element.move(10, 10);
 
@@ -103,22 +85,16 @@ class SVGRectangleTest {
 
     @Test
     void testRectangleIsWithinBounds() {
-        SVGRectangle element = new SVGRectangle(
-            100, 100, 200, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGRectangle element = new SVGRectangle(100, 100, 200, 200);
 
         assertTrue(element.isWithinBounds(500, 500));
     }
 
     @Test
     void testRectangleColorToHex() {
-        SVGRectangle element = new SVGRectangle(
-            100, 100, 200, 100,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGRectangle element = new SVGRectangle(100, 100, 200, 200);
+        element.setFillColor(Color.RED);
+        element.setStrokeWidth(2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));
         assertEquals("#000000", element.colorToHex(Color.BLACK));

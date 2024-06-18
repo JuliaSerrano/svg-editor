@@ -53,24 +53,24 @@ public class DialogUtils {
                     y = getIntValueFromComponent(components, Y_LABEL);
                     width = getIntValueFromComponent(components, WIDTH_LABEL);
                     height = getIntValueFromComponent(components, HEIGHT_LABEL);
-                    return new SVGRectangle(x, y, width, height, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+                    return new SVGRectangle(x, y, width, height);
                 case "Circle":
                     centerX = getIntValueFromComponent(components, CENTER_X_LABEL);
                     centerY = getIntValueFromComponent(components, CENTER_Y_LABEL);
                     radius = getIntValueFromComponent(components, RADIUS_LABEL);
-                    return new SVGCircle(centerX, centerY, radius, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+                    return new SVGCircle(centerX, centerY, radius);
                 case "Ellipse":
                     centerX = getIntValueFromComponent(components, CENTER_X_LABEL);
                     centerY = getIntValueFromComponent(components, CENTER_Y_LABEL);
                     width = getIntValueFromComponent(components, WIDTH_LABEL);
                     height = getIntValueFromComponent(components, HEIGHT_LABEL);
-                    return new SVGEllipse(centerX, centerY, width, height, Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+                    return new SVGEllipse(centerX, centerY, width, height);
                 case "Line":
                     startX = getIntValueFromComponent(components, START_X_LABEL);
                     startY = getIntValueFromComponent(components, START_Y_LABEL);
                     endX = getIntValueFromComponent(components, END_X_LABEL);
                     endY = getIntValueFromComponent(components, END_Y_LABEL);
-                    return new SVGLine(startX, startY, endX, endY, Color.BLACK, 1.0, 1.0);
+                    return new SVGLine(startX, startY, endX, endY);
                 default:
                     return null;
             }
@@ -173,9 +173,9 @@ public class DialogUtils {
 
         switch (shapeType) {
             case "Polyline":
-                return new SVGPolyline(xPoints, yPoints, Color.BLACK, 1.0, 1.0);
+                return new SVGPolyline(xPoints, yPoints);
             case "Polygon":
-                return new SVGPolygon(xPoints, yPoints, points.size(), Color.BLACK, 1.0, Color.BLACK, 1.0, 1.0);
+                return new SVGPolygon(xPoints, yPoints, points.size());
             case "Path":
                 Path2D path = new Path2D.Double();
                 Point firstPoint = points.get(0);
@@ -184,7 +184,7 @@ public class DialogUtils {
                     Point nextPoint = points.get(i);
                     path.lineTo(nextPoint.getX(), nextPoint.getY());
                 }
-                return new SVGPath(0, 0, null, 1.0, Color.BLACK, 1.0, 1.0, path);
+                return new SVGPath(0, 0, path);
             default:
                 return null;
         }

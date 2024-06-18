@@ -33,7 +33,7 @@ public class PathCreator implements ShapeCreator {
         // Create the SVGPath object and add it to the controller
         if (currentPath != null) {
             currentPath.lineTo(e.getX(), e.getY());
-            SVGPath svgPath = new SVGPath(0, 0, null, 1.0, Color.BLACK, 1.0, 1.0, currentPath);
+            SVGPath svgPath = new SVGPath(0, 0, currentPath);
             controller.addElement(svgPath);
             currentPath = null;
         }

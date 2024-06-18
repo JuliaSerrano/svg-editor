@@ -1,6 +1,5 @@
 package es.upm.pproject.geditor.model;
 
-import java.awt.Color;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 
@@ -8,11 +7,11 @@ import java.awt.geom.PathIterator;
 public class SVGPath extends SVGElement {
     private Path2D path;
 
-    public SVGPath(double x, double y, Color fillColor, double fillOpacity, Color strokeColor,
-            double strokeOpacity, double strokeWidth, Path2D path) {
-        super(x, y, fillColor, fillOpacity, strokeColor, strokeOpacity, strokeWidth);
+    public SVGPath(double x, double y, Path2D path) {
+        super(x, y);
         this.path = path;
         this.shape = path;
+        this.setFillColor(null);
     }
 
     @Override

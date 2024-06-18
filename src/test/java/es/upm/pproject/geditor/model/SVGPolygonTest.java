@@ -20,11 +20,7 @@ class SVGPolygonTest {
         List<Integer> xPoints = Arrays.asList(100, 200, 300);
         List<Integer> yPoints = Arrays.asList(100, 200, 100);
 
-        SVGElement element = new SVGPolygon(
-            xPoints, yPoints, xPoints.size(),  // xPoints, yPoints, numPoints
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGPolygon(xPoints, yPoints, xPoints.size());
 
         document.addElement(element);
 
@@ -41,11 +37,7 @@ class SVGPolygonTest {
         List<Integer> xPoints = Arrays.asList(1300, 1400, 1500);
         List<Integer> yPoints = Arrays.asList(900, 1000, 1100);
 
-        SVGElement element = new SVGPolygon(
-            xPoints, yPoints, xPoints.size(),  // xPoints, yPoints, numPoints
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGPolygon(xPoints, yPoints, xPoints.size());
 
         document.addElement(element);
 
@@ -59,13 +51,8 @@ class SVGPolygonTest {
 
         List<Integer> xPoints = Arrays.asList(100, 200, 300, 400);
         List<Integer> yPoints = Arrays.asList(100, 150, 250, 300);
-        int numPoints = xPoints.size();
 
-        SVGElement element = new SVGPolygon(
-            xPoints, yPoints, numPoints,       // xPoints, yPoints, numPoints
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGPolygon(xPoints, yPoints, xPoints.size());
 
         document.addElement(element);
         assertEquals(1, document.getElements().size());
@@ -82,13 +69,10 @@ class SVGPolygonTest {
 
         List<Integer> xPoints = Arrays.asList(100, 200, 300, 400);
         List<Integer> yPoints = Arrays.asList(100, 150, 250, 300);
-        int numPoints = xPoints.size();
 
-        SVGElement element = new SVGPolygon(
-            xPoints, yPoints, numPoints,       // xPoints, yPoints, numPoints
-            Color.RED, 1.0,                    // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0              // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGPolygon(xPoints, yPoints, xPoints.size());
+        element.setFillColor(Color.RED);
+        element.setStrokeWidth(2.0);
 
         document.addElement(element);
 
@@ -104,13 +88,8 @@ class SVGPolygonTest {
     void testPolygonMove() {
         List<Integer> xPoints = Arrays.asList(100, 200, 300, 400);
         List<Integer> yPoints = Arrays.asList(100, 150, 250, 300);
-        int numPoints = xPoints.size();
 
-        SVGPolygon element = new SVGPolygon(
-            xPoints, yPoints, numPoints,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGPolygon element = new SVGPolygon(xPoints, yPoints, xPoints.size());
 
         element.move(10, 10);
 
@@ -124,13 +103,8 @@ class SVGPolygonTest {
     void testPolygonIsWithinBounds() {
         List<Integer> xPoints = Arrays.asList(100, 200, 300, 400);
         List<Integer> yPoints = Arrays.asList(100, 150, 250, 300);
-        int numPoints = xPoints.size();
 
-        SVGElement element = new SVGPolygon(
-            xPoints, yPoints, numPoints,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGElement element = new SVGPolygon(xPoints, yPoints, xPoints.size() );
 
         assertTrue(element.isWithinBounds(500, 500));
     }
@@ -139,13 +113,10 @@ class SVGPolygonTest {
     void testPolygonColorToHex() {
         List<Integer> xPoints = Arrays.asList(100, 200, 300, 400);
         List<Integer> yPoints = Arrays.asList(100, 150, 250, 300);
-        int numPoints = xPoints.size();
 
-        SVGElement element = new SVGPolygon(
-            xPoints, yPoints, numPoints,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGElement element = new SVGPolygon(xPoints, yPoints, xPoints.size());
+        element.setFillColor(Color.RED);
+        element.setStrokeWidth(2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));
         assertEquals("#000000", element.colorToHex(Color.BLACK));

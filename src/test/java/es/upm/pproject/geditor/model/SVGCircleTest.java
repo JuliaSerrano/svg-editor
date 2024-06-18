@@ -15,11 +15,7 @@ class SVGCircleTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGCircle(
-            100, 100, 50,                    // x, y, radius
-            Color.RED, 1.0,                  // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0            // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGCircle(100, 100, 50);
 
         document.addElement(element);
 
@@ -33,11 +29,7 @@ class SVGCircleTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGCircle(
-            1300, 900, 50,                  // x, y, radius
-            Color.RED, 1.0,                 // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0           // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGCircle(1300, 900, 50);
 
         document.addElement(element);
 
@@ -50,11 +42,7 @@ class SVGCircleTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGCircle(
-            100, 100, 50,                   // x, y, radius
-            Color.RED, 1.0,                 // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0           // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGCircle(100, 100, 50);
 
         document.addElement(element);
         assertEquals(1, document.getElements().size());
@@ -69,11 +57,9 @@ class SVGCircleTest {
         int height = 800;
         SVGDocument document = new SVGDocument(width, height);
 
-        SVGElement element = new SVGCircle(
-            100, 100, 50,                   // x, y, radius
-            Color.RED, 1.0,                 // fillColor, fillOpacity
-            Color.BLACK, 1.0, 2.0           // strokeColor, strokeOpacity, strokeWidth
-        );
+        SVGElement element = new SVGCircle(100, 100, 50);
+
+        element.setStyles(Color.RED, 1.0, Color.BLACK, 2.0, 1.0);
 
         document.addElement(element);
 
@@ -87,11 +73,7 @@ class SVGCircleTest {
     
     @Test
     void testCircleMove() {
-        SVGCircle element = new SVGCircle(
-            100, 100, 50,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGCircle element = new SVGCircle(100, 100, 50);
 
         element.move(10, 10);
 
@@ -101,22 +83,16 @@ class SVGCircleTest {
 
     @Test
     void testCircleIsWithinBounds() {
-        SVGCircle element = new SVGCircle(
-            100, 100, 50,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGCircle element = new SVGCircle(100, 100, 50);
 
         assertTrue(element.isWithinBounds(500, 500));
     }
 
     @Test
     void testCircleColorToHex() {
-        SVGCircle element = new SVGCircle(
-            100, 100, 50,
-            Color.RED, 1.0,
-            Color.BLACK, 1.0, 2.0
-        );
+        SVGCircle element = new SVGCircle(100, 100, 50);
+
+        element.setStyles(Color.RED, 1.0, Color.BLACK, 1.0, 2.0);
 
         assertEquals("#ff0000", element.colorToHex(Color.RED));
         assertEquals("#000000", element.colorToHex(Color.BLACK));
