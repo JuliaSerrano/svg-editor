@@ -1,6 +1,7 @@
 package es.upm.pproject.geditor.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 
@@ -82,5 +83,43 @@ class SVGEllipseTest {
                 "</svg>";
 
         assertEquals(expectedSVGString, document.toSVGString());
+    }
+    
+    @Test
+    void testEllipseMove() {
+        SVGEllipse element = new SVGEllipse(
+            100, 100, 200, 100,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0
+        );
+
+        element.move(10, 10);
+
+        assertEquals(110, element.getX());
+        assertEquals(110, element.getY());
+    }
+
+    @Test
+    void testEllipseIsWithinBounds() {
+        SVGEllipse element = new SVGEllipse(
+            100, 100, 200, 100,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0
+        );
+
+        assertTrue(element.isWithinBounds(500, 500));
+    }
+
+    @Test
+    void testEllipseColorToHex() {
+        SVGEllipse element = new SVGEllipse(
+            100, 100, 200, 100,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0
+        );
+
+        assertEquals("#ff0000", element.colorToHex(Color.RED));
+        assertEquals("#000000", element.colorToHex(Color.BLACK));
+        assertEquals("#ffffff", element.colorToHex(Color.WHITE));
     }
 }

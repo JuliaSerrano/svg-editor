@@ -1,9 +1,12 @@
 package es.upm.pproject.geditor.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
+
 import org.junit.jupiter.api.Test;
 
 class SVGPathTest {
@@ -110,5 +113,82 @@ class SVGPathTest {
                 "</svg>";
 
         assertEquals(expectedSVGString.replaceAll("\\s+", ""), document.toSVGString().replaceAll("\\s+", ""));
+    }
+    
+    @Test
+    void testPathMove() {
+        Path2D path = new Path2D.Double();
+        path.moveTo(100, 100);
+        path.lineTo(200, 200);
+        path.lineTo(300, 100);
+        path.closePath();
+
+        SVGPath element = new SVGPath(
+            100, 100,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0,
+            path
+        );
+
+        element.move(10, 10);
+
+        Path2D expectedPath = new Path2D.Double();
+        expectedPath.moveTo(110, 110);
+        expectedPath.lineTo(210, 210);
+        expectedPath.lineTo(310, 110);
+        expectedPath.closePath();
+
+        PathIterator expectedIterator = expectedPath.getPathIterator(null);
+        PathIterator actualIterator = element.getPath().getPathIterator(null);
+        float[] expectedCoords = new float[6];
+        float[] actualCoords = new float[6];
+        while (!expectedIterator.isDone() && !actualIterator.isDone()) {
+            int expectedSegment = expectedIterator.currentSegment(expectedCoords);
+            int actualSegment = actualIterator.currentSegment(actualCoords);
+            assertEquals(expectedSegment, actualSegment);
+            for (int i = 0; i < 6; i++) {
+                assertEquals(expectedCoords[i], actualCoords[i], 0.01);
+            }
+            expectedIterator.next();
+            actualIterator.next();
+        }
+    }
+
+    @Test
+    void testPathIsWithinBounds() {
+        Path2D path = new Path2D.Double();
+        path.moveTo(100, 100);
+        path.lineTo(200, 200);
+        path.lineTo(300, 100);
+        path.closePath();
+
+        SVGElement element = new SVGPath(
+            100, 100,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0,
+            path
+        );
+
+        assertTrue(element.isWithinBounds(500, 500));
+    }
+
+    @Test
+    void testPathColorToHex() {
+        Path2D path = new Path2D.Double();
+        path.moveTo(100, 100);
+        path.lineTo(200, 200);
+        path.lineTo(300, 100);
+        path.closePath();
+
+        SVGElement element = new SVGPath(
+            100, 100,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0,
+            path
+        );
+
+        assertEquals("#ff0000", element.colorToHex(Color.RED));
+        assertEquals("#000000", element.colorToHex(Color.BLACK));
+        assertEquals("#ffffff", element.colorToHex(Color.WHITE));
     }
 }

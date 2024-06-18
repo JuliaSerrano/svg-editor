@@ -1,6 +1,7 @@
 package es.upm.pproject.geditor.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
 
@@ -82,5 +83,43 @@ class SVGCircleTest {
                 "</svg>";
 
         assertEquals(expectedSVGString, document.toSVGString());
+    }
+    
+    @Test
+    void testCircleMove() {
+        SVGCircle element = new SVGCircle(
+            100, 100, 50,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0
+        );
+
+        element.move(10, 10);
+
+        assertEquals(110, element.getCx());
+        assertEquals(110, element.getCy());
+    }
+
+    @Test
+    void testCircleIsWithinBounds() {
+        SVGCircle element = new SVGCircle(
+            100, 100, 50,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0
+        );
+
+        assertTrue(element.isWithinBounds(500, 500));
+    }
+
+    @Test
+    void testCircleColorToHex() {
+        SVGCircle element = new SVGCircle(
+            100, 100, 50,
+            Color.RED, 1.0,
+            Color.BLACK, 1.0, 2.0
+        );
+
+        assertEquals("#ff0000", element.colorToHex(Color.RED));
+        assertEquals("#000000", element.colorToHex(Color.BLACK));
+        assertEquals("#ffffff", element.colorToHex(Color.WHITE));
     }
 }
