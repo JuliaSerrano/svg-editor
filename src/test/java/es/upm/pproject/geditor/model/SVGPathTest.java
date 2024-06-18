@@ -3,12 +3,13 @@ package es.upm.pproject.geditor.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Color;
-import java.awt.geom.Path2D;
-import java.awt.geom.PathIterator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.awt.Color;
+import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 
 class SVGPathTest {
 

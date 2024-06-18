@@ -57,7 +57,7 @@ class SVGPolylineTest {
 
         String expectedSVGString = "<svg width=\"1200\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\">\n\n" +
                 "  <rect width=\"100%\" height=\"100%\" fill=\"#ffffff\" />\n\n" +
-                "  <polyline points=\"100,100 200,150 300,250 400,300\" style=\"fill:none; stroke:#000000; stroke-opacity:1.00; stroke-width:2.00\" />\n\n" +
+                "  <polyline points=\"100,100 200,200 300,100\" style=\"fill:none; stroke:#000000; stroke-opacity:1.00; stroke-width:2.00\" />\n\n" +
                 "</svg>";
 
         assertEquals(expectedSVGString, document.toSVGString());

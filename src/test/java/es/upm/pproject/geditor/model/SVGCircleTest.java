@@ -29,7 +29,7 @@ class SVGCircleTest {
 
     @Test
     void testAddCircleElementOutOfBounds() {
-        SVGElement element2 = new SVGCircle(1300, 900, 50);
+    	SVGCircle element2 = new SVGCircle(1300, 900, 50);
         document.addElement(element2);
 
         assertEquals(1, document.getElements().size()); 
