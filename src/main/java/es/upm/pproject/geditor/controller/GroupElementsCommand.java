@@ -26,7 +26,7 @@ public class GroupElementsCommand implements Command {
 
     @Override
     public void execute() {
-        boolean hasGroup = elements.stream().anyMatch(element -> element instanceof SVGGroup);
+        boolean hasGroup = elements.stream().anyMatch(SVGGroup.class::isInstance);
 
         if (hasGroup) {
             JOptionPane.showMessageDialog(null,

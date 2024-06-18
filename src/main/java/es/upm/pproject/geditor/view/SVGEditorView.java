@@ -503,7 +503,7 @@ public class SVGEditorView extends JFrame {
         for (Component comp : toolBar.getComponents()) {
             if (comp instanceof JToggleButton) {
                 JToggleButton toggleButton = (JToggleButton) comp;
-                if (toggleButton.getText().equals("In Selection")) {
+                if ("In Selection".equals(toggleButton.getText())) {
                     toggleButton.setSelected(false);
                     toggleButton.setText(SELECT_TXT);
                     canvas.setMode(SVGCanvas.Mode.DEFAULT);

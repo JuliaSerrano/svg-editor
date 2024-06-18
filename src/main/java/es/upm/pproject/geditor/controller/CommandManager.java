@@ -1,10 +1,15 @@
 package es.upm.pproject.geditor.controller;
 
 import javax.swing.undo.UndoManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.undo.CannotUndoException;
 
 public class CommandManager {
     private UndoManager undoManager = new UndoManager();
+    private static final Logger logger = LoggerFactory.getLogger(CommandManager.class);
 
     public void executeCommand(Command command) {
         command.execute();
@@ -17,7 +22,7 @@ public class CommandManager {
                 undoManager.undo();
             }
         } catch (CannotUndoException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 }
