@@ -1,7 +1,6 @@
 package es.upm.pproject.geditor.model;
 
 import java.awt.Color;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 public class SVGRectangle extends SVGElement {
@@ -45,8 +44,7 @@ public class SVGRectangle extends SVGElement {
     public void move(double dx, double dy) {
         this.x += dx;
         this.y += dy;
-        AffineTransform transform = AffineTransform.getTranslateInstance(dx, dy);
-        shape = transform.createTransformedShape(shape);
+        this.shape = new Rectangle2D.Double(x, y, width, height);
     }
 
     public boolean isWithinBounds(int width, int height) {
