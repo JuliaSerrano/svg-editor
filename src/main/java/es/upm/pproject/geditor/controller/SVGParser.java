@@ -217,7 +217,7 @@ public class SVGParser {
     }
 
     private static Color parseColor(String colorStr, Color defaultColor) {
-        if (colorStr == null || colorStr.isEmpty() || colorStr.equals("none")) {
+        if (colorStr == null || colorStr.isEmpty() || "none".equals(colorStr)) {
             return defaultColor;
         }
 
