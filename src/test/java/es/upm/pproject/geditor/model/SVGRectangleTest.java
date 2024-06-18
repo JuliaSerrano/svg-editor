@@ -69,4 +69,26 @@ class SVGRectangleTest {
     void testRectangleIsWithinBounds() {
         assertTrue(element.isWithinBounds(500, 500));
     }
+
+    @Test
+    void testRectangleGetWidth() {
+        assertEquals(200, element.getWidth());
+    }
+
+    @Test
+    void testRectangleSetWidth() {
+        element.setWidth(300);
+        assertEquals(300, element.getWidth());
+    }
+
+    @Test
+    void testRectangleGetHeight() {
+        assertEquals(200, element.getHeight());
+    }
+
+    @Test
+    void testRectangleSetHeight() {
+        element.setHeight(300);
+        assertEquals(300, element.getHeight());
+    }
 }

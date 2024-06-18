@@ -75,8 +75,46 @@ class SVGPolygonTest {
         assertEquals(expectedXPoints, element.getXPoints());
         assertEquals(expectedYPoints, element.getYPoints());
     }
+
     @Test
     void testPolygonIsWithinBounds() {
         assertTrue(element.isWithinBounds(500, 500));
+    }
+
+    @Test
+    void testPolygonGetXPoints() {
+        List<Integer> expectedXPoints = Arrays.asList(100, 200, 300);
+        assertEquals(expectedXPoints, element.getXPoints());
+    }
+
+    @Test
+    void TestPolygonSetXPoints() {
+        List<Integer> expectedXPoints = Arrays.asList(200, 300, 400);
+        element.setXPoints(expectedXPoints);
+        assertEquals(expectedXPoints, element.getXPoints());
+    }
+
+    @Test
+    void testPolygonGetYPoints() {
+        List<Integer> expectedYPoints = Arrays.asList(100, 200, 100);
+        assertEquals(expectedYPoints, element.getYPoints());
+    }
+
+    @Test
+    void testPolygonSetYPoints() {
+        List<Integer> expectedYPoints = Arrays.asList(200, 300, 200);
+        element.setYPoints(expectedYPoints);
+        assertEquals(expectedYPoints, element.getYPoints());
+    }
+
+    @Test
+    void testPolygonGetNumPoints() {
+        assertEquals(3, element.getNumPoints());
+    }
+
+    @Test
+    void testPolygonSetNumPoints() {
+        element.setNumPoints(4);
+        assertEquals(4, element.getNumPoints());
     }
 }

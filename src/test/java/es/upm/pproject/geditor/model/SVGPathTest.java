@@ -103,4 +103,54 @@ class SVGPathTest {
     void testPathIsWithinBounds() {
         assertTrue(element.isWithinBounds(500, 500));
     }
+
+    @Test
+    void testPathGetPath() {
+        Path2D expectedPath = new Path2D.Double();
+        expectedPath.moveTo(100, 100);
+        expectedPath.lineTo(200, 200);
+        expectedPath.lineTo(300, 100);
+        expectedPath.closePath();
+
+        PathIterator expectedIterator = expectedPath.getPathIterator(null);
+        PathIterator actualIterator = element.getPath().getPathIterator(null);
+        float[] expectedCoords = new float[6];
+        float[] actualCoords = new float[6];
+        while (!expectedIterator.isDone() && !actualIterator.isDone()) {
+            int expectedSegment = expectedIterator.currentSegment(expectedCoords);
+            int actualSegment = actualIterator.currentSegment(actualCoords);
+            assertEquals(expectedSegment, actualSegment);
+            for (int i = 0; i < 6; i++) {
+                assertEquals(expectedCoords[i], actualCoords[i], 0.01);
+            }
+            expectedIterator.next();
+            actualIterator.next();
+        }
+    }
+
+    @Test
+    void testPathSetPath() {
+        Path2D path = new Path2D.Double();
+        path.moveTo(200, 200);
+        path.lineTo(300, 300);
+        path.lineTo(400, 200);
+        path.closePath();
+
+        element.setPath(path);
+
+        PathIterator expectedIterator = path.getPathIterator(null);
+        PathIterator actualIterator = element.getPath().getPathIterator(null);
+        float[] expectedCoords = new float[6];
+        float[] actualCoords = new float[6];
+        while (!expectedIterator.isDone() && !actualIterator.isDone()) {
+            int expectedSegment = expectedIterator.currentSegment(expectedCoords);
+            int actualSegment = actualIterator.currentSegment(actualCoords);
+            assertEquals(expectedSegment, actualSegment);
+            for (int i = 0; i < 6; i++) {
+                assertEquals(expectedCoords[i], actualCoords[i], 0.01);
+            }
+            expectedIterator.next();
+            actualIterator.next();
+        }
+    }
 }

@@ -77,4 +77,26 @@ class SVGEllipseTest {
         assertEquals("#000000", element.colorToHex(Color.BLACK));
         assertEquals("#ffffff", element.colorToHex(Color.WHITE));
     }
+
+    @Test
+    void testEllipseGetWidth() {
+        assertEquals(200, element.getWidth());
+    }
+
+    @Test
+    void testEllipseSetWidth() {
+        element.setWidth(300);
+        assertEquals(300, element.getWidth());
+    }
+
+    @Test
+    void testEllipseGetHeight() {
+        assertEquals(100, element.getHeight());
+    }
+
+    @Test
+    void testEllipseSetHeight() {
+        element.setHeight(200);
+        assertEquals(200, element.getHeight());
+    }
 }

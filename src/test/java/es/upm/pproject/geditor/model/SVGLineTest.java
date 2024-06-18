@@ -69,4 +69,26 @@ class SVGLineTest {
     void testLineIsWithinBounds() {
         assertTrue(element.isWithinBounds(500, 500));
     }
+
+    @Test
+    void testLineGetX2() {
+        assertEquals(300, element.getX2());
+    }
+
+    @Test
+    void testLineGetY2() {
+        assertEquals(300, element.getY2());
+    }
+
+    @Test
+    void testLineSetX2() {
+        element.setX2(400);
+        assertEquals(400, element.getX2());
+    }
+
+    @Test
+    void testLineSetY2() {
+        element.setY2(400);
+        assertEquals(400, element.getY2());
+    }
 }

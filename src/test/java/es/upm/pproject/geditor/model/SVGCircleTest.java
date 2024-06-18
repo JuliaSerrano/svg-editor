@@ -67,4 +67,15 @@ class SVGCircleTest {
     void testCircleIsWithinBounds() {
         assertTrue(element.isWithinBounds(500, 500));
     }
+
+    @Test
+    void testCircleGetRadius() {
+        assertEquals(50, element.getRadius());
+    }
+
+    @Test
+    void testCircleSetRadius() {
+        element.setRadius(100);
+        assertEquals(100, element.getRadius());
+    }
 }
