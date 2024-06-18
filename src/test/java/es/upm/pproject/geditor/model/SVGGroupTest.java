@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import es.upm.pproject.geditor.model.SVGGroup;
 import es.upm.pproject.geditor.model.SVGRectangle;
 
-public class SVGGroupTest {
+class SVGGroupTest {
 
     @Test
     void testAddElement() {
