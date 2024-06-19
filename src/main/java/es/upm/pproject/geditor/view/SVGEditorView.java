@@ -2,6 +2,7 @@
 package es.upm.pproject.geditor.view;
 
 import javax.swing.*;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import es.upm.pproject.geditor.controller.SVGEditorController;
@@ -192,12 +193,22 @@ public class SVGEditorView extends JFrame {
 
         // Fill color picker
         JButton fillColorButton = new JButton("Fill Color");
-        fillColorButton.addActionListener(e -> {
-            Color newColor = JColorChooser.showDialog(null, "Choose Fill Color", Color.BLACK);
-            if (newColor != null) {
-                // Set fill color to the selected color
-                controller.changeSelectedElementFillColor(canvas.getSelectedElements(), newColor);
+        fillColorButton.addActionListener(event -> {
+            JColorChooser colorChooser = new JColorChooser();
+            AbstractColorChooserPanel[] panels = colorChooser.getChooserPanels();
+            for (AbstractColorChooserPanel panel : panels) {
+                if (!panel.getDisplayName().equals("Swatches")) {
+                    colorChooser.removeChooserPanel(panel);
+                }
             }
+            JColorChooser.createDialog(
+                null, 
+                "Choose Fill Color", 
+                true, 
+                colorChooser, 
+                e -> controller.changeSelectedElementFillColor(canvas.getSelectedElements(), colorChooser.getColor()),
+                null
+             ).setVisible(true);
         });
         toolBar.add(fillColorButton);
         toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
@@ -222,11 +233,22 @@ public class SVGEditorView extends JFrame {
 
         // Line color picker
         JButton lineColorButton = new JButton("Line Color");
-        lineColorButton.addActionListener(e -> {
-            Color newColor = JColorChooser.showDialog(null, "Choose Line Color", Color.BLACK);
-            if (newColor != null) {
-                controller.changeSelectedElementStrokeColor(canvas.getSelectedElements(), newColor);
+        lineColorButton.addActionListener(event -> {
+            JColorChooser colorChooser = new JColorChooser();
+            AbstractColorChooserPanel[] panels = colorChooser.getChooserPanels();
+            for (AbstractColorChooserPanel panel : panels) {
+                if (!panel.getDisplayName().equals("Swatches")) {
+                    colorChooser.removeChooserPanel(panel);
+                }
             }
+            JColorChooser.createDialog(
+                null, 
+                "Choose Line Color", 
+                true, 
+                colorChooser, 
+                e -> controller.changeSelectedElementStrokeColor(canvas.getSelectedElements(), colorChooser.getColor()),
+                null
+             ).setVisible(true);
         });
         toolBar.add(lineColorButton);
         toolBar.add(Box.createVerticalStrut(10)); // Space between buttons
